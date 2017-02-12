@@ -1,23 +1,29 @@
 package com.capgemini.dtc.app.plugin;
 
-import com.esotericsoftware.kryo.Kryo;
-import com.capgemini.dtc.app.api.DTCApi;
-import com.capgemini.dtc.app.contract.PurchaseOrderContract;
-import com.capgemini.dtc.app.state.PurchaseOrderState;
-import com.capgemini.dtc.app.flow.DTCFlow;
-import com.capgemini.dtc.app.model.PurchaseOrder;
-import com.capgemini.dtc.app.service.DTCService;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+
 import net.corda.core.crypto.Party;
 import net.corda.core.flows.IllegalFlowLogicException;
 import net.corda.core.messaging.CordaRPCOps;
 import net.corda.core.node.CordaPluginRegistry;
 import net.corda.core.node.PluginServiceHub;
 
-import java.util.*;
-import java.util.function.Function;
+import com.capgemini.dtc.app.api.DTCApi;
+import com.capgemini.dtc.app.contract.PurchaseOrderContract;
+import com.capgemini.dtc.app.flow.DTCFlow;
+import com.capgemini.dtc.app.model.PurchaseOrder;
+import com.capgemini.dtc.app.service.DTCService;
+import com.capgemini.dtc.app.state.PurchaseOrderState;
+import com.esotericsoftware.kryo.Kryo;
 
-public class DTCPlugin extends CordaPluginRegistry {	
-	
+public class DTCPlugin extends CordaPluginRegistry {
     /**
      * A list of classes that expose web APIs.
      */
@@ -55,7 +61,7 @@ public class DTCPlugin extends CordaPluginRegistry {
      */
     private final Map<String, String> staticServeDirs = Collections.singletonMap(
             // This will serve the exampleWeb directory in resources to /web/example
-            "dtc", getClass().getClassLoader().getResource("dtcWeb").toExternalForm()
+            "example", getClass().getClassLoader().getResource("exampleWeb").toExternalForm()
     );
 
     @Override public List<Function<CordaRPCOps, ?>> getWebApis() { return webApis; }
