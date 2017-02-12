@@ -7,6 +7,7 @@ Corda Digital Trade Chain Project Repository
 3. Git v2.11.0
 4. Maven v3.3.9
 5. Gradle Eclipse Plugin (Help->Install New Software) url - http://dist.springsource.com/release/TOOLS/gradle
+6. Postman (REST client)
 
 # application setup
 $ git clone https://github.com/biksen/corda-dtc-app.git
@@ -31,6 +32,9 @@ https://mvnrepository.com/artifact/net.corda/client/0.7
 Corda Maven Local Repository::
 
 C:/Users/biksen/.m2/repository/net/corda
+
+# Broadcasting
+https://discourse.corda.net/t/broadcasting-in-corda-7-missing-signature/755
 
 # REST api call
 
