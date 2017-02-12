@@ -26,7 +26,7 @@ import com.capgemini.dtc.app.model.PurchaseOrder;
 import com.capgemini.dtc.app.state.PurchaseOrderState;
 
 // This API is accessible from /api/example. All paths specified below are relative to it.
-@Path("example")
+@Path("dtc")
 public class DTCApi {
     private final CordaRPCOps services;
     private final String myLegalName;
