@@ -61,7 +61,7 @@ public class DTCPlugin extends CordaPluginRegistry {
      */
     private final Map<String, String> staticServeDirs = Collections.singletonMap(
             // This will serve the exampleWeb directory in resources to /web/example
-            "example", getClass().getClassLoader().getResource("exampleWeb").toExternalForm()
+            "dtc", getClass().getClassLoader().getResource("dtcWeb").toExternalForm()
     );
 
     @Override public List<Function<CordaRPCOps, ?>> getWebApis() { return webApis; }
