@@ -31,3 +31,9 @@ https://mvnrepository.com/artifact/net.corda/client/0.7
 Corda Maven Local Repository::
 
 C:/Users/biksen/.m2/repository/net/corda
+
+# REST api call
+
+PUT:http://localhost:10005/api/dtc/NodeB/create-purchase-order
+
+{"orderNumber": "100","deliveryDate": "2018-09-15","deliveryAddress": {"city": "London","country": "UK"},"items" : [{"name": "widget","amount": "3"},{"name": "thing","amount": "4"}]}
