@@ -21,3 +21,13 @@ Core Corda platform dependent JARs:
 3. core 
 4. finance 
 5. node
+
+Corda Maven Central Repository::
+
+https://mvnrepository.com/artifact/net.corda/corda/0.7 
+
+https://mvnrepository.com/artifact/net.corda/client/0.7
+
+Corda Maven Local Repository::
+
+C:/Users/biksen/.m2/repository/net/corda
