@@ -1,5 +1,5 @@
 # corda-dtc-app
-This is Corda Digital Trade Chain Repository
+Corda Digital Trade Chain Project Repository
 
 # software prerequisites
 1. JDK 8.0 and above
