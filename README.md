@@ -13,3 +13,11 @@ $ git clone https://github.com/biksen/corda-dtc-app.git
 
 Open Eclipse:
 File->Import->Gradle
+
+# corda dependent jars
+Core Corda platform dependent JARs: 
+1. client 
+2. corda 
+3. core 
+4. finance 
+5. node
