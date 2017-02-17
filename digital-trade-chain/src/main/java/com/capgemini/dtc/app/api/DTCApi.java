@@ -86,20 +86,26 @@ public class DTCApi {
     @Path("{party}/create-purchase-order")
     public Response createPurchaseOrder(PurchaseOrder purchaseOrder, @PathParam("party") String partyName) throws InterruptedException, ExecutionException {
         final Party otherParty = services.partyFromName(partyName);
+        final Party anotherParty = services.partyFromName("NodeC");
 
         if (otherParty == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        final PurchaseOrderState state = new PurchaseOrderState(
+        /*final PurchaseOrderState state = new PurchaseOrderState(
                 purchaseOrder,
                 services.nodeIdentity().getLegalIdentity(),
                 otherParty,
+                new PurchaseOrderContract());*/
+        final PurchaseOrderState state = new PurchaseOrderState(
+                purchaseOrder,
+                services.nodeIdentity().getLegalIdentity(),
+                otherParty, anotherParty,
                 new PurchaseOrderContract());
 
         // The line below blocks and waits for the flow to return.
         final DTCFlow.DTCFlowResult result = services
-                .startFlowDynamic(DTCFlow.Initiator.class, state, otherParty)
+                .startFlowDynamic(DTCFlow.Initiator.class, state, otherParty, anotherParty)
                 .getReturnValue()
                 .toBlocking()
                 .first();
