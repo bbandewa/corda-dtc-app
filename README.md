@@ -44,5 +44,7 @@ PUT:http://localhost:10005/api/dtc/NodeB/create-purchase-order
 
 # Git commit issue
 If you face git commit error saying "non-fast-forward". Use the following command:
+
 C:\git\corda-dtc-app\>git pull origin master
+
 then push through eclipse.
