@@ -1,6 +1,6 @@
 package com.capgemini.dtc.app.model;
 
-public class Customer {
+public class Party {
 
 	String name;
 	String userName;
@@ -17,7 +17,7 @@ public class Customer {
 	 * @param vAT
 	 * @param iBAN
 	 */
-	public Customer(String name, String userName, Address address, String bankName, String vAT, String iBAN) {
+	public Party(String name, String userName, Address address, String bankName, String vAT, String iBAN) {
 		super();
 		this.name = name;
 		this.userName = userName;
@@ -68,7 +68,7 @@ public class Customer {
 	 */
 	@Override
 	public String toString() {
-		return String.format("Customer [name=%s, userName=%s, address=%s, bankName=%s, VAT=%s, IBAN=%s]", name,
+		return String.format("Party [name=%s, userName=%s, address=%s, bankName=%s, VAT=%s, IBAN=%s]", name,
 				userName, address, bankName, VAT, IBAN);
 	}
 	

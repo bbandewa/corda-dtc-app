@@ -1,6 +1,6 @@
 package com.capgemini.dtc.app.model;
 
-public class Article {
+public class Item {
 
 	String articleId;
 	String description;
@@ -11,7 +11,7 @@ public class Article {
 	 * @param description
 	 * @param price
 	 */
-	public Article(String articleId, String description, float price) {
+	public Item(String articleId, String description, float price) {
 		super();
 		this.articleId = articleId;
 		this.description = description;
@@ -44,7 +44,7 @@ public class Article {
 	 */
 	@Override
 	public String toString() {
-		return String.format("Article [articleId=%s, description=%s, price=%s]", articleId, description, price);
+		return String.format("Item [articleId=%s, description=%s, price=%s]", articleId, description, price);
 	}
 	
 }

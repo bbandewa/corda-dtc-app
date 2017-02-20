@@ -1,15 +1,15 @@
 package com.capgemini.dtc.app.model;
 
-public class ArticlePurchased {
+public class ItemPurchased {
 
-	Article article;
+	Item article;
 	int quantity;
 	
 	/**
 	 * @param article
 	 * @param quantity
 	 */
-	public ArticlePurchased(Article article, int quantity) {
+	public ItemPurchased(Item article, int quantity) {
 		super();
 		this.article = article;
 		this.quantity = quantity;
@@ -18,7 +18,7 @@ public class ArticlePurchased {
 	/**
 	 * @return the article
 	 */
-	public Article getArticle() {
+	public Item getArticle() {
 		return article;
 	}
 	
@@ -34,6 +34,6 @@ public class ArticlePurchased {
 	 */
 	@Override
 	public String toString() {
-		return String.format("ArticlePurchased [article=%s, quantity=%s]", article, quantity);
+		return String.format("ItemPurchased [article=%s, quantity=%s]", article, quantity);
 	}
 }
