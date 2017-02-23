@@ -1,0 +1,96 @@
+﻿<!DOCTYPE HTML>
+<HTML xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+    <META content="IE=11.0000"
+          http-equiv="X-UA-Compatible">
+    <TITLE> </TITLE>
+    <META charset="utf-8">
+    <META name="viewport" content="width=device-width, initial-scale=1">     <!-- jQuery -->
+
+    <SCRIPT src="js/jquery.min.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery-ui.js"></SCRIPT>
+
+    <SCRIPT src="js/js/bootstrap.min.js"></SCRIPT>
+
+    <SCRIPT src="js/grid.locale-en.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery.jqGrid.min.js"></SCRIPT>
+
+    <!-- jquery-ui CSS -->
+    <LINK href="css/jquery-ui.css"
+          rel="stylesheet">     <!-- Bootstrap core CSS -->
+    <LINK href="css/bootstrap.min.css"
+          rel="stylesheet">
+    <LINK href="css/ui.jqgrid.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <STYLE type="text/css"></STYLE>
+    <META name="GENERATOR" content="MSHTML 11.00.10570.1001">
+</HEAD>
+<BODY>
+    <FORM id="form1" method="post">
+        <DIV class="container">
+            <DIV class="panel-group col-sm-6"
+                 style="margin-top: 100px; margin-left: 200px;">
+                <DIV class="panel panel-info">
+                    <DIV class="panel-heading">
+                        <H3>User Login</H3>
+                    </DIV>
+                    <DIV class="panel-body" style="min-height: 350px;">
+                        <DIV class="form-group ">
+                            <LABEL for="email">Username:</LABEL>
+                            <INPUT class="form-control" id="userName" type="email">
+                        </DIV>
+                        <DIV class="form-group ">
+                            <LABEL for="pwd">Password:</LABEL>
+                            <INPUT class="form-control" id="pwd" type="password">
+                        </DIV>
+                        <DIV class="checkbox">
+                            <LABEL>
+                                <INPUT type="checkbox">
+                                Remember me
+                            </LABEL>
+                        </DIV><BUTTON class="btn btn-info"
+                                      id="btnLogin">
+                            Login
+                        </BUTTON>                         <BUTTON class="btn btn-link"
+                                                                  type="button">
+                            Forgot Password?
+                        </BUTTON>
+                    </DIV>
+                </DIV>
+            </DIV>
+        </DIV>
+    </FORM><!-- Visual Studio Browser Link -->
+    <!-- End Browser Link -->
+    <SCRIPT>
+        // Get the modal
+        $(document).ready(function () {
+            $('#btnLogin').click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "ChainGangService.asmx/ValidateCredentials",
+                    cache: false,
+                    contentType: "application/json; charset=utf-8",
+                    data: '{"userName":"' + $("#userName").val() + '"}',
+                    dataType: "json",
+                    success: handleHtml,
+                    error: ajaxFailed
+                });
+            });
+            function handleHtml(data, status) {
+                alert(data.d);
+            }
+
+            function ajaxFailed(xmlRequest) {
+                alert(xmlRequest.status + ' \n\r ' +
+                      xmlRequest.statusText + '\n\r' +
+                      xmlRequest.responseText);
+            }
+        });
+    </SCRIPT>
+    <SCRIPT src="js/bootstrap.min.js"></SCRIPT>
+
+</BODY>
+
+</HTML>

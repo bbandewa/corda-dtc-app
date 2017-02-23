@@ -1,0 +1,637 @@
+﻿<!DOCTYPE HTML>
+<HTML xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+    <META content="IE=11.0000"
+          http-equiv="X-UA-Compatible">
+    <TITLE> </TITLE>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8"><!-- jQuery -->
+
+    <SCRIPT src="js/jquery-1.10.1.min.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery-migrate-1.2.1.min.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery-ui.js"></SCRIPT>
+
+    <SCRIPT src="js/grid.locale-en.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery.jqGrid.min.js"></SCRIPT>
+    <!-- jquery-ui CSS -->
+    <LINK href="css/jquery-ui.css"
+          rel="stylesheet">     <!-- Bootstrap core CSS -->
+    <LINK href="css/bootstrap.min.css"
+          rel="stylesheet">
+    <LINK href="css/ui.jqgrid.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <STYLE type="text/css">
+        body {
+            padding-top: 30px;
+            padding-bottom: 40px;
+        }
+
+        #content {
+            width: 100%;
+            height: 100%;
+        }
+
+        .navbar {
+            margin-bottom: 30px;
+        }
+
+        .jumbotron {
+            font-size: inheret;
+            font-weight: 200;
+            line-height: 1;
+            color: inherit;
+        }
+    </STYLE>
+    <LINK href="css/jqGrid.bootstrap.css" rel="stylesheet">
+    <LINK href="css/Custom.css" rel="stylesheet">
+    <META name="GENERATOR" content="MSHTML 11.00.10570.1001">
+</HEAD>
+<BODY>
+    <FORM id="form1">
+        <DIV class="panel-heading" style="width: 100%; height: 50px; color: white; margin-bottom: 5px;"></DIV>
+        <DIV class="container">
+            <DIV id="content">
+                <DIV class="panel-group" id="divPanleMain">
+                    <DIV class="panel panel-info" id="divSearchBuyerCointainer">
+                        <DIV class="panel-heading">
+                            <H4 class="modal-title" id="h4BuyerSeller">I am a buyer</H4>
+                            &nbsp; &nbsp;                    <BUTTON class="btn btn-info"
+                                                                     id="btnBuyer">
+                                Buyer
+                            </BUTTON>&nbsp;                    <BUTTON class="btn btn-info"
+                                                                       id="btnSeller">
+                                Seller
+                            </BUTTON>
+                        </DIV>
+                        <DIV class="panel-body">
+                            <DIV class="form-group">
+                                <DIV class="row">
+                                    <DIV class="col-sm-8">
+                                        <DIV class="col-sm-6"
+                                             style="padding-right: 1px;"><INPUT class="form-control" id="txtSearchBuyer" style="height: 28px !important; line-height: 28px;" type="text" placeholder="Search buyer" value=""></DIV>
+                                        <DIV class="col-sm-2" style="padding-left: 1px;">
+                                            <BUTTON class="btn btn-default"
+                                                    id="btnSearchBuyer" type="button" data-toggle="modal"
+                                                    data-target="#myModal">
+                                                <SPAN class="glyphicon glyphicon-search"></SPAN>
+                                            </BUTTON>
+                                        </DIV>
+                                    </DIV>
+                                </DIV>
+                            </DIV>
+                        </DIV><!-- Modal -->
+
+                        <DIV class="modal fade" id="myModal" role="dialog">
+                            <DIV class="modal-dialog">
+                                <!-- Modal content-->
+                                <DIV class="modal-content">
+                                    <DIV class="modal-header">
+                                        <BUTTON class="close" type="button" data-dismiss="modal">×</BUTTON>
+
+                                        <H4 class="modal-title">Select Buyer</H4>
+                                    </DIV>
+                                    <DIV class="modal-body">
+                                        <TABLE id="jqGridBuyer"></TABLE>
+                                        <DIV id="jqGridBuyerPager"></DIV>
+                                    </DIV>
+                                    <DIV class="modal-footer">
+                                        <BUTTON class="btn btn-default" type="button"
+                                                data-dismiss="modal">
+                                            Close
+                                        </BUTTON>
+                                    </DIV>
+                                </DIV>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                    <DIV class="panel panel-info" id="divBankDetailsContainer">
+                        <DIV class="panel-heading">
+                            Bank Details
+                        </DIV>
+                        <DIV class="panel-body">
+                            <TABLE class="table table-hover">
+                                <THEAD>
+                                    <TR>
+                                        <TH>Company</TH>
+                                        <TH>Bank</TH>
+                                        <TH>VAT</TH>
+                                        <TH>IBAN</TH>
+                                        <TH>Address</TH>
+                                    </TR>
+                                </THEAD>
+                                <TBODY>
+                                    <TR>
+                                        <TD><LABEL id="lblCompany"></LABEL>                                 </TD>
+                                        <TD><LABEL id="lblBank"></LABEL>                                 </TD>
+                                        <TD><LABEL id="lblVAT"></LABEL>                                 </TD>
+                                        <TD><LABEL id="lblIBAN"></LABEL>                                 </TD>
+                                        <TD>
+                                            <LABEL id="lblAddress"></LABEL>
+                                        </TD>
+                                    </TR>
+                                </TBODY>
+                            </TABLE>
+                        </DIV>
+                    </DIV>
+                    <DIV class="panel">
+                        <DIV class="row">
+                            <DIV class="col-sm-6">
+                                <DIV class="panel panel-info" id="divOrderDetailsContainer">
+                                    <DIV class="panel-heading">
+                                        Order Details
+                                    </DIV>
+                                    <DIV class="panel-body">
+                                        <DIV class="row">
+                                            <DIV class="col-sm-4">
+                                                <DIV class="form-group">
+                                                    <LABEL for="txtPurchaseOrder">Purchase Order:</LABEL>
+
+                                                    <INPUT class="form-control input-sm" id="txtPurchaseOrder" type="text">
+                                                </DIV>
+                                            </DIV>
+                                            <DIV class="col-sm-4">
+                                                <DIV class="form-group">
+                                                    <LABEL for="txtTotalPrice">Total Price:</LABEL>
+                                                    <INPUT class="form-control" id="txtTotalPrice" type="text">
+                                                </DIV>
+                                            </DIV>
+                                            <DIV class="col-sm-4">
+                                                <DIV class="form-group">
+                                                    <LABEL for="txtUnknown">&nbsp; </LABEL>
+                                                    <INPUT class="form-control" id="txtUnknown" type="text">
+                                                </DIV>
+                                            </DIV>
+                                        </DIV>
+                                        <DIV class="row">
+                                            <DIV class="col-sm-4">
+                                                <DIV class="form-group">
+                                                    <LABEL for="txtDeliveryDate">Delivery Date:</LABEL>
+                                                    <INPUT class="form-control" id="txtDeliveryDate" type="text">
+                                                </DIV>
+                                            </DIV>
+                                            <DIV class="col-sm-4">
+                                                <DIV class="form-group">
+                                                    <LABEL for="txtIncoterm">Incoterm:</LABEL>
+                                                    <INPUT class="form-control" id="txtIncoterm" type="text">
+                                                </DIV>
+                                            </DIV>
+                                            <DIV class="col-sm-4">
+                                                <DIV class="form-group">
+                                                    <LABEL for="txtPaymentCondition">
+                                                        Payment
+                                                        Condition:
+                                                    </LABEL>                                             <INPUT class="form-control" id="txtPaymentCondition" type="text">
+                                                </DIV>
+                                            </DIV>
+                                        </DIV>
+                                    </DIV>
+                                </DIV>
+                            </DIV>
+                            <DIV class="col-sm-6">
+                                <DIV class="panel panel-info" id="divArticleDetailsContainer" style="min-height: 134px;">
+                                    <DIV class="panel-heading">
+                                        Article Details
+                                        <A class="pull-right" id="lnkAddItem" href="#">
+                                            <SPAN class="glyphicon glyphicon-plus-sign"></SPAN>
+                                        </A>
+                                    </DIV>
+                                    <DIV class="panel-body">
+                                        <TABLE class="table" id="tblArticleDetails">
+                                            <THEAD>
+                                                <TR>
+                                                    <TH>ArticleID</TH>
+                                                    <TH>Description</TH>
+                                                    <TH>Quantity</TH>
+                                                </TR>
+                                            </THEAD>
+                                            <TBODY id="tblArticleDetailsBody">
+                                                <TR id="trArticle1">
+                                                    <TD>
+                                                        <DIV class="form-group">
+                                                            <SELECT class="ddlDummySelector" id="ddlItemID"
+                                                                    style="width: 80px;">
+                                                                <OPTION>-- Select --</OPTION>
+                                                                <OPTION>Item 1</OPTION>
+                                                                <OPTION>Item 12</OPTION>
+                                                                <OPTION>Item 13</OPTION>
+                                                                <OPTION>Item 14</OPTION>
+                                                            </SELECT>
+                                                        </DIV>
+                                                    </TD>
+                                                    <TD>
+                                                        <DIV class="col-sm-4"><INPUT class="form-control" id="txtItemDescription" style="min-width: 280px;" type="text"></DIV>
+                                                    </TD>
+                                                    <TD>
+                                                        <DIV class="form-group col-sm-6"><INPUT class="form-control" id="txtItemQuantity" onchange="javascript:updateTotalPrice();" type="text"></DIV>
+                                                    </TD>
+                                                </TR>
+                                            </TBODY>
+                                        </TABLE>
+                                    </DIV>
+                                </DIV>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                    <DIV class="panel">
+                        <DIV class="row">
+                            <DIV class="col-sm-6">
+                                <DIV class="panel panel-info" id="divDeliveryAddressContainer">
+                                    <DIV class="panel-heading">
+                                        Delivery Address
+                                    </DIV>
+                                    <DIV class="panel-body">
+                                        <DIV class="row">
+                                            <DIV class="col-sm-6">
+                                                <DIV class="form-group">
+                                                    <LABEL for="txtAddress1">Address1:</LABEL>
+                                                    <INPUT class="form-control" id="txtAddress1" type="text">
+                                                </DIV>
+                                            </DIV>
+                                            <DIV class="col-sm-6">
+                                                <DIV class="form-group">
+                                                    <LABEL for="txtAddress2">Address2:</LABEL>
+                                                    <INPUT class="form-control" id="txtAddress2" type="text">
+                                                </DIV>
+                                            </DIV>
+                                        </DIV>
+                                        <DIV class="row">
+                                            <DIV class="col-sm-4">
+                                                <DIV class="form-group">
+                                                    <LABEL for="txtPostalCode">Postal Code:</LABEL>
+                                                    <INPUT class="form-control" id="txtPostalCode" type="text">
+                                                </DIV>
+                                            </DIV>
+                                            <DIV class="col-sm-4">
+                                                <DIV class="form-group">
+                                                    <LABEL for="txtCity">City:</LABEL>
+
+                                                    <INPUT class="form-control" id="txtCity" type="text">
+                                                </DIV>
+                                            </DIV>
+                                            <DIV class="col-sm-4">
+                                                <DIV class="form-group">
+                                                    <LABEL for="txtCountry">Country:</LABEL>
+                                                    <INPUT class="form-control" id="txtCountry" type="text">
+                                                </DIV>
+                                            </DIV>
+                                        </DIV>
+                                    </DIV>
+                                </DIV>
+                            </DIV>
+                            <DIV class="col-sm-6">
+                                <DIV class="panel panel-info" id="divExtraServicesContainer" style="min-height: 134px;">
+                                    <DIV class="panel-heading">
+                                        Extra Services
+                                    </DIV>
+                                    <DIV class="panel-body">
+                                        <DIV class="row">
+                                            <DIV class="col-sm-6" id="divBuyerExtraServices">
+                                                <DIV class="form-group">
+                                                    <LABEL>Buyer:</LABEL>
+
+                                                    <DIV class="checkbox">
+                                                        <LABEL>
+                                                            <INPUT id="chkPaymentConfirmation" type="checkbox"
+                                                                   value="">Payment Confirmation
+                                                        </LABEL>
+                                                    </DIV>
+                                                    <DIV class="checkbox">
+                                                        <LABEL>
+                                                            <INPUT id="chkBankPaymentCommitment" type="checkbox"
+                                                                   value="">Bank Payment Commitment
+                                                        </LABEL>
+                                                    </DIV>
+                                                </DIV>
+                                            </DIV>
+                                            <DIV class="col-sm-6">
+                                                <DIV class="form-group" id="divSellerExtraServices">
+                                                    <LABEL>Seller:</LABEL>
+
+                                                    <DIV class="checkbox">
+                                                        <LABEL>
+                                                            <INPUT id="chkInformationCounterparty" type="checkbox"
+                                                                   value="">Information Counterparty
+                                                        </LABEL>
+                                                    </DIV>
+                                                    <DIV class="checkbox">
+                                                        <LABEL>
+                                                            <INPUT id="chkFormattingof" type="checkbox" value="">Formatting
+                                                            of
+                                                        </LABEL>
+                                                    </DIV>
+                                                </DIV>
+                                            </DIV>
+                                        </DIV>
+                                    </DIV>
+                                </DIV>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                    <DIV class="panel " id="divSaveOrder">
+                        <DIV class="row pull-right">
+                            <DIV class="col-sm-5">
+                                <BUTTON class="btn btn-info " id="btnSave">Save</BUTTON>
+                            </DIV>
+                            <DIV class="col-sm-5">
+                                <BUTTON class="btn btn-info" id="btnClose">Close</BUTTON>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                    <DIV class="panel panel-info" id="divOrderStatus">
+                        <DIV class="panel-body">
+                            <DIV class="form-group">
+                                <DIV class="row">
+                                    <DIV class="col-sm-3">
+                                        <LABEL>Invoice Status:</LABEL>
+
+                                        <H4><SPAN class="label label-default">Not Sent</SPAN></H4>
+                                    </DIV>
+                                    <DIV class="col-sm-3">
+                                        <LABEL for="email">Payment Status:</LABEL>
+
+                                        <H4><SPAN class="label label-primary">Primary Label</SPAN></H4>
+                                    </DIV>
+                                    <DIV class="col-sm-3">
+                                        <LABEL for="email">Contract Status:</LABEL>
+
+                                        <H4><SPAN class="label label-success">Success Label</SPAN></H4>
+                                    </DIV>
+                                    <DIV class="col-sm-3">
+                                        <LABEL for="email">Delivery Status:</LABEL>
+
+                                        <H4><SPAN class="label label-info">Info Label</SPAN> </H4>
+                                    </DIV>
+                                </DIV>
+                            </DIV>
+                            <DIV class="form-group">
+                                <DIV class="row">
+                                    <DIV class="col-sm-4">
+                                        <LABEL for="email">Tracking ID :</LABEL>
+
+                                        <H4>
+                                            <SPAN class="label label-warning">
+                                                Warning
+                                                Label
+                                            </SPAN>
+                                        </H4>
+                                    </DIV>
+                                </DIV>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                    <DIV class="panel" id="divOrderConfirmation">
+                        <DIV class="row pull-right">
+                            <DIV class="col-sm-4">
+                                <BUTTON class="btn btn-info" id="btnConfirmOrder">
+                                    Confirm
+                                    Order
+                                </BUTTON>
+                            </DIV>
+                            <DIV class="col-sm-4">
+                                <BUTTON class="btn btn-info" id="btnDeclineOrder">
+                                    Decline
+                                    Order
+                                </BUTTON>
+                            </DIV>
+                            <DIV class="col-sm-4">
+                                <BUTTON class="btn btn-info" id="btnSendInvoice">
+                                    Send
+                                    Invoice
+                                </BUTTON>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                </DIV>
+            </DIV>
+            <SCRIPT type="text/javascript">
+
+                var party = { buyer: "buyer", seller: "seller", bank: "bank" };
+                var action = { create: "create", edit: "edit", view: "view", remove: "remove" };
+                var currentParty = null;
+                var formAction = null;
+                var order = {
+                    purchaseOrderNum: "100",
+                    deliveryDate: "2018-09-15",
+                    deliveryAddress:
+                        { city: "London", country: "UK" },
+                    itemsList: [
+                        {
+                        	article:{articleId: "widget", description: "widget", price: "3"},
+                        	quantity: "0"
+                        },
+                        {
+                        	article:{articleId: "thing", description: "thing", price: "4"},
+                        	quantity: "0"
+                        }
+                    ],
+                    pymntCondDays: 0,
+                    isPymntConfirmation: false,
+                    isBankPymntCommitment: false,
+                    isInfoCounterparty: false,
+                    isForfaitingOfInvoice: false, incoterm: "",
+                    totalPrice = 00.0,
+                    currency = "EUR"
+                };
+
+                var tempItem = {
+                    id: 1, name: "widget", amount: "3", quantity: 2
+                };
+                var tempDeliveryAddress = { address: "", city: "London", country: "UK", postalCode: "" };
+                var updateTotalPrice = function () {
+                    var totalAmount = 0;
+                    $('#tblArticleDetails > tbody  > tr').each(function (index, tr) {
+                        if (!isNaN($('td:eq(2)', this).find("input:text").val())) {
+                            totalAmount += parseInt($('td:eq(2)', this).find("input:text").val());
+                        }
+                    });
+                    $("#txtTotalPrice").val(totalAmount);
+                }
+                $(document).ready(function () {
+                    //BindBankDetails();
+                    formAction = action.create;// TODO : Set form action based on Query string.
+                    setControlByAction();
+                    //BindOrderDetails();
+                    //BindArticleDetails();
+                    // Setup grid
+                    $("#jqGridBuyer").jqGrid({
+                        url: "ChainGangService.asmx/GetData",
+                        mtype: "POST",
+                        ajaxGridOptions: { contentType: 'application/json; charset=utf-8' },
+                        serializeGridData: function (postData) {
+                            return JSON.stringify(postData);
+                        },
+                        jsonReader: { repeatitems: false, root: "d.orders", page: "d.page", total: "d.total", records: "d.records" },
+                        datatype: "json",
+                        height: "auto",
+                        rowNum: 10,
+                        shrinkToFit: true,
+                        rowList: [10, 20, 30],
+                        colNames: ['Buyer', 'OrderDate'],
+                        colModel: [
+                        { name: 'Buyer', width: 400, sortable: false, align: "center", hidden: false },
+                        { name: 'OrderDate', width: 100, sortable: false, align: "center", hidden: false }
+                        ],
+                        pager: "#jqGridBuyerPager",
+                        viewrecords: true,
+                        caption: "Buyer List",
+                        hidegrid: false,
+                        onSelectRow: function (id) {
+                            var jqGridBuyer = $('#jqGridBuyer');
+                            var selRowId = jqGridBuyer.jqGrid('getGridParam', 'selrow');
+                            var celValue = jqGridBuyer.jqGrid('getCell', selRowId, 'Buyer');
+                            $("#txtSearchBuyer").val(celValue);
+                            $('#myModal').modal('hide');
+                            BindBankDetails(celValue);
+                        }
+                    });
+                    // Setup buttons
+                    $("#jqGridBuyer").jqGrid('navGrid', '#jqGridBuyerPager',
+                            { edit: false, add: false, del: false, search: true },
+                            { reloadAfterSubmit: true }
+                    );
+
+                    function StatusClicked() {
+                        alert('test');
+                    }
+                    function BindBankDetails(objBankDetail) {
+                        $("#lblCompany").text("DTC Corp");
+                        $("#lblBank").text("Bank of Scotland");
+                        $("#lblVAT").text("BOS12SB8EGHAS");
+                        $("#lblIBAN").text("BOS12SB");
+                        $("#lblAddress").text("45 Henderson St, Bridge of Allan, Stirling FK9 4HG, UK");
+                    }
+                    function BindOrderDetails(objOrderDetails) {
+                        $("#txtPurchaseOrder").val("ORD #5");
+                        $("#txtTotalPrice").val("1250");
+                        $("#txtUnknown").val("Unknown");
+                        $("#txtDeliveryDate").val("02/28/2017");
+                        $("#txtIncoterm").val("BOS12SB");
+                        $("#txtPaymentCondition").val("15 Days");
+                        $("#divOrderDetailsContainer input[type='text']").attr("disabled", "disabled");
+                    }
+                    function BindArticleDetails(objArticleDetails) {
+                        var tableRow = "<tr> <td>ArticleID</td> <td>Description</td> <td>Quantity</td> </tr>";
+                        tableRow += "<tr> <td>ArticleID</td> <td>Description</td> <td>Quantity</td> </tr>";
+                        $('#tblArticleDetailsBody').html(tableRow);
+                    }
+                    $("#lnkAddItem").click(function () {
+                        //var newTr = $("#tblArticleDetails tr:last").clone();
+                        //var newIndex = newTr.index() + 1;
+                        //$("#tblArticleDetails").append($newTr);
+                        $("#tblArticleDetails tr:last").clone().appendTo("#tblArticleDetails");
+                    });
+                    $('#tblArticleDetailsBody').delegate("#ddlItemID", "change", function () {
+                        var selectedRow = $(this).closest('tr');
+                        $(selectedRow).find("#txtItemDescription").val($(this).find("option:selected").text());
+                        //var idx = this.selectedIndex;
+                        //$("select#selected").prop('selectedIndex', idx);
+                    });
+
+
+                    $("#btnSave").click(function (e) {
+                        //debugger;
+                        order.orderNumber = $("#txtPurchaseOrder").val();
+                        order.deliveryDate = $("#txtDeliveryDate").val();
+                        order.incoterm = $("#txtIncoterm").val();
+                        order.paymentCondition = $("#txtPaymentCondition").val();
+
+                        tempDeliveryAddress.address = $("#txtAddress1").val() + ", " + $("#txtAddress2").val();
+                        tempDeliveryAddress.postalCode = $("#txtPostalCode").val();
+                        tempDeliveryAddress.city = $("#txtCity").val();
+                        tempDeliveryAddress.country = $("#txtCountry").val();
+                        order.deliveryAddress = tempDeliveryAddress;
+
+                        order.isBuyerPaymentConfirmation = $('#chkPaymentConfirmation').is(":checked");
+                        order.isBuyerBankPaymentCommitment = $('#chkBankPaymentCommitment').is(":checked");;
+                        order.isSellerInformationCounterparty = $('#chkInformationCounterparty').is(":checked");;
+                        order.isSellerFormattingof = $('#chkFormattingof').is(":checked");;
+                        order.incoterm = $("#txtIncoterm").val();
+                        order.items = [];
+                        $('#tblArticleDetails > tbody  > tr').each(function (index, tr) {
+                            tempItem = new Object();
+                            tempItem.id = $(tr).find("select option:selected").text();
+                            tempItem.name = $('td:eq(1)', this).find("input:text").val();
+                            tempItem.quantity = $('td:eq(2)', this).find("input:text").val();
+                            tempItem.amount = $('td:eq(2)', this).find("input:text").val();
+                            order.items.push(tempItem);
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: "ChainGangService.asmx/SaveOrder",
+                            dataType: 'application/json',
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify({ objOrder: order }), //objOrder will be parameter name in service.
+                            success: function (data) { },
+                            error: function (errMsg) { }
+                        });
+
+
+                        e.preventDefault();
+                    });
+
+                    function getOrder() {
+                        order = {
+                            orderNumber: "100",
+                            deliveryDate: "2018-09-15",
+                            deliveryAddress:
+                                { address: "", city: "London", country: "UK", postalCode: "" },
+                            items: [
+                                {
+                                    name: "widget", amount: "3", quantity: 2
+                                }, { name: "thing", amount: "4", quantity: 2 }
+                            ],
+                            paymentCondition: "",
+                            isBuyerPaymentConfirmation: false,
+                            isBuyerBankPaymentCommitment: false,
+                            isSellerInformationCounterparty: false,
+                            isSellerFormattingof: false, incoterm: ""
+                        }
+                    }
+
+                    function setControlByAction() {
+
+                        $("#divOrderConfirmation").hide();
+                        $("#divOrderStatus").hide();
+                        $("#divSaveOrder").hide();
+
+                        if (formAction == action.create) {
+                            $("#divSaveOrder").show();
+                        }
+                        else if (formAction == action.edit) {
+                            $("#divOrderConfirmation").show();
+                            $("#divOrderStatus").show();
+                            BindOrderDetails();
+                        }
+                        else if (formAction == action.view) {
+                            $("#divOrderStatus").show();
+                            BindOrderDetails();
+                        }
+                    }
+
+                    $("#btnBuyer").click(function (e) {
+                        currentParty = party.buyer;
+                        $("#h4BuyerSeller").html("I am a " + currentParty);
+                        $("#txtSearchBuyer").attr("placeholder", "Search " + party.seller);
+                        e.preventDefault();
+                    });
+                    $("#btnSeller").click(function (e) {
+                        currentParty = party.seller;
+                        $("#h4BuyerSeller").html("I am a " + currentParty);
+                        $("#txtSearchBuyer").attr("placeholder", "Search " + party.buyer);
+                        e.preventDefault();
+                    });
+                });
+            </SCRIPT>
+        </DIV>
+    </FORM>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <SCRIPT src="js/bootstrap.min.js"></SCRIPT>
+    <!-- Visual Studio Browser Link -->
+    <!-- End Browser Link -->
+</BODY>
+</HTML>

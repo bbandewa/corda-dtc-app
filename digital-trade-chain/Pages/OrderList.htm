@@ -1,0 +1,178 @@
+﻿<!DOCTYPE HTML>
+<HTML xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+    <META content="IE=11.0000"
+          http-equiv="X-UA-Compatible">
+    <TITLE> </TITLE>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8"><!-- jQuery -->
+
+    <SCRIPT src="js/jquery-1.10.1.min.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery-migrate-1.2.1.min.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery-ui.js"></SCRIPT>
+
+    <SCRIPT src="js/grid.locale-en.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery.jqGrid.min.js"></SCRIPT>
+    <!-- jquery-ui CSS -->
+    <LINK href="css/jquery-ui.css"
+          rel="stylesheet">     <!-- Bootstrap core CSS -->
+    <LINK href="css/bootstrap.min.css"
+          rel="stylesheet">
+    <LINK href="css/ui.jqgrid.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <STYLE type="text/css">
+        body {
+            padding-top: 30px;
+            padding-bottom: 40px;
+        }
+
+        #content {
+            width: 100%;
+            height: 100%;
+        }
+
+        .navbar {
+            margin-bottom: 30px;
+        }
+
+        .jumbotron {
+            font-size: inheret;
+            font-weight: 200;
+            line-height: 1;
+            color: inherit;
+        }
+    </STYLE>
+    <LINK href="css/jqGrid.bootstrap.css" rel="stylesheet">
+    <STYLE type="text/css">
+        th.ui-th-column {
+            border-right-color: transparent !important;
+        }
+
+        .ui-jqgrid tr.ui-row-ltr td {
+            border-right-color: transparent !important;
+        }
+    </STYLE>
+    <LINK href="css/Custom.css" rel="stylesheet">
+    <META name="GENERATOR" content="MSHTML 11.00.10570.1001">
+</HEAD>
+<BODY>
+    <FORM id="form1" method="post">
+        <DIV class="panel-heading" style="width: 100%; height: 50px; color: white; margin-bottom: 5px;"></DIV>
+        <DIV class="container">
+            <DIV id="content">
+                <DIV class="row">
+                    <DIV class="cell-sm-8 pull-right">
+                        <BUTTON class="btn btn-info" id="btnCreateNewContract">
+                            Create
+                            New Contract
+                        </BUTTON>
+                    </DIV>
+                </DIV>
+                <TABLE id="jqGrid01"></TABLE>
+                <DIV id="jqGridPager01"></DIV>
+            </DIV>
+            <SCRIPT type="text/javascript">
+                $(document).ready(function () {
+                    // Setup grid
+                    $("#jqGrid01").jqGrid({
+                        url: "ChainGangService.asmx/GetData",
+                        mtype: "POST",
+                        ajaxGridOptions: { contentType: 'application/json; charset=utf-8' },
+                        serializeGridData: function (postData) {
+                            return JSON.stringify(postData);
+                        },
+                        jsonReader: { repeatitems: false, root: "d.orders", page: "d.page", total: "d.total", records: "d.records" },
+                        datatype: "json",
+                        height: "auto",
+                        rowNum: 10,
+                        rowList: [10, 20, 30],
+                        colNames: ['OrderNumber', 'Buyer', 'Seller', 'OrderDate', 'Status'],
+                        colModel: [
+                        { name: 'OrderNumber', key: true, width: 60, align: "center", hidden: false },
+                        { name: 'Buyer', width: 80, sortable: false, align: "center", hidden: false },
+                        { name: 'Seller', width: 180, sortable: false, align: "center", hidden: false },
+                        { name: 'OrderDate', width: 180, sortable: false, align: "center", hidden: false },
+                        {
+                            name: 'Status', width: 180, sortable: false, hidden: false, align: "center", formatter: function (cellvalue, options, rowObject) {
+                                var cls = "label label-default";
+                                switch (rowObject.StatusNumber) {
+                                    case 1:
+                                        cls = "label label-primary";
+                                        break;
+                                    case 2:
+                                        cls = "btn btn-info";
+                                        break;
+                                    case 3:
+                                        cls = "label label-success";
+                                        break;
+                                    case 4:
+                                        cls = "label label-info";
+                                        break;
+                                    case 5:
+                                        cls = "label label-danger";
+                                        break;
+                                    case 6:
+                                        cls = "label label-primary";
+                                        break;
+                                    default:
+                                        cls = "label label-primary";
+                                        break;
+                                }
+                                return "<h4><span class='" + cls + "'>" + rowObject.Status + "</span></h4>";
+                                //return "<button type='button' class='" + cls + "' onclick='StatusClicked(this)'>" + rowObject.Status + "</button>";
+                            }
+                        }
+                        ],
+                        pager: "#jqGridPager01",
+                        viewrecords: true,
+                        add: true,
+                        edit: true,
+                        addtext: 'Add',
+                        edittext: 'Edit',
+                        caption: "Order List",
+                        hidegrid: false,
+                        gridComplete: function () {
+                            var jqGrid01 = $("#jqGrid01");
+                            var ids = jqGrid01.getDataIDs();
+                            for (var i = 0; i < ids.length; i++) {
+                                jqGrid01.setRowData(ids[i], false, { height: 40 });
+                            }
+                            //for (var i = 0; i < ids.length; i++) {
+                            //    var cl = ids[i];
+                            //    be = "<input style='height:22px;width:20px;' type='button' value='E' onclick=jQuery('#rowed2').editRow(" + cl + "); ></ids>";
+                            //    se = "<input style='height:22px;width:20px;' type='button' value='S' onclick=jQuery('#rowed2').saveRow(" + cl + "); />";
+                            //    ce = "<input style='height:22px;width:20px;' type='button' value='C' onclick=jQuery('#rowed2').restoreRow(" + cl + "); />";
+                            //    jQuery("#jqGrid01").setRowData(ids[i], { act: be + se + ce })
+                            //}
+                        },
+                    });
+
+                    // Setup buttons
+                    $("#jqGrid01").jqGrid('navGrid', '#jqGridPager01',
+                            { edit: true, add: true, del: false, search: true },
+                            { height: 200, reloadAfterSubmit: true }
+                    );
+                    // Setup filters
+                    //$("#jqGrid01").jqGrid('filterToolbar', { defaultSearch: true, stringResult: true });
+                    // Set grid width to #content
+                    $("#jqGrid01").jqGrid('setGridWidth', $("#content").width(), true);
+                });
+                function StatusClicked() {
+                    alert('test');
+                }
+            </SCRIPT>
+        </DIV>
+        <DIV class="aspNetHidden">
+            <INPUT name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" type="hidden" value="7F8F1FF9">
+        </DIV>
+    </FORM>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <SCRIPT src="js/bootstrap.min.js"></SCRIPT>
+    <!-- Visual Studio Browser Link -->
+    <!-- End Browser Link -->
+</BODY>
+</HTML>

@@ -23,6 +23,7 @@ import net.corda.core.messaging.CordaRPCOps;
 import com.capgemini.dtc.app.contract.PurchaseOrderContract;
 import com.capgemini.dtc.app.flow.DTCFlow;
 import com.capgemini.dtc.app.model.PurchaseOrder;
+import com.capgemini.dtc.app.model.PurchaseOrderNew;
 import com.capgemini.dtc.app.state.PurchaseOrderState;
 
 // This API is accessible from /api/example. All paths specified below are relative to it.
@@ -84,7 +85,7 @@ public class DTCApi {
      */
     @PUT
     @Path("{party}/create-purchase-order")
-    public Response createPurchaseOrder(PurchaseOrder purchaseOrder, @PathParam("party") String partyName) throws InterruptedException, ExecutionException {
+    public Response createPurchaseOrder(PurchaseOrderNew purchaseOrder, @PathParam("party") String partyName) throws InterruptedException, ExecutionException {
         final Party otherParty = services.partyFromName(partyName);
         final Party anotherParty = services.partyFromName("NodeC");
 
