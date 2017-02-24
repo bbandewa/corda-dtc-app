@@ -412,10 +412,21 @@
                 var currentParty = null;
                 var formAction = null;
                 var order = {
-                    purchaseOrderNum: "100",
+                	buyer: {
+                		name: "ABC", userName: "abc123", 
+                		address: {streetName: "Shafer Courte", streetNumber: "1200", postalCode: "41006", city: "London", country: "UK"},
+                		bankName: "HDFC", VAT: "0215589963", IBAN: "FR124545"
+                	},
+                	seller: {
+                		name: "XYZ", userName: "xyz456", 
+                		address: {streetName: "Shafer Courte1", streetNumber: "1201", postalCode: "41007", city: "Zurich", country: "UK"},
+                		bankName: "HDFC", VAT: "0215589964", IBAN: "FR124546"
+                	},
+                    purchaseOrderNum: "111",
                     deliveryDate: "2018-09-15",
+                    pymntCondDays: 60,
                     deliveryAddress:
-                        { city: "London", country: "UK" },
+                        { streetName: "Karve Road", streetNumber: "605", postalCode: "411038", city: "Pune", country: "UK" },
                     itemsList: [
                         {
                         	article:{articleId: "widget", description: "widget", price: "3"},
@@ -532,38 +543,38 @@
 
                     $("#btnSave").click(function (e) {
                         //debugger;
-                        order.orderNumber = $("#txtPurchaseOrder").val();
-                        order.deliveryDate = $("#txtDeliveryDate").val();
-                        order.incoterm = $("#txtIncoterm").val();
-                        order.paymentCondition = $("#txtPaymentCondition").val();
+                        //order.orderNumber = $("#txtPurchaseOrder").val();
+                        //order.deliveryDate = $("#txtDeliveryDate").val();
+                        //order.incoterm = $("#txtIncoterm").val();
+                        //order.paymentCondition = $("#txtPaymentCondition").val();
 
-                        tempDeliveryAddress.address = $("#txtAddress1").val() + ", " + $("#txtAddress2").val();
-                        tempDeliveryAddress.postalCode = $("#txtPostalCode").val();
-                        tempDeliveryAddress.city = $("#txtCity").val();
-                        tempDeliveryAddress.country = $("#txtCountry").val();
-                        order.deliveryAddress = tempDeliveryAddress;
+                        //tempDeliveryAddress.address = $("#txtAddress1").val() + ", " + $("#txtAddress2").val();
+                        //tempDeliveryAddress.postalCode = $("#txtPostalCode").val();
+                        //tempDeliveryAddress.city = $("#txtCity").val();
+                        //tempDeliveryAddress.country = $("#txtCountry").val();
+                        //order.deliveryAddress = tempDeliveryAddress;
 
-                        order.isBuyerPaymentConfirmation = $('#chkPaymentConfirmation').is(":checked");
-                        order.isBuyerBankPaymentCommitment = $('#chkBankPaymentCommitment').is(":checked");;
-                        order.isSellerInformationCounterparty = $('#chkInformationCounterparty').is(":checked");;
-                        order.isSellerFormattingof = $('#chkFormattingof').is(":checked");;
-                        order.incoterm = $("#txtIncoterm").val();
-                        order.items = [];
-                        $('#tblArticleDetails > tbody  > tr').each(function (index, tr) {
-                            tempItem = new Object();
-                            tempItem.id = $(tr).find("select option:selected").text();
-                            tempItem.name = $('td:eq(1)', this).find("input:text").val();
-                            tempItem.quantity = $('td:eq(2)', this).find("input:text").val();
-                            tempItem.amount = $('td:eq(2)', this).find("input:text").val();
-                            order.items.push(tempItem);
-                        });
+                        //order.isBuyerPaymentConfirmation = $('#chkPaymentConfirmation').is(":checked");
+                        //order.isBuyerBankPaymentCommitment = $('#chkBankPaymentCommitment').is(":checked");;
+                        //order.isSellerInformationCounterparty = $('#chkInformationCounterparty').is(":checked");;
+                        //order.isSellerFormattingof = $('#chkFormattingof').is(":checked");;
+                        //order.incoterm = $("#txtIncoterm").val();
+                        //order.items = [];
+                        //$('#tblArticleDetails > tbody  > tr').each(function (index, tr) {
+                            //tempItem = new Object();
+                            //tempItem.id = $(tr).find("select option:selected").text();
+                            //tempItem.name = $('td:eq(1)', this).find("input:text").val();
+                            //tempItem.quantity = $('td:eq(2)', this).find("input:text").val();
+                            //tempItem.amount = $('td:eq(2)', this).find("input:text").val();
+                            //order.items.push(tempItem);
+                        //});
 
                         $.ajax({
                             type: "POST",
                             url: "ChainGangService.asmx/SaveOrder",
                             dataType: 'application/json',
                             contentType: "application/json; charset=utf-8",
-                            data: JSON.stringify({ objOrder: order }), //objOrder will be parameter name in service.
+                            data: JSON.stringify(order), //objOrder will be parameter name in service.
                             success: function (data) { },
                             error: function (errMsg) { }
                         });
