@@ -12,6 +12,14 @@ import java.util.List;
  */
 public class PurchaseOrderNew {
 
+	/**
+	 * 
+	 */
+	public PurchaseOrderNew() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	Party buyer;
 	Party seller;
 	String purchaseOrderNum;
@@ -22,10 +30,10 @@ public class PurchaseOrderNew {
 	int pymntCondDays;
 	List<ItemPurchased> itemsList;
 	Address deliveryAddress;
-	boolean isPymntConfirmation;
-	boolean isBankPymntCommitment;
-	boolean isInfoCounterparty;
-	boolean isForfaitingOfInvoice;
+	String pymntConfirmation;
+	String bankPymntCommitment;
+	String infoCounterparty;
+	String forfaitingOfInvoice;
 	
 	/**
 	 * @param buyer
@@ -45,8 +53,8 @@ public class PurchaseOrderNew {
 	 */
 	public PurchaseOrderNew(Party buyer, Party seller, String purchaseOrderNum, double totalPrice, String currency,
 			Date deliveryDate, String incoterm, int pymntCondDays, List<ItemPurchased> itemsList,
-			Address deliveryAddress, boolean isPymntConfirmation, boolean isBankPymntCommitment,
-			boolean isInfoCounterparty, boolean isForfaitingOfInvoice) {
+			Address deliveryAddress, String isPymntConfirmation, String isBankPymntCommitment,
+			String isInfoCounterparty, String isForfaitingOfInvoice) {
 		super();
 		this.buyer = buyer;
 		this.seller = seller;
@@ -58,10 +66,10 @@ public class PurchaseOrderNew {
 		this.pymntCondDays = pymntCondDays;
 		this.itemsList = itemsList;
 		this.deliveryAddress = deliveryAddress;
-		this.isPymntConfirmation = isPymntConfirmation;
-		this.isBankPymntCommitment = isBankPymntCommitment;
-		this.isInfoCounterparty = isInfoCounterparty;
-		this.isForfaitingOfInvoice = isForfaitingOfInvoice;
+		this.pymntConfirmation = isPymntConfirmation;
+		this.bankPymntCommitment = isBankPymntCommitment;
+		this.infoCounterparty = isInfoCounterparty;
+		this.forfaitingOfInvoice = isForfaitingOfInvoice;
 	}
 	
 	/**
@@ -189,52 +197,52 @@ public class PurchaseOrderNew {
 	/**
 	 * @return the isPymntConfirmation
 	 */
-	public boolean isPymntConfirmation() {
-		return isPymntConfirmation;
+	public String isPymntConfirmation() {
+		return pymntConfirmation;
 	}
 	/**
-	 * @param isPymntConfirmation the isPymntConfirmation to set
+	 * @param pymntConfirmation the isPymntConfirmation to set
 	 */
-	public void setPymntConfirmation(boolean isPymntConfirmation) {
-		this.isPymntConfirmation = isPymntConfirmation;
+	public void setPymntConfirmation(String pymntConfirmation) {
+		this.pymntConfirmation = pymntConfirmation;
 	}
 	/**
 	 * @return the isBankPymntCommitment
 	 */
-	public boolean isBankPymntCommitment() {
-		return isBankPymntCommitment;
+	public String isBankPymntCommitment() {
+		return bankPymntCommitment;
 	}
 	/**
-	 * @param isBankPymntCommitment the isBankPymntCommitment to set
+	 * @param bankPymntCommitment the isBankPymntCommitment to set
 	 */
-	public void setBankPymntCommitment(boolean isBankPymntCommitment) {
-		this.isBankPymntCommitment = isBankPymntCommitment;
+	public void setBankPymntCommitment(String bankPymntCommitment) {
+		this.bankPymntCommitment = bankPymntCommitment;
 	}
 	/**
 	 * @return the isInfoCounterparty
 	 */
-	public boolean isInfoCounterparty() {
-		return isInfoCounterparty;
+	public String isInfoCounterparty() {
+		return infoCounterparty;
 	}
 	/**
-	 * @param isInfoCounterparty the isInfoCounterparty to set
+	 * @param infoCounterparty the isInfoCounterparty to set
 	 */
-	public void setInfoCounterparty(boolean isInfoCounterparty) {
-		this.isInfoCounterparty = isInfoCounterparty;
+	public void setInfoCounterparty(String infoCounterparty) {
+		this.infoCounterparty = infoCounterparty;
 	}
 	
 	/**
 	 * @return the isForfaitingOfInvoice
 	 */
-	public boolean isForfaitingOfInvoice() {
-		return isForfaitingOfInvoice;
+	public String isForfaitingOfInvoice() {
+		return forfaitingOfInvoice;
 	}
 	
 	/**
-	 * @param isForfaitingOfInvoice the isForfaitingOfInvoice to set
+	 * @param forfaitingOfInvoice the isForfaitingOfInvoice to set
 	 */
-	public void setForfaitingOfInvoice(boolean isForfaitingOfInvoice) {
-		this.isForfaitingOfInvoice = isForfaitingOfInvoice;
+	public void setForfaitingOfInvoice(String forfaitingOfInvoice) {
+		this.forfaitingOfInvoice = forfaitingOfInvoice;
 	}
 	
 	/* (non-Javadoc)
@@ -245,7 +253,7 @@ public class PurchaseOrderNew {
 		return String.format(
 				"PurchaseOrderNew [buyer=%s, seller=%s, purchaseOrderNum=%s, totalPrice=%s, currency=%s, deliveryDate=%s, incoterm=%s, pymntCondDays=%s, itemsList=%s, deliveryAddress=%s, isPymntConfirmation=%s, isBankPymntCommitment=%s, isInfoCounterparty=%s, isForfaitingOfInvoice=%s]",
 				buyer, seller, purchaseOrderNum, totalPrice, currency, deliveryDate, incoterm, pymntCondDays, itemsList,
-				deliveryAddress, isPymntConfirmation, isBankPymntCommitment, isInfoCounterparty, isForfaitingOfInvoice);
+				deliveryAddress, pymntConfirmation, bankPymntCommitment, infoCounterparty, forfaitingOfInvoice);
 	}
 	
 	
