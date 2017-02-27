@@ -9,19 +9,23 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
+import com.capgemini.dtc.app.api.DTCApi;
+import com.capgemini.dtc.app.contract.PurchaseOrderContract;
+import com.capgemini.dtc.app.flow.DTCFlow;
+import com.capgemini.dtc.app.model.Address;
+import com.capgemini.dtc.app.model.Item;
+import com.capgemini.dtc.app.model.ItemPurchased;
+import com.capgemini.dtc.app.model.PurchaseOrder;
+import com.capgemini.dtc.app.model.PurchaseOrderNew;
+import com.capgemini.dtc.app.service.DTCService;
+import com.capgemini.dtc.app.state.PurchaseOrderState;
+import com.esotericsoftware.kryo.Kryo;
+
 import net.corda.core.crypto.Party;
 import net.corda.core.flows.IllegalFlowLogicException;
 import net.corda.core.messaging.CordaRPCOps;
 import net.corda.core.node.CordaPluginRegistry;
 import net.corda.core.node.PluginServiceHub;
-
-import com.capgemini.dtc.app.api.DTCApi;
-import com.capgemini.dtc.app.contract.PurchaseOrderContract;
-import com.capgemini.dtc.app.flow.DTCFlow;
-import com.capgemini.dtc.app.model.PurchaseOrder;
-import com.capgemini.dtc.app.service.DTCService;
-import com.capgemini.dtc.app.state.PurchaseOrderState;
-import com.esotericsoftware.kryo.Kryo;
 
 public class DTCPlugin extends CordaPluginRegistry {
     /**
@@ -76,9 +80,14 @@ public class DTCPlugin extends CordaPluginRegistry {
         kryo.register(PurchaseOrderState.class);
         kryo.register(PurchaseOrderContract.class);
         kryo.register(PurchaseOrder.class);
+        kryo.register(PurchaseOrderNew.class);
         kryo.register(PurchaseOrder.Address.class);
+        kryo.register(Address.class);
         kryo.register(Date.class);
         kryo.register(PurchaseOrder.Item.class);
+        kryo.register(Item.class);
+        kryo.register(ItemPurchased.class);
+        kryo.register(com.capgemini.dtc.app.model.Party.class);
         kryo.register(DTCFlow.DTCFlowResult.Success.class);
         kryo.register(DTCFlow.DTCFlowResult.Failure.class);
         kryo.register(IllegalArgumentException.class);
