@@ -46,10 +46,12 @@
     </STYLE>
     <LINK href="css/jqGrid.bootstrap.css" rel="stylesheet">
     <LINK href="css/Custom.css" rel="stylesheet">
+    <SCRIPT src="js/custom.js"></SCRIPT>
+
     <META name="GENERATOR" content="MSHTML 11.00.10570.1001">
 </HEAD>
 <BODY>
-    <FORM id="form1">
+    <FORM id="form1" method="post">
         <DIV class="panel-heading" style="width: 100%; height: 50px; color: white; margin-bottom: 5px;"></DIV>
         <DIV class="container">
             <DIV id="content">
@@ -88,7 +90,7 @@
                                 <!-- Modal content-->
                                 <DIV class="modal-content">
                                     <DIV class="modal-header">
-                                        <BUTTON class="close" type="button" data-dismiss="modal">×</BUTTON>
+                                        <BUTTON class="close" type="button" data-dismiss="modal">׼/BUTTON>
 
                                         <H4 class="modal-title">Select Buyer</H4>
                                     </DIV>
@@ -159,8 +161,8 @@
                                             </DIV>
                                             <DIV class="col-sm-4">
                                                 <DIV class="form-group">
-                                                    <LABEL for="txtUnknown">&nbsp; </LABEL>
-                                                    <INPUT class="form-control" id="txtUnknown" type="text">
+                                                    <LABEL for="txtCurrency">Currency</LABEL>
+                                                    <INPUT class="form-control" id="txtCurrency" type="text">
                                                 </DIV>
                                             </DIV>
                                         </DIV>
@@ -212,7 +214,6 @@
                                                         <DIV class="form-group">
                                                             <SELECT class="ddlDummySelector" id="ddlItemID"
                                                                     style="width: 80px;">
-                                                                <OPTION>-- Select --</OPTION>
                                                                 <OPTION>Item 1</OPTION>
                                                                 <OPTION>Item 12</OPTION>
                                                                 <OPTION>Item 13</OPTION>
@@ -317,8 +318,8 @@
                                                     </DIV>
                                                     <DIV class="checkbox">
                                                         <LABEL>
-                                                            <INPUT id="chkFormattingof" type="checkbox" value="">Formatting
-                                                            of
+                                                            <INPUT id="chkForfaitingOfInvoice" type="checkbox"
+                                                                   value="">Forfaiting Of Invoice
                                                         </LABEL>
                                                     </DIV>
                                                 </DIV>
@@ -346,22 +347,39 @@
                                     <DIV class="col-sm-3">
                                         <LABEL>Invoice Status:</LABEL>
 
-                                        <H4><SPAN class="label label-default">Not Sent</SPAN></H4>
+                                        <H4>
+                                            <SPAN class="label label-default" id="spanInvoiceStatus">
+                                                Not
+                                                Sent
+                                            </SPAN>
+                                        </H4>
                                     </DIV>
                                     <DIV class="col-sm-3">
                                         <LABEL for="email">Payment Status:</LABEL>
 
-                                        <H4><SPAN class="label label-primary">Primary Label</SPAN></H4>
+                                        <H4>
+                                            <SPAN class="label label-primary" id="spanPaymentStatus">
+                                                Primary
+                                                Label
+                                            </SPAN>
+                                        </H4>
                                     </DIV>
                                     <DIV class="col-sm-3">
                                         <LABEL for="email">Contract Status:</LABEL>
 
-                                        <H4><SPAN class="label label-success">Success Label</SPAN></H4>
+                                        <H4>
+                                            <SPAN class="label label-success" id="spanContractStatus">
+                                                Success
+                                                Label
+                                            </SPAN>
+                                        </H4>
                                     </DIV>
                                     <DIV class="col-sm-3">
                                         <LABEL for="email">Delivery Status:</LABEL>
 
-                                        <H4><SPAN class="label label-info">Info Label</SPAN> </H4>
+                                        <H4>
+                                            <SPAN class="label label-info" id="spanDeliveryStatus">Info Label</SPAN>
+                                        </H4>
                                     </DIV>
                                 </DIV>
                             </DIV>
@@ -371,7 +389,7 @@
                                         <LABEL for="email">Tracking ID :</LABEL>
 
                                         <H4>
-                                            <SPAN class="label label-warning">
+                                            <SPAN class="label label-warning" id="spanTrackingID">
                                                 Warning
                                                 Label
                                             </SPAN>
@@ -406,115 +424,30 @@
                 </DIV>
             </DIV>
             <SCRIPT type="text/javascript">
-
-                var party = { buyer: "buyer", seller: "seller", bank: "bank" };
-                var action = { create: "create", edit: "edit", view: "view", remove: "remove" };
                 var currentParty = null;
                 var formAction = null;
-                var order =
-                {
-                    buyer: {
-                        name: "ABC",
-                        userName: "abc123",
-                        address: {
-                            streetName: "Shafer Courte",
-                            streetNumber: "1200",
-                            postalCode: "41006",
-                            city: "London",
-                            country: "UK"
-                        },
-                        bankName: "HDFC",
-                        vat: "0215589963",
-                        iban: "FR124545"
-                    },
-                    seller: {
-                        name: "XYZ",
-                        userName: "xyz456",
-                        address: {
-                            streetName: "Shafer Courte1",
-                            streetNumber: "1201",
-                            postalCode: "41007",
-                            city: "Zurich",
-                            country: "UK"
-                        },
-                        bankName: "HDFC",
-                        vat: "0215589964",
-                        iban: "FR124546"
-                    },
-                    purchaseOrderNum: "111",
-                    deliveryDate: "2018-09-15",
-                    pymntCondDays: 60,
-                    deliveryAddress: {
-                        streetName: "Karve Road",
-                        streetNumber: "605",
-                        postalCode: "411038",
-                        city: "Pune",
-                        country: "UK"
-                    },
-                    itemsList: [
-                      {
-                          article: {
-                              articleId: "widget",
-                              description: "widget",
-                              price: "3"
-                          },
-                          quantity: "0"
-                      },
-                      {
-                          article: {
-                              articleId: "thing",
-                              description: "thing",
-                              price: "4"
-                          },
-                          quantity: "0"
-                      }
-                    ],
-                    pymntConfirmation: false,
-                    bankPymntCommitment: false,
-                    infoCounterparty: false,
-                    forfaitingOfInvoice: false,
-                    incoterm: "",
-                    totalPrice: "0",
-                    currency: "EUR"
-                };
-
-                var tempItem = {
-                    id: 1, name: "widget", amount: "3", quantity: 2
-                };
-                var tempDeliveryAddress = { address: "", city: "London", country: "UK", postalCode: "" };
-                var updateTotalPrice = function () {
-                    var totalAmount = 0;
-                    $('#tblArticleDetails > tbody  > tr').each(function (index, tr) {
-                        if (!isNaN($('td:eq(2)', this).find("input:text").val())) {
-                            totalAmount += parseInt($('td:eq(2)', this).find("input:text").val());
-                        }
-                    });
-                    $("#txtTotalPrice").val(totalAmount);
-                }
+                var orderDetails = null;
                 $(document).ready(function () {
-                    //BindBankDetails();
-                    formAction = action.create;// TODO : Set form action based on Query string.
-                    setControlByAction();
-                    //BindOrderDetails();
-                    //BindArticleDetails();
                     // Setup grid
                     $("#jqGridBuyer").jqGrid({
-                        url: "ChainGangService.asmx/GetData",
-                        mtype: "POST",
-                        ajaxGridOptions: { contentType: 'application/json; charset=utf-8' },
-                        serializeGridData: function (postData) {
-                            return JSON.stringify(postData);
-                        },
-                        jsonReader: { repeatitems: false, root: "d.orders", page: "d.page", total: "d.total", records: "d.records" },
+                        datatype: "local",
+                        // url: "ChainGangService.asmx/GetData",
+                        //mtype: "POST",
+                        //ajaxGridOptions: { contentType: 'application/json; charset=utf-8' },
+                        //serializeGridData: function (postData) {
+                        //    return JSON.stringify(postData);
+                        //},
+                        //jsonReader: { repeatitems: false, root: "d.orders", page: "d.page", total: "d.total", records: "d.records" },
                         datatype: "json",
                         height: "auto",
                         rowNum: 10,
                         shrinkToFit: true,
                         rowList: [10, 20, 30],
-                        colNames: ['Buyer', 'OrderDate'],
+                        colNames: ['id', 'Party', 'Order Date'],
                         colModel: [
-                        { name: 'Buyer', width: 400, sortable: false, align: "center", hidden: false },
-                        { name: 'OrderDate', width: 100, sortable: false, align: "center", hidden: false }
+                        { name: 'id', hidden: true },
+                        { name: 'name', width: 400, sortable: false, align: "center", hidden: false },
+                        { name: 'orderDate', width: 100, sortable: false, align: "center", hidden: false }
                         ],
                         pager: "#jqGridBuyerPager",
                         viewrecords: true,
@@ -523,10 +456,10 @@
                         onSelectRow: function (id) {
                             var jqGridBuyer = $('#jqGridBuyer');
                             var selRowId = jqGridBuyer.jqGrid('getGridParam', 'selrow');
-                            var celValue = jqGridBuyer.jqGrid('getCell', selRowId, 'Buyer');
+                            var celValue = jqGridBuyer.jqGrid('getCell', selRowId, 'name');
                             $("#txtSearchBuyer").val(celValue);
                             $('#myModal').modal('hide');
-                            BindBankDetails(celValue);
+                            setBankDetails(celValue);
                         }
                     });
                     // Setup buttons
@@ -534,115 +467,77 @@
                             { edit: false, add: false, del: false, search: true },
                             { reloadAfterSubmit: true }
                     );
-
-                    function StatusClicked() {
-                        alert('test');
-                    }
-                    function BindBankDetails(objBankDetail) {
-                        $("#lblCompany").text("DTC Corp");
-                        $("#lblBank").text("Bank of Scotland");
-                        $("#lblVAT").text("BOS12SB8EGHAS");
-                        $("#lblIBAN").text("BOS12SB");
-                        $("#lblAddress").text("45 Henderson St, Bridge of Allan, Stirling FK9 4HG, UK");
-                    }
-                    function BindOrderDetails(objOrderDetails) {
-                        $("#txtPurchaseOrder").val("ORD #5");
-                        $("#txtTotalPrice").val("1250");
-                        $("#txtUnknown").val("Unknown");
-                        $("#txtDeliveryDate").val("02/28/2017");
-                        $("#txtIncoterm").val("BOS12SB");
-                        $("#txtPaymentCondition").val("15 Days");
-                        $("#divOrderDetailsContainer input[type='text']").attr("disabled", "disabled");
-                    }
-                    function BindArticleDetails(objArticleDetails) {
-                        var tableRow = "<tr> <td>ArticleID</td> <td>Description</td> <td>Quantity</td> </tr>";
-                        tableRow += "<tr> <td>ArticleID</td> <td>Description</td> <td>Quantity</td> </tr>";
-                        $('#tblArticleDetailsBody').html(tableRow);
-                    }
-                    $("#lnkAddItem").click(function () {
-                        //var newTr = $("#tblArticleDetails tr:last").clone();
-                        //var newIndex = newTr.index() + 1;
-                        //$("#tblArticleDetails").append($newTr);
-                        $("#tblArticleDetails tr:last").clone().appendTo("#tblArticleDetails");
-                    });
-                    $('#tblArticleDetailsBody').delegate("#ddlItemID", "change", function () {
-                        var selectedRow = $(this).closest('tr');
-                        $(selectedRow).find("#txtItemDescription").val($(this).find("option:selected").text());
-                        //var idx = this.selectedIndex;
-                        //$("select#selected").prop('selectedIndex', idx);
-                    });
-
-
-                    $("#btnSave").click(function (e) {
-                        debugger;
-                        //order.orderNumber = $("#txtPurchaseOrder").val();
-                        //order.deliveryDate = $("#txtDeliveryDate").val();
-                        //order.incoterm = $("#txtIncoterm").val();
-                        //order.paymentCondition = $("#txtPaymentCondition").val();
-
-                        //tempDeliveryAddress.address = $("#txtAddress1").val() + ", " + $("#txtAddress2").val();
-                        //tempDeliveryAddress.postalCode = $("#txtPostalCode").val();
-                        //tempDeliveryAddress.city = $("#txtCity").val();
-                        //tempDeliveryAddress.country = $("#txtCountry").val();
-                        //order.deliveryAddress = tempDeliveryAddress;
-
-                        //order.isBuyerPaymentConfirmation = $('#chkPaymentConfirmation').is(":checked");
-                        //order.isBuyerBankPaymentCommitment = $('#chkBankPaymentCommitment').is(":checked");;
-                        //order.isSellerInformationCounterparty = $('#chkInformationCounterparty').is(":checked");;
-                        //order.isSellerFormattingof = $('#chkFormattingof').is(":checked");;
-                        //order.incoterm = $("#txtIncoterm").val();
-                        //order.items = [];
-                        //$('#tblArticleDetails > tbody  > tr').each(function (index, tr) {
-                            //tempItem = new Object();
-                            //tempItem.id = $(tr).find("select option:selected").text();
-                            //tempItem.name = $('td:eq(1)', this).find("input:text").val();
-                            //tempItem.quantity = $('td:eq(2)', this).find("input:text").val();
-                            //tempItem.amount = $('td:eq(2)', this).find("input:text").val();
-                            //order.items.push(tempItem);
-                        //});
-
-                        $.ajax({
-                            type: "PUT",
-                            url: "http://localhost:10005/api/dtc/NodeB/create-purchase-order",
-                            dataType: 'application/json',
-                            contentType: "application/json; charset=utf-8",
-                            data: JSON.stringify(order), //objOrder will be parameter name in service.
-                            success: function (data) {
-                            	debugger;
-                            	alert('Success');
-                            },
-                            error: function (errMsg) {
-                            	debugger;
-                            	alert(errMsg);
-                            	
-                            	}
+                    function updateTotalPrice() {
+                        var totalAmount = 0;
+                        alert('');
+                        $('#tblArticleDetails > tbody  > tr').each(function (index, tr) {
+                            if (!isNaN($('td:eq(2)', this).find("input:text").val())) {
+                                totalAmount += parseInt($('td:eq(2)', this).find("input:text").val());
+                            }
                         });
-
-
-                        e.preventDefault();
-                    });
-
-                    function getOrder() {
-                        order = {
-                            orderNumber: "100",
-                            deliveryDate: "2018-09-15",
-                            deliveryAddress:
-                                { address: "", city: "London", country: "UK", postalCode: "" },
-                            items: [
-                                {
-                                    name: "widget", amount: "3", quantity: 2
-                                }, { name: "thing", amount: "4", quantity: 2 }
-                            ],
-                            paymentCondition: "",
-                            isBuyerPaymentConfirmation: false,
-                            isBuyerBankPaymentCommitment: false,
-                            isSellerInformationCounterparty: false,
-                            isSellerFormattingof: false, incoterm: ""
-                        }
+                        $("#txtTotalPrice").val(totalAmount);
                     }
+                    function setBankDetails(partyName) {
+                    	if(undefined==partyName|| partyName=='' ||partyName==null)
+                    	{
+// TODO: Get bank details of buyer/seller  in case of new order.
+                    		
+	                        $("#lblCompany").text("DTC Corp");
+	                        $("#lblBank").text("Bank of Scotland");
+	                        $("#lblVAT").text("BOS12SB8EGHAS");
+	                        $("#lblIBAN").text("BOS12SB");
+	                        $("#lblAddress").text("45 Henderson St, Bridge of Allan, Stirling FK9 4HG, UK");
+                    		   
+                    	}
+                    	else
+                    	{
+                    		$("#lblCompany").text("DTC Corp"); // TODO :
+                            $("#lblBank").text(orderDetails.buyer.bankName);
+                            $("#lblVAT").text(orderDetails.buyer.vat);
+                            $("#lblIBAN").text(orderDetails.buyer.iban);
+                            $("#lblAddress").text("45 Henderson St, Bridge of Allan, Stirling FK9 4HG, UK");
+                    	}
+                    }
+                    function setOrderDetails() {
+                        $("#txtPurchaseOrder").val(orderDetails.purchaseOrderNum);
+                        $("#txtTotalPrice").val(orderDetails.totalPrice);
+                        $("#txtCurrency").val(orderDetails.currency);
+                        $("#txtDeliveryDate").val(orderDetails.deliveryDate);
+                        $("#txtIncoterm").val(orderDetails.incoterm);
+                        $("#txtPaymentCondition").val(orderDetails.pymntCondDays);
+                        $("#divOrderDetailsContainer input[type='text']").attr("disabled", "disabled");
 
+                        //setArticleDetails
+                        var tableRow = "";
+                        for (var i = 0; i < orderDetails.itemsList.length; i++) {
+                            var item = orderDetails.itemsList[i];
+                            tableRow += "<tr> <td>" + item.article.articleId + "</td> <td>" + item.article.description + "</td> <td>" + item.quantity + "</td> </tr>";
+                        }
+                        $('#tblArticleDetailsBody').html(tableRow);
+
+                        // setOrderAddress
+                        $("#txtAddress1").val(orderDetails.deliveryAddress.streetName);
+                        $("#txtAddress2").val(orderDetails.deliveryAddress.streetNumber);
+                        $("#txtPostalCode").val(orderDetails.deliveryAddress.postalCode);
+                        $("#txtCity").val(orderDetails.deliveryAddress.city);
+                        $("#txtCountry").val(orderDetails.deliveryAddress.country);
+
+                        // setOrderExtraServices
+                        $("#chkPaymentConfirmation").prop("checked", orderDetails.pymntConfirmation);
+                        $("#chkBankPaymentCommitment").prop("checked", orderDetails.bankPymntCommitment);
+                        $("#chkInformationCounterparty").prop("checked", orderDetails.infoCounterparty);
+                        $("#chkForfaitingOfInvoice").prop("checked", orderDetails.forfaitingOfInvoice);
+
+
+                        // setOrderStatus
+                        $("#spanInvoiceStatus").text("spanInvoiceStatus");
+                        $("#spanPaymentStatus").text();
+                        $("#spanContractStatus").text();
+                        $("#spanInvoiceStatus").text();
+                        $("#spanDeliveryStatus").text();
+                        $("#spanTrackingID").text();
+                    }
                     function setControlByAction() {
-
                         $("#divOrderConfirmation").hide();
                         $("#divOrderStatus").hide();
                         $("#divSaveOrder").hide();
@@ -653,35 +548,223 @@
                         else if (formAction == action.edit) {
                             $("#divOrderConfirmation").show();
                             $("#divOrderStatus").show();
-                            BindOrderDetails();
                         }
                         else if (formAction == action.view) {
                             $("#divOrderStatus").show();
-                            BindOrderDetails();
                         }
                     }
+                    function setBuyerSeller(buyerseller) {
+                        $("#txtSearchBuyer").val(buyerseller);
+                    }
+                    function loadOrderDetails(orderID) {
+                    	/*
+                    	$.ajax({
+                            type: "GET",
+                            url: "http://localhost:10005/api/dtc/NodeB/get-purchase-order",
+                            dataType: 'application/json',
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify(order), //objOrder will be parameter name in service.
+                            success: function (data) {
+                            	orderDetails=data;
+                            },
+                            error: function (errMsg) {
+                            	alert(errMsg);
+                            	}
+                        });
+                        */
+                        orderDetails =
+                               {
+                                   buyer: {
+                                       name: "ABC",
+                                       userName: "abc123",
+                                       address: {
+                                           streetName: "Shafer Courte",
+                                           streetNumber: "1200",
+                                           postalCode: "41006",
+                                           city: "London",
+                                           country: "UK"
+                                       },
+                                       bankName: "HDFC",
+                                       vat: "0215589963",
+                                       iban: "FR124545"
+                                   },
+                                   seller: {
+                                       name: "XYZ",
+                                       userName: "xyz456",
+                                       address: {
+                                           streetName: "Shafer Courte1",
+                                           streetNumber: "1201",
+                                           postalCode: "41007",
+                                           city: "Zurich",
+                                           country: "UK"
+                                       },
+                                       bankName: "HDFC",
+                                       vat: "0215589964",
+                                       iban: "FR124546"
+                                   },
+                                   purchaseOrderNum: "111",
+                                   deliveryDate: "2018-09-15",
+                                   pymntCondDays: 60,
+                                   deliveryAddress: {
+                                       streetName: "Karve Road",
+                                       streetNumber: "605",
+                                       postalCode: "411038",
+                                       city: "Pune",
+                                       country: "UK"
+                                   },
+                                   itemsList: [
+                                     {
+                                         article: {
+                                             articleId: "widget",
+                                             description: "widget",
+                                             price: "3"
+                                         },
+                                         quantity: "0"
+                                     },
+                                     {
+                                         article: {
+                                             articleId: "thing",
+                                             description: "thing",
+                                             price: "4"
+                                         },
+                                         quantity: "0"
+                                     }
+                                   ],
+                                   pymntConfirmation: false,
+                                   bankPymntCommitment: false,
+                                   infoCounterparty: false,
+                                   forfaitingOfInvoice: false,
+                                   incoterm: "",
+                                   totalPrice: "0",
+                                   currency: "EUR"
+                               };
+                    }
+                    function initForm() {
+                        var orderID = getQueryStringValue("orderID");
+                        if (null == orderID || undefined == orderID || orderID == '' || orderID == '0') {
+                            formAction = action.create;
+                            loadOrderDetails(0);
+                            setControlByAction();
+                            setBankDetails();
+                        }
+                        else {
+                            formAction = action.edit;
+                            $("#divSearchBuyerCointainer").hide();
+                            loadOrderDetails(orderID);
+                            setControlByAction();
+                            setBankDetails();//pass party id and bind bank details.
+                            setOrderDetails();
+                        }
+                    }
+                    initForm();
+                    $("#lnkAddItem").click(function () {
+                        $("#tblArticleDetails tr:last").clone().appendTo("#tblArticleDetails");
+                    });
+                    $('#tblArticleDetailsBody').delegate("#ddlItemID", "change", function () {
+                        var selectedRow = $(this).closest('tr');
+                        $(selectedRow).find("#txtItemDescription").val($(this).find("option:selected").text());
+                    });
+                    $("#btnClose").click(function (e) {
+                        redirectUser("OrderList.html?userID=" + currentUser.userID);
+                        e.preventDefault();
+                    });
+                    $("#btnSave").click(function (e) {
+                        debugger;
+                        //orderDetails = new Object();
+                        orderDetails.itemsList = [];
+                        //TODO Set Buyer and Seller
+                        orderDetails.purchaseOrderNum = $("#txtPurchaseOrder").val();
+                        orderDetails.totalPrice = $("#txtTotalPrice").val();
+                        orderDetails.currency = $("#txtCurrency").val();
+                        orderDetails.deliveryDate = $("#txtDeliveryDate").val();
+                        orderDetails.incoterm = $("#txtIncoterm").val();
+                        orderDetails.pymntCondDays = $("#txtPaymentCondition").val();
 
+                        //setArticleDetails
+                        var tempItem = {
+                            article: {
+                                articleId: "widget",
+                                description: "widget",
+                                price: "3"
+                            },
+                            quantity: "0"
+                        };
+                        $('#tblArticleDetails > tbody  > tr').each(function (index, tr) {
+                            tempItem.article.articleId = $(tr).find("select option:selected").text();
+                            tempItem.article.description = $('td:eq(1)', this).find("input:text").val();
+                            tempItem.quantity = $('td:eq(2)', this).find("input:text").val();
+                            tempItem.article.price = $('td:eq(2)', this).find("input:text").val();
+                            orderDetails.itemsList.push(tempItem);
+                        });
+                        orderDetails.deliveryAddress = new Object();
+                        orderDetails.deliveryAddress.streetName = $("#txtAddress1").val();
+                        orderDetails.deliveryAddress.streetNumber = $("#txtAddress2").val();
+                        orderDetails.deliveryAddress.postalCode = $("#txtPostalCode").val();
+                        orderDetails.deliveryAddress.city = $("#txtCity").val();
+                        orderDetails.deliveryAddress.country = $("#txtCountry").val();
+
+                        orderDetails.pymntConfirmation = $('#chkPaymentConfirmation').is(":checked");
+                        orderDetails.bankPymntCommitment = $('#chkBankPaymentCommitment').is(":checked");
+                        orderDetails.infoCounterparty = $('#chkInformationCounterparty').is(":checked");
+                        orderDetails.forfaitingOfInvoice = $('#chkForfaitingOfInvoice').is(":checked");
+                        debugger;
+                        var ltr = orderDetails;
+                        
+                        $.ajax({
+                            type: "PUT",
+                            url: "http://localhost:10005/api/dtc/NodeB/create-purchase-order",
+                            dataType: 'application/json',
+                            contentType: "application/json; charset=utf-8",
+                            data: orderDetails, //objOrder will be parameter name in service.
+                            success: function (data) {
+                            	alert('Success');
+                            },
+                            error: function (errMsg) {
+                            	debugger;
+                            		alert(errMsg);
+                            	}
+                        });
+                        redirectUser("OrderList.htm?userID=" + currentUser.userID);
+                        e.preventDefault();
+                    });
                     $("#btnBuyer").click(function (e) {
                         currentParty = party.buyer;
                         $("#h4BuyerSeller").html("I am a " + currentParty);
                         $("#txtSearchBuyer").attr("placeholder", "Search " + party.seller);
+                        $("#txtPaymentCondition").attr("disabled", "disabled");
+                        $("#divBuyerExtraServices input[type='checkbox']").attr("disabled", "disabled");
+                        $("#divSellerExtraServices input[type='checkbox']").attr("disabled", false);
+                        e.preventDefault();
+                    });
+                    $("#btnConfirmOrder").click(function (e) {
+                        //TODO: confirm order.
+                        redirectUser("OrderList.html?userID=" + currentUser.userID);
+                        e.preventDefault();
+                    });
+                    $("#btnDeclineOrder").click(function (e) {
+                        //TODO: confirm order.
+                        redirectUser("OrderList.html?userID=" + currentUser.userID);
+                        e.preventDefault();
+                    });
+                    $("#btnSendInvoice").click(function (e) {
+                        //TODO: confirm order.
+                        redirectUser("OrderList.html?userID=" + currentUser.userID);
                         e.preventDefault();
                     });
                     $("#btnSeller").click(function (e) {
                         currentParty = party.seller;
                         $("#h4BuyerSeller").html("I am a " + currentParty);
                         $("#txtSearchBuyer").attr("placeholder", "Search " + party.buyer);
+                        $("#txtPaymentCondition").attr("disabled", false);
+                        $("#divSellerExtraServices input[type='checkbox']").attr("disabled", "disabled");
+                        $("#divBuyerExtraServices input[type='checkbox']").attr("disabled", false);
                         e.preventDefault();
                     });
+
                 });
             </SCRIPT>
         </DIV>
     </FORM>
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
     <SCRIPT src="js/bootstrap.min.js"></SCRIPT>
-    <!-- Visual Studio Browser Link -->
-    <!-- End Browser Link -->
 </BODY>
 </HTML>
