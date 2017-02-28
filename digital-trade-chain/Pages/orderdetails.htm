@@ -411,38 +411,70 @@
                 var action = { create: "create", edit: "edit", view: "view", remove: "remove" };
                 var currentParty = null;
                 var formAction = null;
-                var order = {
-                	buyer: {
-                		name: "ABC", userName: "abc123", 
-                		address: {streetName: "Shafer Courte", streetNumber: "1200", postalCode: "41006", city: "London", country: "UK"},
-                		bankName: "HDFC", VAT: "0215589963", IBAN: "FR124545"
-                	},
-                	seller: {
-                		name: "XYZ", userName: "xyz456", 
-                		address: {streetName: "Shafer Courte1", streetNumber: "1201", postalCode: "41007", city: "Zurich", country: "UK"},
-                		bankName: "HDFC", VAT: "0215589964", IBAN: "FR124546"
-                	},
+                var order =
+                {
+                    buyer: {
+                        name: "ABC",
+                        userName: "abc123",
+                        address: {
+                            streetName: "Shafer Courte",
+                            streetNumber: "1200",
+                            postalCode: "41006",
+                            city: "London",
+                            country: "UK"
+                        },
+                        bankName: "HDFC",
+                        vat: "0215589963",
+                        iban: "FR124545"
+                    },
+                    seller: {
+                        name: "XYZ",
+                        userName: "xyz456",
+                        address: {
+                            streetName: "Shafer Courte1",
+                            streetNumber: "1201",
+                            postalCode: "41007",
+                            city: "Zurich",
+                            country: "UK"
+                        },
+                        bankName: "HDFC",
+                        vat: "0215589964",
+                        iban: "FR124546"
+                    },
                     purchaseOrderNum: "111",
                     deliveryDate: "2018-09-15",
                     pymntCondDays: 60,
-                    deliveryAddress:
-                        { streetName: "Karve Road", streetNumber: "605", postalCode: "411038", city: "Pune", country: "UK" },
+                    deliveryAddress: {
+                        streetName: "Karve Road",
+                        streetNumber: "605",
+                        postalCode: "411038",
+                        city: "Pune",
+                        country: "UK"
+                    },
                     itemsList: [
-                        {
-                        	article:{articleId: "widget", description: "widget", price: "3"},
-                        	quantity: "0"
-                        },
-                        {
-                        	article:{articleId: "thing", description: "thing", price: "4"},
-                        	quantity: "0"
-                        }
+                      {
+                          article: {
+                              articleId: "widget",
+                              description: "widget",
+                              price: "3"
+                          },
+                          quantity: "0"
+                      },
+                      {
+                          article: {
+                              articleId: "thing",
+                              description: "thing",
+                              price: "4"
+                          },
+                          quantity: "0"
+                      }
                     ],
-                    pymntCondDays: 0,
-                    isPymntConfirmation: false,
-                    isBankPymntCommitment: false,
-                    isInfoCounterparty: false,
-                    isForfaitingOfInvoice: false, incoterm: "",
-                    totalPrice: 0,
+                    pymntConfirmation: false,
+                    bankPymntCommitment: false,
+                    infoCounterparty: false,
+                    forfaitingOfInvoice: false,
+                    incoterm: "",
+                    totalPrice: "0",
                     currency: "EUR"
                 };
 
@@ -542,7 +574,7 @@
 
 
                     $("#btnSave").click(function (e) {
-                        //debugger;
+                        debugger;
                         //order.orderNumber = $("#txtPurchaseOrder").val();
                         //order.deliveryDate = $("#txtDeliveryDate").val();
                         //order.incoterm = $("#txtIncoterm").val();
@@ -576,9 +608,14 @@
                             contentType: "application/json; charset=utf-8",
                             data: JSON.stringify(order), //objOrder will be parameter name in service.
                             success: function (data) {
+                            	debugger;
                             	alert('Success');
                             },
-                            error: function (errMsg) { }
+                            error: function (errMsg) {
+                            	debugger;
+                            	alert(errMsg);
+                            	
+                            	}
                         });
 
 
