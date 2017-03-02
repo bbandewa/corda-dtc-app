@@ -90,7 +90,7 @@
                                 <!-- Modal content-->
                                 <DIV class="modal-content">
                                     <DIV class="modal-header">
-                                        <BUTTON class="close" type="button" data-dismiss="modal">׼/BUTTON>
+                                        <BUTTON class="close" type="button" data-dismiss="modal"></BUTTON>
 
                                         <H4 class="modal-title">Select Buyer</H4>
                                     </DIV>
@@ -707,15 +707,17 @@
                         orderDetails.bankPymntCommitment = $('#chkBankPaymentCommitment').is(":checked");
                         orderDetails.infoCounterparty = $('#chkInformationCounterparty').is(":checked");
                         orderDetails.forfaitingOfInvoice = $('#chkForfaitingOfInvoice').is(":checked");
-                        debugger;
-                        var ltr = orderDetails;
+                        
+                        var ltr= JSON.stringify(orderDetails);
+                        //ltr= ltr.substring(1,ltr.length - 1) ;
                         
                         $.ajax({
                             type: "PUT",
                             url: "http://localhost:10005/api/dtc/NodeB/create-purchase-order",
-                            dataType: 'application/json',
-                            contentType: "application/json; charset=utf-8",
-                            data: orderDetails, //objOrder will be parameter name in service.
+                            dataType: "json",
+                            contentType: "application/json;charset=UTF-8",
+                            data: ltr, //objOrder will be parameter name in service.
+                           
                             success: function (data) {
                             	alert('Success');
                             },
@@ -723,8 +725,9 @@
                             	debugger;
                             		alert(errMsg);
                             	}
+                            
                         });
-                        redirectUser("OrderList.htm?userID=" + currentUser.userID);
+                        //redirectUser("OrderList.htm?userID=" + currentUser.userID);
                         e.preventDefault();
                     });
                     $("#btnBuyer").click(function (e) {
