@@ -3,6 +3,10 @@ package com.capgemini.dtc.app.api;
 import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -15,16 +19,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.capgemini.dtc.app.contract.PurchaseOrderContract;
+import com.capgemini.dtc.app.flow.DTCFlow;
+import com.capgemini.dtc.app.model.PurchaseOrderNew;
+import com.capgemini.dtc.app.state.PurchaseOrderState;
+
 import net.corda.core.contracts.ContractState;
 import net.corda.core.contracts.StateAndRef;
 import net.corda.core.crypto.Party;
 import net.corda.core.messaging.CordaRPCOps;
-
-import com.capgemini.dtc.app.contract.PurchaseOrderContract;
-import com.capgemini.dtc.app.flow.DTCFlow;
-import com.capgemini.dtc.app.model.PurchaseOrder;
-import com.capgemini.dtc.app.model.PurchaseOrderNew;
-import com.capgemini.dtc.app.state.PurchaseOrderState;
 
 // This API is accessible from /api/example. All paths specified below are relative to it.
 @Path("dtc")
@@ -72,6 +75,34 @@ public class DTCApi {
     public List<StateAndRef<ContractState>> getPurchaseOrders() {
         return services.vaultAndUpdates().getFirst();
     }
+    
+    @GET
+    @Path("{poNumber}/get-po-details")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<PurchaseOrderNew> getPODetails(@PathParam("poNumber") String poNumber) {
+    	
+    	List<PurchaseOrderNew> returnRecords = new ArrayList<PurchaseOrderNew>();
+    	
+    	List<StateAndRef<ContractState>> allRecords = services.vaultAndUpdates().getFirst();
+    	
+    	for(int i=0; i<allRecords.size();i++){
+    		
+    		StateAndRef<ContractState> singleRecord = (StateAndRef<ContractState>) allRecords.get(i);
+    		
+    		PurchaseOrderState state = (PurchaseOrderState) singleRecord.getState().getData();
+    		
+    		if(state.getPurchaseOrder().getPurchaseOrderNum().equalsIgnoreCase(poNumber)){
+    			returnRecords.add(state.getPurchaseOrder());
+    		}
+    	}
+    	// return only one record based on kycDate which is created last
+    	PurchaseOrderNew lastPOCreation = Collections.max(returnRecords, Comparator.comparing(PurchaseOrderNew::getPoDate));
+    	
+    	returnRecords.clear();
+    	returnRecords.add(lastPOCreation);
+    	
+        return returnRecords;
+    }
 
     /**
      * This should only be called from the 'buyer' node. It initiates a flow to agree a purchase order with a
@@ -99,6 +130,7 @@ public class DTCApi {
                 services.nodeIdentity().getLegalIdentity(),
                 otherParty,
                 new PurchaseOrderContract());*/
+        purchaseOrder.setPoDate(new Date());
         final PurchaseOrderState state = new PurchaseOrderState(
                 purchaseOrder,
                 services.nodeIdentity().getLegalIdentity(),

@@ -96,12 +96,13 @@
                         colNames: ['Order Number', 'Buyer', 'Seller', 'Order Date', 'Status', "Detail"],
                         colModel: [
                         { name: 'state.data.purchaseOrder.purchaseOrderNum', key: true, width: 100, align: "center", hidden: false },
-                        { name: 'state.data.buyer', width: 150, sortable: false, align: "center", hidden: false },
-                        { name: 'state.data.seller', width: 150, sortable: false, align: "center", hidden: false },
+                        { name: 'state.data.purchaseOrder.buyer.name', width: 150, sortable: false, align: "center", hidden: false },
+                        { name: 'state.data.purchaseOrder.seller.name', width: 150, sortable: false, align: "center", hidden: false },
                         {
-						 name: 'state.data.purchaseOrder.deliveryDate', width: 200, sortable: false, align: "center", hidden: false,
+						 name: 'state.data.purchaseOrder.poDate', width: 200, sortable: false, align: "center", hidden: false,
 						 formatter: function (cellvalue, options, rowObject) {
-							 var parsedDate = new Date(parseInt(cellvalue.toString().substr(6)));
+							 //var parsedDate = new Date(parseInt(cellvalue.toString().substr(6)));
+							 var parsedDate = new Date(parseInt(cellvalue.toString()));
 	                         var jsDate = new Date(parsedDate); //Date object
 							 return jsDate;
 						 },

@@ -155,8 +155,8 @@ public class PurchaseOrderContract implements Contract {
                             command.getSigners().containsAll(out.getParticipants()));
 
                     // Purchase order specific constraints.
-                    require.by("We only deliver to the UK.",
-                            out.getPurchaseOrder().getDeliveryAddress().getCountry().equals("UK"));
+                    /*require.by("We only deliver to the UK.",
+                            out.getPurchaseOrder().getDeliveryAddress().getCountry().equals("UK"));*/
                     require.by("You must order at least one type of item.",
                             !out.getPurchaseOrder().getItemsList().isEmpty());
                     require.by("You cannot order zero or negative amounts of an item.",

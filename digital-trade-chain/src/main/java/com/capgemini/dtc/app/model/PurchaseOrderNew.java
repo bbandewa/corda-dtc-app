@@ -20,20 +20,22 @@ public class PurchaseOrderNew {
 		// TODO Auto-generated constructor stub
 	}
 
-	Party buyer;
-	Party seller;
-	String purchaseOrderNum;
-	double totalPrice;
-	String currency;
-	Date deliveryDate;
-	String incoterm;
-	int pymntCondDays;
-	List<ItemPurchased> itemsList;
-	Address deliveryAddress;
-	String pymntConfirmation;
-	String bankPymntCommitment;
-	String infoCounterparty;
-	String forfaitingOfInvoice;
+	private Party buyer;
+	private Party seller;
+	private String purchaseOrderNum;
+	private double totalPrice;
+	private String currency;
+	private Date deliveryDate;
+	private String incoterm;
+	private int pymntCondDays;
+	private List<ItemPurchased> itemsList;
+	private Address deliveryAddress;
+	private String pymntConfirmation;
+	private String bankPymntCommitment;
+	private String infoCounterparty;
+	private String forfaitingOfInvoice;
+	
+	Date poDate;
 	
 	/**
 	 * @param buyer
@@ -70,6 +72,15 @@ public class PurchaseOrderNew {
 		this.bankPymntCommitment = isBankPymntCommitment;
 		this.infoCounterparty = isInfoCounterparty;
 		this.forfaitingOfInvoice = isForfaitingOfInvoice;
+		this.poDate = new Date();
+	}
+	
+	public Date getPoDate(){
+		return poDate;
+	}
+	
+	public void setPoDate(Date poDate){
+		this.poDate = poDate;
 	}
 	
 	/**
