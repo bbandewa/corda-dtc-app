@@ -82,7 +82,8 @@
                     // Setup grid
                     $("#jqGrid01").jqGrid({
                         //datatype: "local",
-                        url: "http://localhost:10005/api/dtc/purchase-orders",
+                        //url: "http://localhost:10005/api/dtc/purchase-orders",
+                        url: "http://localhost:10005/api/dtc/abc123/purchase-orders",
                         mtype: "GET",
                         ajaxGridOptions: { contentType: 'application/json; charset=utf-8' },
                         serializeGridData: function (postData) {
@@ -95,11 +96,11 @@
                         rowList: [10, 20, 30],
                         colNames: ['Order Number', 'Buyer', 'Seller', 'Order Date', 'Status', "Detail"],
                         colModel: [
-                        { name: 'state.data.purchaseOrder.purchaseOrderNum', key: true, width: 100, align: "center", hidden: false },
-                        { name: 'state.data.purchaseOrder.buyer.name', width: 150, sortable: false, align: "center", hidden: false },
-                        { name: 'state.data.purchaseOrder.seller.name', width: 150, sortable: false, align: "center", hidden: false },
+                        { name: 'purchaseOrderNum', key: true, width: 100, align: "center", hidden: false },
+                        { name: 'buyer.name', width: 150, sortable: false, align: "center", hidden: false },
+                        { name: 'seller.name', width: 150, sortable: false, align: "center", hidden: false },
                         {
-						 name: 'state.data.purchaseOrder.poDate', width: 200, sortable: false, align: "center", hidden: false,
+						 name: 'poDate', width: 200, sortable: false, align: "center", hidden: false,
 						 formatter: function (cellvalue, options, rowObject) {
 							 //var parsedDate = new Date(parseInt(cellvalue.toString().substr(6)));
 							 var parsedDate = new Date(parseInt(cellvalue.toString()));
@@ -114,7 +115,7 @@
                         },
                         {
                             name: 'detail', width: 180, sortable: false, hidden: false, align: "center", formatter: function (cellvalue, options, rowObject) {
-                                return "<a onclick='redirectUser(\"OrderDetails.htm?orderID=" + rowObject.state.data.purchaseOrder.purchaseOrderNum + "&userID=" + currentUser.userID + "\")' class='btn btn-info'>Order Details</a>"
+                                return "<a onclick='redirectUser(\"OrderDetails.htm?orderID=" + rowObject.purchaseOrderNum + "&userID=" + currentUser.userID + "\")' class='btn btn-info'>Order Details</a>"
                             },
                         },
                         ],

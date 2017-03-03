@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -70,10 +71,33 @@ public class DTCApi {
      * Displays all purchase order states that exist in the vault.
      */
     @GET
-    @Path("purchase-orders")
+    @Path("{userId}/purchase-orders")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<StateAndRef<ContractState>> getPurchaseOrders() {
-        return services.vaultAndUpdates().getFirst();
+    public List<PurchaseOrderNew> getPurchaseOrders(@PathParam("userId") String userId) {
+
+    	List<PurchaseOrderNew> returnRecords = new ArrayList<PurchaseOrderNew>();
+    	
+    	List<StateAndRef<ContractState>> allRecords = services.vaultAndUpdates().getFirst();
+    	System.out.println("81");
+    	for(int i=0; i<allRecords.size();i++){
+    		
+    		StateAndRef<ContractState> singleRecord = (StateAndRef<ContractState>) allRecords.get(i);
+    		
+    		PurchaseOrderState state = (PurchaseOrderState) singleRecord.getState().getData();
+    		
+    		if(state.getPurchaseOrder().getBuyer().getUserName().equalsIgnoreCase(userId) ||
+    				state.getPurchaseOrder().getSeller().getUserName().equalsIgnoreCase(userId)){
+    			returnRecords.add(state.getPurchaseOrder());
+    		}
+    	}
+    	// return only one record based on kycDate which is created last
+    	//PurchaseOrderNew lastPOCreation = Collections.max(returnRecords, Comparator.comparing(PurchaseOrderNew::getPoDate));
+    	
+    	//returnRecords.clear();
+    	//returnRecords.add(lastPOCreation);
+    	
+        //return services.vaultAndUpdates().getFirst();
+    	return returnRecords;
     }
     
     @GET
@@ -96,10 +120,10 @@ public class DTCApi {
     		}
     	}
     	// return only one record based on kycDate which is created last
-    	PurchaseOrderNew lastPOCreation = Collections.max(returnRecords, Comparator.comparing(PurchaseOrderNew::getPoDate));
+    	//PurchaseOrderNew lastPOCreation = Collections.max(returnRecords, Comparator.comparing(PurchaseOrderNew::getPoDate));
     	
-    	returnRecords.clear();
-    	returnRecords.add(lastPOCreation);
+    	//returnRecords.clear();
+    	//returnRecords.add(lastPOCreation);
     	
         return returnRecords;
     }

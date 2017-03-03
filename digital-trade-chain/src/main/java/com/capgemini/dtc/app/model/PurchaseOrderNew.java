@@ -6,6 +6,8 @@ package com.capgemini.dtc.app.model;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * @author Balaji
  *
@@ -25,6 +27,7 @@ public class PurchaseOrderNew {
 	private String purchaseOrderNum;
 	private double totalPrice;
 	private String currency;
+	//@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date deliveryDate;
 	private String incoterm;
 	private int pymntCondDays;
