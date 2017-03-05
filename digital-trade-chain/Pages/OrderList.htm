@@ -86,8 +86,8 @@
             </DIV>
             <SCRIPT type="text/javascript">
             
-            var userID = "abc123";
-            
+            //var userID = "abc123";
+            var userID = getQueryStringValue("userID");
                 $(document).ready(function () {
                     // Setup grid
                     $("#jqGrid01").jqGrid({
@@ -110,14 +110,14 @@
                         { name: 'buyer.name', width: 150, sortable: false, align: "center", hidden: false },
                         { name: 'seller.name', width: 150, sortable: false, align: "center", hidden: false },
                         {
-						 name: 'poDate', width: 200, sortable: false, align: "center", hidden: false,
-						 formatter: function (cellvalue, options, rowObject) {
-							 //var parsedDate = new Date(parseInt(cellvalue.toString().substr(6)));
-							 var parsedDate = new Date(parseInt(cellvalue.toString()));
-	                         var jsDate = new Date(parsedDate); //Date object
-							 return jsDate;
-						 },
-						 },
+                            name: 'poDate', width: 200, sortable: false, align: "center", hidden: false,
+                            formatter: function (cellvalue, options, rowObject) {
+                                //var parsedDate = new Date(parseInt(cellvalue.toString().substr(6)));
+                                var parsedDate = new Date(parseInt(cellvalue.toString()));
+                                var jsDate = new Date(parsedDate); //Date object
+                                return jsDate;
+                            },
+                        },
                         {
                             name: 'status', width: 180, sortable: false, hidden: false, align: "center", formatter: function (cellvalue, options, rowObject) {
                                 return "<h4><span class='" + getClassByOrderStatus(rowObject.Status) + "'>" + rowObject.status + "</span></h4>";
@@ -163,7 +163,6 @@
                         $("#jqGrid01").trigger("reloadGrid");
                     }
                     */
-                    
                     $("#btnCreateNewContract").click(function (e) {
                         //var url = "Orderdetails.htm?orderID=0&userID=" + currentUser.userID;
                         var url = "Orderdetails.htm?orderID=0&userID=" + userID;

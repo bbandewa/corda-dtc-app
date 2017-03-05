@@ -7,11 +7,11 @@
     <META charset="utf-8">
     <META name="viewport" content="width=device-width, initial-scale=1">     <!-- jQuery -->
 
-    <SCRIPT src="js/jquery.min.js"></SCRIPT>
+    <SCRIPT src="js/jquery-1.10.1.min.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery-migrate-1.2.1.min.js"></SCRIPT>
 
     <SCRIPT src="js/jquery-ui.js"></SCRIPT>
-
-    <SCRIPT src="js/js/bootstrap.min.js"></SCRIPT>
 
     <SCRIPT src="js/grid.locale-en.js"></SCRIPT>
 
@@ -29,6 +29,13 @@
 </HEAD>
 <BODY>
     <FORM id="form1" method="post">
+        <div class="busyStatus" id="divBusyStatus" style="text-align: center;">
+            <div id="yourdiv" style="display: inline-block;">
+                <div class="loader">
+                </div>
+            </div>
+            <h2>Please wait...</h2>
+        </div>
         <DIV class="container">
             <DIV class="panel-group col-sm-6"
                  style="margin-top: 100px; margin-left: 200px;">
@@ -39,7 +46,7 @@
                     <DIV class="panel-body" style="min-height: 350px;">
                         <DIV class="form-group ">
                             <LABEL for="email">Username:</LABEL>
-                            <INPUT class="form-control" id="userName" type="email">
+                            <INPUT class="form-control" id="userName">
                         </DIV>
                         <DIV class="form-group ">
                             <LABEL for="pwd">Password:</LABEL>
@@ -66,31 +73,35 @@
     <SCRIPT>
         // Get the modal
         $(document).ready(function () {
-            $('#btnLogin').click(function () {
-                $.ajax({
-                    type: "POST",
-                    url: "OrderList.htm?userID=xyz456",
-                    cache: false,
-                    contentType: "application/json; charset=utf-8",
-                    data: '{"userName":"' + $("#userName").val() + '"}',
-                    dataType: "json",
-                    success: handleHtml,
-                    error: ajaxFailed
-                });
+            $('#btnLogin').click(function (e) {
+                //$.ajax({
+                //    type: "POST",
+                //    url: "http://localhost:63524/ChainGangService.asmx/ValidateCredentials", //TODO: Change the web service URL to make it live
+                //    cache: false,
+                //    contentType: "application/json; charset=utf-8",
+                //    data: '{"userName":"' + $("#userName").val() + '"}',
+                //    dataType: "json",
+                //    success: function (data, status) {
+                //    window.location = "OrderList.htm?userID=dtcuser"; //TODO: pass the userID returned from service result
+                //     },
+                //beforeSend: function () {
+                //    $("#divBusyStatus").show();
+                //},
+                //complete: function () {
+                //    $("#divBusyStatus").hide();
+                //}
+                //    error: function (xmlRequest) {
+                //    alert(xmlRequest.status + ' \n\r ' +
+                //          xmlRequest.statusText + '\n\r' +
+                //          xmlRequest.responseText);
+                //}
+                //});
+                window.location = "OrderList.htm?userID=" + $("#userName").val();;// TODO: Implement rest service to validate user and redirect user in success call back function.
+                e.preventDefault();
             });
-            function handleHtml(data, status) {
-                alert(data.d);
-            }
-
-            function ajaxFailed(xmlRequest) {
-                alert(xmlRequest.status + ' \n\r ' +
-                      xmlRequest.statusText + '\n\r' +
-                      xmlRequest.responseText);
-            }
+            $("#divBusyStatus").hide();
         });
     </SCRIPT>
     <SCRIPT src="js/bootstrap.min.js"></SCRIPT>
-
 </BODY>
-
 </HTML>

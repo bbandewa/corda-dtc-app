@@ -435,7 +435,8 @@
                 var currentParty = null;
                 var formAction = null;
                 var orderDetails = null;
-                var userID = "abc123";
+                //var userID = "abc123";
+                var userID = getQueryStringValue("userID");
                 $(document).ready(function () {
                     // Setup grid
                     $("#jqGridBuyer").jqGrid({
@@ -633,6 +634,12 @@
                             dataType: 'json',
                             //contentType: "application/json; charset=utf-8",
                             //data: JSON.stringify(order), //objOrder will be parameter name in service.
+                            beforeSend: function () {
+                                $("#divBusyStatus").show();
+                            },
+                            complete: function () {
+                                $("#divBusyStatus").hide();
+                            },
                             success: function (data) {
                             	debugger;
                             	orderDetails=data;
@@ -640,7 +647,7 @@
                             error: function (errMsg) {
                             	alert(errMsg);
                             	debugger;
-                            	orderDetails=errMsg;
+                            	
                             	}
                         });
                         
@@ -795,14 +802,21 @@
                             dataType: "json",
                             contentType: "application/json;charset=UTF-8",
                             data: ltr, //objOrder will be parameter name in service.
-
+                            beforeSend: function () {
+                                $("#divBusyStatus").show();
+                            },
+                            complete: function () {
+                                $("#divBusyStatus").hide();
+                            },
                             success: function (data) {
                                 alert('Success');
+                                window.location = "OrderList.htm?userID=" + userID;
                             },
                             error: function (errMsg) {
                                 debugger;
                                 alert(errMsg);
-                                redirectUser("OrderList.htm?userID=" + userID);
+                                //redirectUser("OrderList.htm?userID=" + userID);
+                                window.location = "OrderList.htm?userID=" + userID;
                             }
 
                         });
