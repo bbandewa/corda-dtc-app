@@ -120,11 +120,11 @@ public class DTCApi {
     		}
     	}
     	// return only one record based on kycDate which is created last
-    	//PurchaseOrderNew lastPOCreation = Collections.max(returnRecords, Comparator.comparing(PurchaseOrderNew::getPoDate));
+    	PurchaseOrderNew lastPOCreation = Collections.max(returnRecords, Comparator.comparing(PurchaseOrderNew::getPoDate));
     	
-    	//returnRecords.clear();
-    	//returnRecords.add(lastPOCreation);
-    	
+    	returnRecords.clear();
+    	returnRecords.add(lastPOCreation);
+    	System.out.println("127");
         return returnRecords;
     }
 

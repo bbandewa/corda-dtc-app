@@ -489,7 +489,8 @@
 
                         }
                         else {
-                            $("#lblCompany").text("DTC Corp"); // TODO :
+                        	debugger;
+                            $("#lblCompany").text(orderDetails.buyer.name); // TODO :
                             $("#lblBank").text(orderDetails.buyer.bankName);
                             $("#lblVAT").text(orderDetails.buyer.vat);
                             $("#lblIBAN").text(orderDetails.buyer.iban);
@@ -497,6 +498,7 @@
                         }
                     }
                     function setOrderDetails() {
+                    	debugger;
                         $("#txtPurchaseOrder").val(orderDetails.purchaseOrderNum);
                         $("#txtTotalPrice").val(orderDetails.totalPrice);
                         $("#txtCurrency").val(orderDetails.currency);
@@ -555,22 +557,95 @@
                         $("#txtSearchBuyer").val(buyerseller);
                     }
                     function loadOrderDetails(orderID) {
-                        /*
+                        
+                    	orderDetails =
+                        {
+                            buyer: {
+                                name: "ABC",
+                                userName: "abc123",
+                                address: {
+                                    streetName: "Shafer Courte",
+                                    streetNumber: "1200",
+                                    postalCode: "41006",
+                                    city: "London",
+                                    country: "UK"
+                                },
+                                bankName: "HDFC",
+                                vat: "0215589963",
+                                iban: "FR124545"
+                            },
+                            seller: {
+                                name: "XYZ",
+                                userName: "xyz456",
+                                address: {
+                                    streetName: "Shafer Courte1",
+                                    streetNumber: "1201",
+                                    postalCode: "41007",
+                                    city: "Zurich",
+                                    country: "UK"
+                                },
+                                bankName: "HDFC",
+                                vat: "0215589964",
+                                iban: "FR124546"
+                            },
+                            purchaseOrderNum: "111",
+                            deliveryDate: "2018-09-15",
+                            pymntCondDays: 60,
+                            deliveryAddress: {
+                                streetName: "Karve Road",
+                                streetNumber: "605",
+                                postalCode: "411038",
+                                city: "Pune",
+                                country: "UK"
+                            },
+                            itemsList: [
+                              {
+                                  article: {
+                                      articleId: "widget",
+                                      description: "widget",
+                                      price: "3"
+                                  },
+                                  quantity: "0"
+                              },
+                              {
+                                  article: {
+                                      articleId: "thing",
+                                      description: "thing",
+                                      price: "4"
+                                  },
+                                  quantity: "0"
+                              }
+                            ],
+                            pymntConfirmation: false,
+                            bankPymntCommitment: false,
+                            infoCounterparty: false,
+                            forfaitingOfInvoice: false,
+                            incoterm: "",
+                            totalPrice: "0",
+                            currency: "EUR"
+                        };
+                    	
+                    	if (!(null == orderID || undefined == orderID || orderID == '' || orderID == '0')) {
+                    	
                     	$.ajax({
                             type: "GET",
-                            url: "http://localhost:10005/api/dtc/NodeB/get-purchase-order",
-                            dataType: 'application/json',
-                            contentType: "application/json; charset=utf-8",
-                            data: JSON.stringify(order), //objOrder will be parameter name in service.
+                            url: "http://http://localhost:10005/api/dtc/" + orderID + "/get-po-details",
+                            dataType: 'json',
+                            //contentType: "application/json; charset=utf-8",
+                            //data: JSON.stringify(order), //objOrder will be parameter name in service.
                             success: function (data) {
+                            	debugger;
                             	orderDetails=data;
                             },
                             error: function (errMsg) {
                             	alert(errMsg);
+                            	debugger;
+                            	orderDetails=errMsg;
                             	}
                         });
-                        */
-                        orderDetails =
+                        
+                    	}
+                        /* orderDetails =
                                {
                                    buyer: {
                                        name: "ABC",
@@ -635,7 +710,7 @@
                                    incoterm: "",
                                    totalPrice: "0",
                                    currency: "EUR"
-                               };
+                               }; */
                     }
                     function initForm() {
                         var orderID = getQueryStringValue("orderID");
@@ -645,15 +720,16 @@
                             $("#txtPurchaseOrder").val(getPurchaseOrderNumber());
                             $("#txtPurchaseOrder").attr("disabled", "disabled");
                             setControlByAction();
-                            setBankDetails();
+                            setBankDetails('');
                         }
                         else {
                             formAction = action.edit;
                             $("#divSearchBuyerCointainer").hide();
                             loadOrderDetails(orderID);
                             setControlByAction();
-                            setBankDetails();//pass party id and bind bank details.
-                            setOrderDetails();
+                            debugger;
+                            setBankDetails(orderDetails.buyer.name);//pass party id and bind bank details.
+                            setOrderDetails(); 
                         }
                     }
                     initForm();
