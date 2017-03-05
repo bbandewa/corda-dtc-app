@@ -52,6 +52,13 @@
 </HEAD>
 <BODY>
     <FORM id="form1" method="post">
+        <div class="busyStatus" id="divBusyStatus" style="text-align: center;">
+            <div id="yourdiv" style="display: inline-block;">
+                <div class="loader">
+                </div>
+            </div>
+            <h2>Please wait...</h2>
+        </div>
         <DIV class="panel-heading" style="width: 100%; height: 50px; color: white; margin-bottom: 5px;"></DIV>
         <DIV class="container">
             <DIV id="content">
@@ -156,7 +163,7 @@
                                             <DIV class="col-sm-4">
                                                 <DIV class="form-group">
                                                     <LABEL for="txtTotalPrice">Total Price:</LABEL>
-                                                    <INPUT class="form-control" id="txtTotalPrice" type="text">
+                                                    <INPUT class="form-control" disabled="disabled"   id="txtTotalPrice" type="text">
                                                 </DIV>
                                             </DIV>
                                             <DIV class="col-sm-4">
@@ -214,6 +221,7 @@
                                                         <DIV class="form-group">
                                                             <SELECT class="ddlDummySelector" id="ddlItemID"
                                                                     style="width: 80px;">
+                                                                <OPTION>-- Select --</OPTION>
                                                                 <OPTION>Item 1</OPTION>
                                                                 <OPTION>Item 12</OPTION>
                                                                 <OPTION>Item 13</OPTION>
@@ -225,7 +233,7 @@
                                                         <DIV class="col-sm-4"><INPUT class="form-control" id="txtItemDescription" style="min-width: 280px;" type="text"></DIV>
                                                     </TD>
                                                     <TD>
-                                                        <DIV class="form-group col-sm-6"><INPUT class="form-control" id="txtItemQuantity" onchange="javascript:updateTotalPrice();" type="text"></DIV>
+                                                        <DIV class="form-group col-sm-6"><INPUT class="form-control" id="txtItemQuantity" onblur="javascript:updateTotalPrice();" type="text"></DIV>
                                                     </TD>
                                                 </TR>
                                             </TBODY>
@@ -427,6 +435,7 @@
                 var currentParty = null;
                 var formAction = null;
                 var orderDetails = null;
+                var userID = "abc123";
                 $(document).ready(function () {
                     // Setup grid
                     $("#jqGridBuyer").jqGrid({
@@ -467,36 +476,25 @@
                             { edit: false, add: false, del: false, search: true },
                             { reloadAfterSubmit: true }
                     );
-                    function updateTotalPrice() {
-                        var totalAmount = 0;
-                        alert('');
-                        $('#tblArticleDetails > tbody  > tr').each(function (index, tr) {
-                            if (!isNaN($('td:eq(2)', this).find("input:text").val())) {
-                                totalAmount += parseInt($('td:eq(2)', this).find("input:text").val());
-                            }
-                        });
-                        $("#txtTotalPrice").val(totalAmount);
-                    }
+                    
                     function setBankDetails(partyName) {
-                    	if(undefined==partyName|| partyName=='' ||partyName==null)
-                    	{
-// TODO: Get bank details of buyer/seller  in case of new order.
-                    		
-	                        $("#lblCompany").text("DTC Corp");
-	                        $("#lblBank").text("Bank of Scotland");
-	                        $("#lblVAT").text("BOS12SB8EGHAS");
-	                        $("#lblIBAN").text("BOS12SB");
-	                        $("#lblAddress").text("45 Henderson St, Bridge of Allan, Stirling FK9 4HG, UK");
-                    		   
-                    	}
-                    	else
-                    	{
-                    		$("#lblCompany").text("DTC Corp"); // TODO :
+                        if (undefined == partyName || partyName == '' || partyName == null) {
+                            // TODO: Get bank details of buyer/seller  in case of new order.
+
+                            $("#lblCompany").text("DTC Corp");
+                            $("#lblBank").text("Bank of Scotland");
+                            $("#lblVAT").text("BOS12SB8EGHAS");
+                            $("#lblIBAN").text("BOS12SB");
+                            $("#lblAddress").text("45 Henderson St, Bridge of Allan, Stirling FK9 4HG, UK");
+
+                        }
+                        else {
+                            $("#lblCompany").text("DTC Corp"); // TODO :
                             $("#lblBank").text(orderDetails.buyer.bankName);
                             $("#lblVAT").text(orderDetails.buyer.vat);
                             $("#lblIBAN").text(orderDetails.buyer.iban);
                             $("#lblAddress").text("45 Henderson St, Bridge of Allan, Stirling FK9 4HG, UK");
-                    	}
+                        }
                     }
                     function setOrderDetails() {
                         $("#txtPurchaseOrder").val(orderDetails.purchaseOrderNum);
@@ -557,7 +555,7 @@
                         $("#txtSearchBuyer").val(buyerseller);
                     }
                     function loadOrderDetails(orderID) {
-                    	/*
+                        /*
                     	$.ajax({
                             type: "GET",
                             url: "http://localhost:10005/api/dtc/NodeB/get-purchase-order",
@@ -644,6 +642,8 @@
                         if (null == orderID || undefined == orderID || orderID == '' || orderID == '0') {
                             formAction = action.create;
                             loadOrderDetails(0);
+                            $("#txtPurchaseOrder").val(getPurchaseOrderNumber());
+                            $("#txtPurchaseOrder").attr("disabled", "disabled");
                             setControlByAction();
                             setBankDetails();
                         }
@@ -659,13 +659,15 @@
                     initForm();
                     $("#lnkAddItem").click(function () {
                         $("#tblArticleDetails tr:last").clone().appendTo("#tblArticleDetails");
+                        updateTotalPrice();
                     });
+
                     $('#tblArticleDetailsBody').delegate("#ddlItemID", "change", function () {
                         var selectedRow = $(this).closest('tr');
                         $(selectedRow).find("#txtItemDescription").val($(this).find("option:selected").text());
                     });
                     $("#btnClose").click(function (e) {
-                        redirectUser("OrderList.html?userID=" + currentUser.userID);
+                        redirectUser("OrderList.htm?userID=" + userID);
                         e.preventDefault();
                     });
                     $("#btnSave").click(function (e) {
@@ -707,25 +709,26 @@
                         orderDetails.bankPymntCommitment = $('#chkBankPaymentCommitment').is(":checked");
                         orderDetails.infoCounterparty = $('#chkInformationCounterparty').is(":checked");
                         orderDetails.forfaitingOfInvoice = $('#chkForfaitingOfInvoice').is(":checked");
-                        
-                        var ltr= JSON.stringify(orderDetails);
+
+                        var ltr = JSON.stringify(orderDetails);
                         //ltr= ltr.substring(1,ltr.length - 1) ;
-                        
+
                         $.ajax({
                             type: "PUT",
                             url: "http://localhost:10005/api/dtc/NodeB/create-purchase-order",
                             dataType: "json",
                             contentType: "application/json;charset=UTF-8",
                             data: ltr, //objOrder will be parameter name in service.
-                           
+
                             success: function (data) {
-                            	alert('Success');
+                                alert('Success');
                             },
                             error: function (errMsg) {
-                            	debugger;
-                            		alert(errMsg);
-                            	}
-                            
+                                debugger;
+                                alert(errMsg);
+                                redirectUser("OrderList.htm?userID=" + userID);
+                            }
+
                         });
                         //redirectUser("OrderList.htm?userID=" + currentUser.userID);
                         e.preventDefault();
@@ -741,17 +744,17 @@
                     });
                     $("#btnConfirmOrder").click(function (e) {
                         //TODO: confirm order.
-                        redirectUser("OrderList.html?userID=" + currentUser.userID);
+                        redirectUser("OrderList.htm?userID=" + userID);
                         e.preventDefault();
                     });
                     $("#btnDeclineOrder").click(function (e) {
                         //TODO: confirm order.
-                        redirectUser("OrderList.html?userID=" + currentUser.userID);
+                        redirectUser("OrderList.htm?userID=" + userID);
                         e.preventDefault();
                     });
                     $("#btnSendInvoice").click(function (e) {
                         //TODO: confirm order.
-                        redirectUser("OrderList.html?userID=" + currentUser.userID);
+                        redirectUser("OrderList.htm?userID=" + userID);
                         e.preventDefault();
                     });
                     $("#btnSeller").click(function (e) {
@@ -763,7 +766,7 @@
                         $("#divBuyerExtraServices input[type='checkbox']").attr("disabled", false);
                         e.preventDefault();
                     });
-
+                    $("#divBusyStatus").hide();
                 });
             </SCRIPT>
         </DIV>

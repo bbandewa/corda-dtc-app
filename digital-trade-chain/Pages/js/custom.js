@@ -146,3 +146,34 @@ var Response =
           }
       };
 */
+
+// Ajax Busy Status
+$(document)
+  .ajaxStart(function () {
+      $('#divBusyStatus').show();
+  })
+  .ajaxStop(function () {
+      $('#divBusyStatus').hide();
+  });
+
+function getPurchaseOrderNumber() {
+    var d = new Date();
+    var orderNumber = d.getFullYear().toString();
+    orderNumber += d.getMonth() > 9 ? d.getMonth() : "0" + d.getMonth();
+    orderNumber += d.getDate() > 9 ? d.getDate() : "0" + d.getDate();
+    orderNumber += d.getHours() > 9 ? d.getHours() : "0" + d.getHours();
+    orderNumber += d.getMinutes() > 9 ? d.getMinutes() : "0" + d.getMinutes();
+    orderNumber += d.getSeconds() > 9 ? d.getSeconds() : "0" + d.getSeconds();
+    return orderNumber;
+}
+                    
+function updateTotalPrice() {
+
+    var totalAmount = 0;
+    $('#tblArticleDetails > tbody  > tr').each(function (index, tr) {
+        if (!isNaN($('td:eq(2)', this).find("input:text").val())) {
+            totalAmount += parseInt($('td:eq(2)', this).find("input:text").val());
+        }
+    });
+    $("#txtTotalPrice").val(totalAmount);
+}
