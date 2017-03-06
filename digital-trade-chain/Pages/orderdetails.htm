@@ -558,7 +558,6 @@
                         $("#txtSearchBuyer").val(buyerseller);
                     }
                     function loadOrderDetails(orderID) {
-                        
                     	orderDetails =
                         {
                             buyer: {
@@ -630,8 +629,9 @@
                     	
                     	$.ajax({
                             type: "GET",
-                            url: "http://http://localhost:10005/api/dtc/" + orderID + "/get-po-details",
+                            url: "http://localhost:10005/api/dtc/" + orderID + "/get-po-details",
                             dataType: 'json',
+                            async:false,
                             //contentType: "application/json; charset=utf-8",
                             //data: JSON.stringify(order), //objOrder will be parameter name in service.
                             beforeSend: function () {
@@ -642,9 +642,10 @@
                             },
                             success: function (data) {
                             	debugger;
-                            	orderDetails=data;
+                            	orderDetails=data[0];
                             },
                             error: function (errMsg) {
+                            	alert("Error");
                             	alert(errMsg);
                             	debugger;
                             	
@@ -733,6 +734,7 @@
                             formAction = action.edit;
                             $("#divSearchBuyerCointainer").hide();
                             loadOrderDetails(orderID);
+                            debugger;
                             setControlByAction();
                             debugger;
                             setBankDetails(orderDetails.buyer.name);//pass party id and bind bank details.
@@ -764,7 +766,27 @@
                         orderDetails.deliveryDate = $("#txtDeliveryDate").val();
                         orderDetails.incoterm = $("#txtIncoterm").val();
                         orderDetails.pymntCondDays = $("#txtPaymentCondition").val();
-
+                        debugger;
+                        // Set Party
+                        //orderDetails.buyer= new Object();
+                        //orderDetails.seller= new Object();
+                        if(currentParty == party.buyer) // TODO: assign seller from drop down.
+                        {
+                        	orderDetails.buyer.userName=userID;
+                        	if($("#txtSearchBuyer").val().length>0)
+                        	{
+                        		orderDetails.seller.userName=$("#txtSearchBuyer").val();
+                        	}
+                        }
+                        else
+                        {
+                        	orderDetails.seller.userName=userID;
+                        	if($("#txtSearchBuyer").val().length>0)
+                    		{
+                    			orderDetails.buyer.userName=$("#txtSearchBuyer").val();
+                    		}
+                        }
+                        debugger;
                         //setArticleDetails
                         var tempItem = {
                             article: {
@@ -795,7 +817,7 @@
 
                         var ltr = JSON.stringify(orderDetails);
                         //ltr= ltr.substring(1,ltr.length - 1) ;
-
+debugger;
                         $.ajax({
                             type: "PUT",
                             url: "http://localhost:10005/api/dtc/NodeB/create-purchase-order",

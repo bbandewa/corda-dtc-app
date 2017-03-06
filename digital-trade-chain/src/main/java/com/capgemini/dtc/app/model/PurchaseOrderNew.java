@@ -211,7 +211,7 @@ public class PurchaseOrderNew {
 	/**
 	 * @return the isPymntConfirmation
 	 */
-	public String isPymntConfirmation() {
+	public String getPymntConfirmation() {
 		return pymntConfirmation;
 	}
 	/**
@@ -223,7 +223,7 @@ public class PurchaseOrderNew {
 	/**
 	 * @return the isBankPymntCommitment
 	 */
-	public String isBankPymntCommitment() {
+	public String getBankPymntCommitment() {
 		return bankPymntCommitment;
 	}
 	/**
@@ -235,7 +235,7 @@ public class PurchaseOrderNew {
 	/**
 	 * @return the isInfoCounterparty
 	 */
-	public String isInfoCounterparty() {
+	public String getInfoCounterparty() {
 		return infoCounterparty;
 	}
 	/**
@@ -248,7 +248,7 @@ public class PurchaseOrderNew {
 	/**
 	 * @return the isForfaitingOfInvoice
 	 */
-	public String isForfaitingOfInvoice() {
+	public String getForfaitingOfInvoice() {
 		return forfaitingOfInvoice;
 	}
 	

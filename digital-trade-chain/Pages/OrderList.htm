@@ -120,7 +120,9 @@
                         },
                         {
                             name: 'status', width: 180, sortable: false, hidden: false, align: "center", formatter: function (cellvalue, options, rowObject) {
-                                return "<h4><span class='" + getClassByOrderStatus(rowObject.Status) + "'>" + rowObject.status + "</span></h4>";
+                                //return "<h4><span class='" + getClassByOrderStatus(rowObject.Status) + "'>" + rowObject.status + "</span></h4>";
+                                rowObject.status="Ordered";
+                            	return "<h4><span class='" + getClassByOrderStatus(rowObject.Status) + "'>" + rowObject.status + "</span></h4>";
                             },
                         },
                         {

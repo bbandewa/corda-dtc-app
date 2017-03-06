@@ -140,6 +140,7 @@ public class DTCApi {
      */
     @PUT
     @Path("{party}/create-purchase-order")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createPurchaseOrder(PurchaseOrderNew purchaseOrder, @PathParam("party") String partyName) throws InterruptedException, ExecutionException {
     	System.out.println(purchaseOrder);
         final Party otherParty = services.partyFromName(partyName);
