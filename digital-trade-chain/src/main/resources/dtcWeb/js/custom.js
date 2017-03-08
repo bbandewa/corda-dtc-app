@@ -9,6 +9,22 @@ var orderData = [
        { orderNumber: 7, buyer: "Party5", seller: "Party7", orderDate: "01/01/2017", status: "Complete" },
 
 ];
+
+
+
+var buyerSellerMaster = {
+    "page": "1",
+    "records": "5",
+    "rows": [
+        { "id": "1", Name: "bikas" },
+                { "id": "2", Name: "adarsh" },
+                { "id": "3", Name: "balaji" },
+                { "id": "4", Name: "nidhi" },
+                { "id": "5", Name: "mayank" },
+
+    ]
+};
+
 var getQueryStringValue = function (queryStringKey) {
     var url = window.location;
     if (!url) {
@@ -92,6 +108,46 @@ var partyData = [
        { id: 10, name: "Party10", orderDate: "10/01/2017" },
 ];
 
+var userMaster = [
+    { id: 1, userName: "bikas", password: "bikas" },
+    { id: 2, userName: "adarsh", password: "adarsh" },
+    { id: 3, userName: "balaji", password: "balaji" },
+    { id: 4, userName: "nidhi", password: "nidhi" },
+    { id: 5, userName: "mayank", password: "mayank" }
+];
+
+function validateCridentials(userName, password) {
+    //$.ajax({
+    //    type: "POST",
+    //    url: "http://localhost:63524/ChainGangService.asmx/ValidateCredentials", //TODO: Change the web service URL to make it live
+    //    cache: false,
+    //    contentType: "application/json; charset=utf-8",
+    //    data: '{"userName":"' + $("#userName").val() + '"}',
+    //    dataType: "json",
+    //    success: function (data, status) {
+    //    window.location = "OrderList.htm?userID=dtcuser"; //TODO: pass the userID returned from service result
+    //     },
+    //beforeSend: function () {
+    //    $("#divBusyStatus").show();
+    //},
+    //complete: function () {
+    //    $("#divBusyStatus").hide();
+    //}
+    //    error: function (xmlRequest) {
+    //    alert(xmlRequest.status + ' \n\r ' +
+    //          xmlRequest.statusText + '\n\r' +
+    //          xmlRequest.responseText);
+    //}
+    //});
+    var isValid = false;
+    $.each(userMaster, function (index, item) {
+        if (item.userName == userName && item.password == password) {
+            isValid = true;
+        }
+    });
+    return isValid;
+}
+
 /*
 
 var Response =
@@ -166,7 +222,7 @@ function getPurchaseOrderNumber() {
     orderNumber += d.getSeconds() > 9 ? d.getSeconds() : "0" + d.getSeconds();
     return orderNumber;
 }
-                    
+
 function updateTotalPrice() {
 
     var totalAmount = 0;

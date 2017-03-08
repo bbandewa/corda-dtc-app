@@ -98,7 +98,6 @@
                                 <DIV class="modal-content">
                                     <DIV class="modal-header">
                                         <BUTTON class="close" type="button" data-dismiss="modal"></BUTTON>
-
                                         <H4 class="modal-title">Select Buyer</H4>
                                     </DIV>
                                     <DIV class="modal-body">
@@ -163,7 +162,7 @@
                                             <DIV class="col-sm-4">
                                                 <DIV class="form-group">
                                                     <LABEL for="txtTotalPrice">Total Price:</LABEL>
-                                                    <INPUT class="form-control" disabled="disabled"   id="txtTotalPrice" type="text">
+                                                    <INPUT class="form-control" disabled="disabled" id="txtTotalPrice" type="text">
                                                 </DIV>
                                             </DIV>
                                             <DIV class="col-sm-4">
@@ -203,7 +202,7 @@
                                     <DIV class="panel-heading">
                                         Article Details
                                         <A class="pull-right" id="lnkAddItem" href="#">
-                                            <SPAN class="glyphicon glyphicon-plus-sign"></SPAN>
+                                            <b>Add</b>
                                         </A>
                                     </DIV>
                                     <DIV class="panel-body">
@@ -438,7 +437,6 @@
                 //var userID = "abc123";
                 var userID = getQueryStringValue("userID");
                 $(document).ready(function () {
-                    // Setup grid
                     $("#jqGridBuyer").jqGrid({
                         datatype: "local",
                         // url: "ChainGangService.asmx/GetData",
@@ -477,7 +475,7 @@
                             { edit: false, add: false, del: false, search: true },
                             { reloadAfterSubmit: true }
                     );
-                    
+
                     function setBankDetails(partyName) {
                         if (undefined == partyName || partyName == '' || partyName == null) {
                             // TODO: Get bank details of buyer/seller  in case of new order.
@@ -490,7 +488,7 @@
 
                         }
                         else {
-                        	debugger;
+                            debugger;
                             $("#lblCompany").text(orderDetails.buyer.name); // TODO :
                             $("#lblBank").text(orderDetails.buyer.bankName);
                             $("#lblVAT").text(orderDetails.buyer.vat);
@@ -499,7 +497,7 @@
                         }
                     }
                     function setOrderDetails() {
-                    	debugger;
+                        debugger;
                         $("#txtPurchaseOrder").val(orderDetails.purchaseOrderNum);
                         $("#txtTotalPrice").val(orderDetails.totalPrice);
                         $("#txtCurrency").val(orderDetails.currency);
@@ -558,7 +556,7 @@
                         $("#txtSearchBuyer").val(buyerseller);
                     }
                     function loadOrderDetails(orderID) {
-                    	orderDetails =
+                        orderDetails =
                         {
                             buyer: {
                                 name: "ABC",
@@ -624,35 +622,35 @@
                             totalPrice: "0",
                             currency: "EUR"
                         };
-                    	
-                    	if (!(null == orderID || undefined == orderID || orderID == '' || orderID == '0')) {
-                    	
-                    	$.ajax({
-                            type: "GET",
-                            url: "http://localhost:10005/api/dtc/" + orderID + "/get-po-details",
-                            dataType: 'json',
-                            async:false,
-                            //contentType: "application/json; charset=utf-8",
-                            //data: JSON.stringify(order), //objOrder will be parameter name in service.
-                            beforeSend: function () {
-                                $("#divBusyStatus").show();
-                            },
-                            complete: function () {
-                                $("#divBusyStatus").hide();
-                            },
-                            success: function (data) {
-                            	debugger;
-                            	orderDetails=data[0];
-                            },
-                            error: function (errMsg) {
-                            	alert("Error");
-                            	alert(errMsg);
-                            	debugger;
-                            	
-                            	}
-                        });
-                        
-                    	}
+
+                        if (!(null == orderID || undefined == orderID || orderID == '' || orderID == '0')) {
+
+                            $.ajax({
+                                type: "GET",
+                                url: "http://localhost:10005/api/dtc/" + orderID + "/get-po-details",
+                                dataType: 'json',
+                                async: false,
+                                //contentType: "application/json; charset=utf-8",
+                                //data: JSON.stringify(order), //objOrder will be parameter name in service.
+                                beforeSend: function () {
+                                    $("#divBusyStatus").show();
+                                },
+                                complete: function () {
+                                    $("#divBusyStatus").hide();
+                                },
+                                success: function (data) {
+                                    debugger;
+                                    orderDetails = data[0];
+                                },
+                                error: function (errMsg) {
+                                    alert("Error");
+                                    alert(errMsg);
+                                    debugger;
+
+                                }
+                            });
+
+                        }
                         /* orderDetails =
                                {
                                    buyer: {
@@ -738,7 +736,7 @@
                             setControlByAction();
                             debugger;
                             setBankDetails(orderDetails.buyer.name);//pass party id and bind bank details.
-                            setOrderDetails(); 
+                            setOrderDetails();
                         }
                     }
                     initForm();
@@ -766,37 +764,33 @@
                         orderDetails.deliveryDate = $("#txtDeliveryDate").val();
                         orderDetails.incoterm = $("#txtIncoterm").val();
                         orderDetails.pymntCondDays = $("#txtPaymentCondition").val();
-                        debugger;
                         // Set Party
                         //orderDetails.buyer= new Object();
                         //orderDetails.seller= new Object();
-                        if(currentParty == party.buyer) // TODO: assign seller from drop down.
+                        if (currentParty == party.buyer) // TODO: assign seller from drop down.
                         {
-                        	orderDetails.buyer.userName=userID;
-                        	if($("#txtSearchBuyer").val().length>0)
-                        	{
-                        		orderDetails.seller.userName=$("#txtSearchBuyer").val();
-                        	}
+                            orderDetails.buyer.userName = userID;
+                            if ($("#txtSearchBuyer").val().length > 0) {
+                                orderDetails.seller.userName = $("#txtSearchBuyer").val();
+                            }
                         }
-                        else
-                        {
-                        	orderDetails.seller.userName=userID;
-                        	if($("#txtSearchBuyer").val().length>0)
-                    		{
-                    			orderDetails.buyer.userName=$("#txtSearchBuyer").val();
-                    		}
+                        else {
+                            orderDetails.seller.userName = userID;
+                            if ($("#txtSearchBuyer").val().length > 0) {
+                                orderDetails.buyer.userName = $("#txtSearchBuyer").val();
+                            }
                         }
-                        debugger;
                         //setArticleDetails
-                        var tempItem = {
-                            article: {
-                                articleId: "widget",
-                                description: "widget",
-                                price: "3"
-                            },
-                            quantity: "0"
-                        };
+                        var tempItem = null;
                         $('#tblArticleDetails > tbody  > tr').each(function (index, tr) {
+                            tempItem = {
+                                article: {
+                                    articleId: "widget",
+                                    description: "widget",
+                                    price: "3"
+                                },
+                                quantity: "0"
+                            };
                             tempItem.article.articleId = $(tr).find("select option:selected").text();
                             tempItem.article.description = $('td:eq(1)', this).find("input:text").val();
                             tempItem.quantity = $('td:eq(2)', this).find("input:text").val();
@@ -817,7 +811,6 @@
 
                         var ltr = JSON.stringify(orderDetails);
                         //ltr= ltr.substring(1,ltr.length - 1) ;
-debugger;
                         $.ajax({
                             type: "PUT",
                             url: "http://localhost:10005/api/dtc/NodeB/create-purchase-order",
