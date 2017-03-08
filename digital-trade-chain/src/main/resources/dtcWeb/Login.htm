@@ -1,0 +1,107 @@
+﻿<!DOCTYPE HTML>
+<HTML xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+    <META content="IE=11.0000"
+          http-equiv="X-UA-Compatible">
+    <TITLE> </TITLE>
+    <META charset="utf-8">
+    <META name="viewport" content="width=device-width, initial-scale=1">     <!-- jQuery -->
+
+    <SCRIPT src="js/jquery-1.10.1.min.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery-migrate-1.2.1.min.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery-ui.js"></SCRIPT>
+
+    <SCRIPT src="js/grid.locale-en.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery.jqGrid.min.js"></SCRIPT>
+
+    <!-- jquery-ui CSS -->
+    <LINK href="css/jquery-ui.css"
+          rel="stylesheet">     <!-- Bootstrap core CSS -->
+    <LINK href="css/bootstrap.min.css"
+          rel="stylesheet">
+    <LINK href="css/ui.jqgrid.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <STYLE type="text/css"></STYLE>
+    <META name="GENERATOR" content="MSHTML 11.00.10570.1001">
+</HEAD>
+<BODY>
+    <FORM id="form1" method="post">
+        <div class="busyStatus" id="divBusyStatus" style="text-align: center;">
+            <div id="yourdiv" style="display: inline-block;">
+                <div class="loader">
+                </div>
+            </div>
+            <h2>Please wait...</h2>
+        </div>
+        <DIV class="container">
+            <DIV class="panel-group col-sm-6"
+                 style="margin-top: 100px; margin-left: 200px;">
+                <DIV class="panel panel-info">
+                    <DIV class="panel-heading">
+                        <H3>User Login</H3>
+                    </DIV>
+                    <DIV class="panel-body" style="min-height: 350px;">
+                        <DIV class="form-group ">
+                            <LABEL for="email">Username:</LABEL>
+                            <INPUT class="form-control" id="userName">
+                        </DIV>
+                        <DIV class="form-group ">
+                            <LABEL for="pwd">Password:</LABEL>
+                            <INPUT class="form-control" id="pwd" type="password">
+                        </DIV>
+                        <DIV class="checkbox">
+                            <LABEL>
+                                <INPUT type="checkbox">
+                                Remember me
+                            </LABEL>
+                        </DIV><BUTTON class="btn btn-info"
+                                      id="btnLogin">
+                            Login
+                        </BUTTON>                         <BUTTON class="btn btn-link"
+                                                                  type="button">
+                            Forgot Password?
+                        </BUTTON>
+                    </DIV>
+                </DIV>
+            </DIV>
+        </DIV>
+    </FORM><!-- Visual Studio Browser Link -->
+    <!-- End Browser Link -->
+    <SCRIPT>
+        // Get the modal
+        $(document).ready(function () {
+            $('#btnLogin').click(function (e) {
+                //$.ajax({
+                //    type: "POST",
+                //    url: "http://localhost:63524/ChainGangService.asmx/ValidateCredentials", //TODO: Change the web service URL to make it live
+                //    cache: false,
+                //    contentType: "application/json; charset=utf-8",
+                //    data: '{"userName":"' + $("#userName").val() + '"}',
+                //    dataType: "json",
+                //    success: function (data, status) {
+                //    window.location = "OrderList.htm?userID=dtcuser"; //TODO: pass the userID returned from service result
+                //     },
+                //beforeSend: function () {
+                //    $("#divBusyStatus").show();
+                //},
+                //complete: function () {
+                //    $("#divBusyStatus").hide();
+                //}
+                //    error: function (xmlRequest) {
+                //    alert(xmlRequest.status + ' \n\r ' +
+                //          xmlRequest.statusText + '\n\r' +
+                //          xmlRequest.responseText);
+                //}
+                //});
+                window.location = "OrderList.htm?userID=" + $("#userName").val();;// TODO: Implement rest service to validate user and redirect user in success call back function.
+                e.preventDefault();
+            });
+            $("#divBusyStatus").hide();
+        });
+    </SCRIPT>
+    <SCRIPT src="js/bootstrap.min.js"></SCRIPT>
+</BODY>
+</HTML>
