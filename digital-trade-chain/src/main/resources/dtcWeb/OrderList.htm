@@ -1,0 +1,190 @@
+﻿<!DOCTYPE HTML>
+<HTML xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+    <META content="IE=11.0000"
+          http-equiv="X-UA-Compatible">
+    <TITLE> </TITLE>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8"><!-- jQuery -->
+
+    <SCRIPT src="js/jquery-1.10.1.min.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery-migrate-1.2.1.min.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery-ui.js"></SCRIPT>
+
+    <SCRIPT src="js/grid.locale-en.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery.jqGrid.min.js"></SCRIPT>
+
+    <SCRIPT src="js/custom.js"></SCRIPT>
+    <!-- jquery-ui CSS -->
+    <LINK href="css/jquery-ui.css"
+          rel="stylesheet">     <!-- Bootstrap core CSS -->
+    <LINK href="css/bootstrap.min.css"
+          rel="stylesheet">
+    <LINK href="css/ui.jqgrid.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <STYLE type="text/css">
+        body {
+            padding-top: 30px;
+            padding-bottom: 40px;
+        }
+
+        #content {
+            width: 100%;
+            height: 100%;
+        }
+
+        .navbar {
+            margin-bottom: 30px;
+        }
+
+        .jumbotron {
+            font-size: inheret;
+            font-weight: 200;
+            line-height: 1;
+            color: inherit;
+        }
+    </STYLE>
+    <LINK href="css/jqGrid.bootstrap.css" rel="stylesheet">
+    <STYLE type="text/css">
+        th.ui-th-column {
+            border-right-color: transparent !important;
+        }
+
+        .ui-jqgrid tr.ui-row-ltr td {
+            border-right-color: transparent !important;
+        }
+    </STYLE>
+    <LINK href="css/Custom.css" rel="stylesheet">
+    <META name="GENERATOR" content="MSHTML 11.00.10570.1001">
+</HEAD>
+<BODY>
+    <FORM id="form1" method="post">
+        <div class="busyStatus" id="divBusyStatus" style="text-align: center">
+            <div id="yourdiv" style="display: inline-block;">
+                <div class="loader">
+                </div>
+            </div>
+            <h2>Please wait...</h2>
+        </div>
+        <DIV class="panel-heading" style="width: 100%; height: 50px; color: white; margin-bottom: 5px;"></DIV>
+        <DIV class="container">
+            <DIV id="content">
+                <DIV class="row">
+                    <DIV class="cell-sm-8 pull-right">
+                        <BUTTON class="btn btn-info" id="btnCreateNewContract">
+                            Create
+                            New Contract
+                        </BUTTON>                 <BR><BR>
+                    </DIV>
+                </DIV>
+                <DIV class="row">
+                    <TABLE id="jqGrid01"></TABLE>
+                    <DIV id="jqGridPager01"></DIV>
+                </DIV>
+            </DIV>
+            <SCRIPT type="text/javascript">
+            
+            //var userID = "abc123";
+            var userID = getQueryStringValue("userID");
+                $(document).ready(function () {
+                    // Setup grid
+                    $("#jqGrid01").jqGrid({
+                        //datatype: "local",
+                        //url: "http://localhost:10005/api/dtc/purchase-orders",
+                        url: "http://localhost:10005/api/dtc/" + userID + "/purchase-orders",
+                        mtype: "GET",
+                        ajaxGridOptions: { contentType: 'application/json; charset=utf-8' },
+                        serializeGridData: function (postData) {
+                            return JSON.stringify(postData);
+                        },
+                        //jsonReader: { repeatitems: false, root: "d.orders", page: "d.page", total: "d.total", records: "d.records" },
+                        datatype: "json",
+                        height: "auto",
+                        rowNum: 10,
+                        rowList: [10, 20, 30],
+                        colNames: ['Order Number', 'Buyer', 'Seller', 'Order Date', 'Status', "Detail"],
+                        colModel: [
+                        { name: 'purchaseOrderNum', key: true, width: 100, align: "center", hidden: false },
+                        { name: 'buyer.name', width: 150, sortable: false, align: "center", hidden: false },
+                        { name: 'seller.name', width: 150, sortable: false, align: "center", hidden: false },
+                        {
+                            name: 'poDate', width: 200, sortable: false, align: "center", hidden: false,
+                            formatter: function (cellvalue, options, rowObject) {
+                                //var parsedDate = new Date(parseInt(cellvalue.toString().substr(6)));
+                                var parsedDate = new Date(parseInt(cellvalue.toString()));
+                                var jsDate = new Date(parsedDate); //Date object
+                                return jsDate;
+                            },
+                        },
+                        {
+                            name: 'status', width: 180, sortable: false, hidden: false, align: "center", formatter: function (cellvalue, options, rowObject) {
+                                //return "<h4><span class='" + getClassByOrderStatus(rowObject.Status) + "'>" + rowObject.status + "</span></h4>";
+                                rowObject.status="Ordered";
+                            	return "<h4><span class='" + getClassByOrderStatus(rowObject.Status) + "'>" + rowObject.status + "</span></h4>";
+                            },
+                        },
+                        {
+                            name: 'detail', width: 180, sortable: false, hidden: false, align: "center", formatter: function (cellvalue, options, rowObject) {
+                                return "<a onclick='redirectUser(\"orderdetails.htm?orderID=" + rowObject.purchaseOrderNum + "&userID=" + userID + "\")' class='btn btn-info'>Order Details</a>"
+                            },
+                        },
+                        ],
+                        pager: "#jqGridPager01",
+                        viewrecords: true,
+                        add: true,
+                        edit: true,
+                        addtext: 'Add',
+                        edittext: 'Edit',
+                        caption: "Order List",
+                        hidegrid: false,
+                        gridComplete: function () {
+                            var jqGrid01 = $("#jqGrid01");
+                            var ids = jqGrid01.getDataIDs();
+                            for (var i = 0; i < ids.length; i++) {
+                                jqGrid01.setRowData(ids[i], false, { height: 40 });
+                            }
+                        },
+                    });
+
+                    // Setup buttons
+                    $("#jqGrid01").jqGrid('navGrid', '#jqGridPager01',
+                            { edit: true, add: true, del: false, search: true },
+                            { height: 200, reloadAfterSubmit: true }
+                    );
+                    // Setup filters
+                    //$("#jqGrid01").jqGrid('filterToolbar', { defaultSearch: true, stringResult: true });
+                    // Set grid width to #content
+                    $("#jqGrid01").jqGrid('setGridWidth', $("#content").width(), true);
+                    /*
+                    bindData();
+                    function bindData() {
+                        for (var i = 0; i <= orderData.length; i++)
+                            jQuery("#jqGrid01").jqGrid('addRowData', i + 1, orderData[i]);
+                        $("#jqGrid01").trigger("reloadGrid");
+                    }
+                    */
+                    $("#btnCreateNewContract").click(function (e) {
+                        //var url = "orderdetails.htm?orderID=0&userID=" + currentUser.userID;
+                        var url = "orderdetails.htm?orderID=0&userID=" + userID;
+                        redirectUser(url);
+                        e.preventDefault();
+                    });
+                    $("#divBusyStatus").hide();
+                });
+
+                function StatusClicked() {
+                    alert('test');
+                }
+            </SCRIPT>
+        </DIV>
+    </FORM>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <SCRIPT src="js/bootstrap.min.js"></SCRIPT>
+    <!-- Visual Studio Browser Link -->
+    <!-- End Browser Link -->
+</BODY>
+</HTML>

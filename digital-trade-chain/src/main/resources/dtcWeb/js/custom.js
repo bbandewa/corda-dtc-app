@@ -108,13 +108,38 @@ var partyData = [
        { id: 10, name: "Party10", orderDate: "10/01/2017" },
 ];
 
+
 var userMaster = [
-    { id: 1, userName: "bikas", password: "bikas" },
-    { id: 2, userName: "adarsh", password: "adarsh" },
-    { id: 3, userName: "balaji", password: "balaji" },
-    { id: 4, userName: "nidhi", password: "nidhi" },
-    { id: 5, userName: "mayank", password: "mayank" }
+    { id: 1, userName: "bikas", password: "bikas", name: "Bikas", bank: { company: "Bank of Scotland", bankName: "Bank of Scotland", vat: "BOS12SB8EGHAS", iban: "BOS12SB", address: "45 Henderson St, Bridge of Allan, Stirling FK9 4HG, UK" } },
+    { id: 2, userName: "adarsh", password: "adarsh", name: "Adarsh", bank: { company: "China Construction Bank", bankName: "China Construction Bank", vat: "CCB84588A8SS8", iban: "CCB845", address: "No.25, Finance Street, Beijing-100033, China" } },
+    { id: 3, userName: "balaji", password: "balaji", name: "Balaji", bank: { company: "DTC Corp Balaji", bankName: "Wells Fargo & Co", vat: "WFC5DHBSD834SS", iban: "WFC5", address: "Wells Fargo 420 Montgomery Street San Francisco, CA 94104" } },
+    { id: 4, userName: "nidhi", password: "nidhi", name: "Nidhi", bank: { company: "Wells Fargo & Co", bankName: "HSBC Holdings", vat: "HSBC5544SDZA88", iban: "HSBC", address: "	Canary Wharf London, E14 United Kingdom" } },
+    { id: 5, userName: "mayank", password: "mayank", name: "Mayank", bank: { company: "JP Morgan Chase", bankName: "JP Morgan Chase", vat: "JPMC93sKLPFF", iban: "JPMC", address: "270 Park Avenue New York, NY 10017 U.S." } }
 ];
+
+
+var data = {
+    "page": "1",
+    "records": "5",
+    "rows": [
+         { id: 1, userName: "bikas", password: "bikas", name: "Bikas", bank: { company: "Bank of Scotland", bankName: "Bank of Scotland", vat: "BOS12SB8EGHAS", iban: "BOS12SB", address: "45 Henderson St, Bridge of Allan, Stirling FK9 4HG, UK" } },
+    { id: 2, userName: "adarsh", password: "adarsh", name: "Adarsh", bank: { company: "China Construction Bank", bankName: "China Construction Bank", vat: "CCB84588A8SS8", iban: "CCB845", address: "No.25, Finance Street, Beijing-100033, China" } },
+    { id: 3, userName: "balaji", password: "balaji", name: "Balaji", bank: { company: "DTC Corp Balaji", bankName: "Wells Fargo & Co", vat: "WFC5DHBSD834SS", iban: "WFC5", address: "Wells Fargo 420 Montgomery Street San Francisco, CA 94104" } },
+    { id: 4, userName: "nidhi", password: "nidhi", name: "Nidhi", bank: { company: "Wells Fargo & Co", bankName: "HSBC Holdings", vat: "HSBC5544SDZA88", iban: "HSBC", address: "	Canary Wharf London, E14 United Kingdom" } },
+    { id: 5, userName: "mayank", password: "mayank", name: "Mayank", bank: { company: "JP Morgan Chase", bankName: "JP Morgan Chase", vat: "JPMC93sKLPFF", iban: "JPMC", address: "270 Park Avenue New York, NY 10017 U.S." } }
+
+    ]
+};
+function getPartyBankDetails(id) {
+    var bankDetails = null;
+    $.each(data.rows, function (index, item) {
+        if (item.id == id) {
+            bankDetails = item.bank;
+        }
+    });
+    return bankDetails;
+}
+
 
 function validateCridentials(userName, password) {
     //$.ajax({
@@ -227,7 +252,7 @@ function updateTotalPrice() {
 
     var totalAmount = 0;
     $('#tblArticleDetails > tbody  > tr').each(function (index, tr) {
-        if (!isNaN($('td:eq(2)', this).find("input:text").val())) {
+        if (($('td:eq(2)', this).find("input:text").val().length > 0) && (!isNaN($('td:eq(2)', this).find("input:text").val()))) {
             totalAmount += parseInt($('td:eq(2)', this).find("input:text").val());
         }
     });
