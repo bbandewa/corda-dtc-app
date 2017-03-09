@@ -247,10 +247,10 @@
                                                             <SELECT class="ddlDummySelector" id="ddlItemID"
                                                                     style="width: 80px;">
                                                                 <OPTION>-- Select --</OPTION>
-                                                                <OPTION>Item 1</OPTION>
-                                                                <OPTION>Item 12</OPTION>
-                                                                <OPTION>Item 13</OPTION>
-                                                                <OPTION>Item 14</OPTION>
+                                                                <OPTION>Kingfisher</OPTION>
+                                                                <OPTION>Magnum</OPTION>
+                                                                <OPTION>Bacardi</OPTION>
+                                                                <OPTION>Tuborg</OPTION>
                                                             </SELECT>
                                                         </DIV>
                                                     </TD>
@@ -543,11 +543,11 @@
                         if (undefined == partyName || partyName == '' || partyName == null) {
                             // TODO: Get bank details of buyer/seller  in case of new order.
 
-                            $("#lblCompany").text("DTC Corp");
-                            $("#lblBank").text("Bank of Scotland");
-                            $("#lblVAT").text("BOS12SB8EGHAS");
-                            $("#lblIBAN").text("BOS12SB");
-                            $("#lblAddress").text("45 Henderson St, Bridge of Allan, Stirling FK9 4HG, UK");
+                            //$("#lblCompany").text("DTC Corp");
+                        	//$("#lblBank").text("Bank of Scotland");
+                            //$("#lblVAT").text("BOS12SB8EGHAS");
+                            //$("#lblIBAN").text("BOS12SB");
+                            ////$("#lblAddress").text("45 Henderson St, Bridge of Allan, Stirling FK9 4HG, UK");
 
                         }
                         else {
@@ -587,7 +587,7 @@
                         $("#txtPostalCode").val(orderDetails.deliveryAddress.postalCode);
                         $("#txtCity").val(orderDetails.deliveryAddress.city);
                         $("#txtCountry").val(orderDetails.deliveryAddress.country);
-
+debugger;
                         // setOrderExtraServices
                         $("#chkPaymentConfirmation").prop("checked", orderDetails.pymntConfirmation);
                         $("#chkBankPaymentCommitment").prop("checked", orderDetails.bankPymntCommitment);
@@ -916,7 +916,7 @@
                             },
                             error: function (errMsg) {
                                 debugger;
-                                alert(errMsg);
+                                //alert(errMsg);
                                 //redirectUser("OrderList.htm?userID=" + userID);
                                 window.location = "OrderList.htm?userID=" + userID;
                             }
