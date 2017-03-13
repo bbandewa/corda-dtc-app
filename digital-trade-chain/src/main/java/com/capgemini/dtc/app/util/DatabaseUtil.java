@@ -12,7 +12,7 @@ public class DatabaseUtil {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		
-		Connection conn = DriverManager.getConnection("jdbc:h2:tcp://localhost:51270/node", "sa", "");
+Connection conn = DriverManager.getConnection("jdbc:h2:tcp://localhost:51270/node", "sa", "");
 		
 		System.out.println("Connection successfully created...."+conn);
 		
@@ -39,7 +39,8 @@ public class DatabaseUtil {
 	    }
 	    
 	    while (rs1.next())
-	        System.out.println("KEY_HASH= " + rs.getString(1) + " SEQ_NO= " + rs.getString(2));
+	        System.out.println("KEY_HASH= " + rs1.getString(1) + ", SEQ_NO= " + rs1.getString(2) + ", TX_ID= " + rs1.getString(3) + ", TRANSACTION= " + rs1.getString(4));
+
 
 	}
 
