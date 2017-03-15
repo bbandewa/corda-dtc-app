@@ -198,7 +198,7 @@ public class DatabaseUtil {
 		
 		if(isDBUserTableExists(conn)){
 			int result = createDBUserTable(conn);
-			System.out.println("result = "+result);
+			System.out.println("User DB table created = "+result);
 		}else{
 			User user1 = new User();
 			user1.setDtcId("DTC"+new Date().getTime());
@@ -211,12 +211,12 @@ public class DatabaseUtil {
 			user1.setContactNumber("7083042244");
 			
 			int result = createUser(conn, user1);
-			System.out.println("Insert result = "+result);
+			System.out.println("Insert user result = "+result);
 		}
 		
 		boolean r = validateLogin(conn, "biksen", getSHA256Hash("password"));
 		
-		System.out.println("validate login = "+r);
+		System.out.println("validate login status = "+r);
 		
 		displayUser(conn, "biksen");
 
