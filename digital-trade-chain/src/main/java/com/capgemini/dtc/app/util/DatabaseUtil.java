@@ -28,15 +28,16 @@ public class DatabaseUtil {
 	}
 
 	public static boolean isDBUserTableExists(Connection conn) {
-		boolean status = false;
+		boolean status = true;
 		ResultSet rs = null;
 		try {
 			DatabaseMetaData dbmd = conn.getMetaData();
 			String[] types = { "TABLE" };
 			rs = dbmd.getTables(null, null, "%", types);
-			while (rs.next()) {
-				if (rs.getString("TABLE_NAME").equalsIgnoreCase("USER"))
-					return false;
+			while (rs.next()) {				
+				if (rs.getString("TABLE_NAME").equalsIgnoreCase("USER")){
+					status = false;
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,7 +113,7 @@ public class DatabaseUtil {
 					+ "(DTC_ID, FIRST_NAME, LAST_NAME, USER_ID, PASSWORD, CONTACT_NUMBER, EMAIL, DOB) VALUES"
 					+ "(?,?,?,?,?,?,?,?)";
 			ps = conn.prepareStatement(insertTableSQL);
-			ps.setString(1, user.getDtcId());
+			ps.setString(1, "DTC" + new Date().getTime());
 			ps.setString(2, user.getFirstName());
 			ps.setString(3, user.getLastName());
 			ps.setString(4, user.getUserId());
@@ -145,6 +146,30 @@ public class DatabaseUtil {
 			ResultSet rs1 = stmt
 					.executeQuery("SELECT * FROM USER WHERE USER_ID='" + userId
 							+ "'");
+			while (rs1.next())
+				System.out.println("DTC_ID= " + rs1.getString("DTC_ID")
+						+ ", USER_ID= " + rs1.getString("USER_ID")
+						+ ", PASSWORD= " + rs1.getString("PASSWORD")
+						+ ", DOB= " + rs1.getString("DOB"));
+
+			rs1.close();
+			stmt.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	public static void displayAllUsers(Connection conn) {
+
+		try {
+			// Create a Statement class to execute the SQL statement
+			Statement stmt = conn.createStatement();
+
+			// Execute the SQL statement and get the results in a Resultset
+			ResultSet rs1 = stmt
+					.executeQuery("SELECT * FROM USER");
 			while (rs1.next())
 				System.out.println("DTC_ID= " + rs1.getString("DTC_ID")
 						+ ", USER_ID= " + rs1.getString("USER_ID")
@@ -194,31 +219,32 @@ public class DatabaseUtil {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		
-		Connection conn = getDBConnection("localhost", "59552");
+		Connection conn = getDBConnection("localhost", "55618");
 		
-		if(isDBUserTableExists(conn)){
+		if (isDBUserTableExists(conn)) {
 			int result = createDBUserTable(conn);
-			System.out.println("User DB table created = "+result);
-		}else{
-			User user1 = new User();
-			user1.setDtcId("DTC"+new Date().getTime());
-			user1.setUserId("biksen");
-			user1.setPassword("password");
-			user1.setFirstName("Bikash");
-			user1.setLastName("Sen");
-			user1.setDateOfBirth(new Date());
-			user1.setEmail("sen.bikash@gmail.com");
-			user1.setContactNumber("7083042244");
-			
-			int result = createUser(conn, user1);
-			System.out.println("Insert user result = "+result);
+			System.out.println("User DB table created = " + result);
 		}
+		
+		User user1 = new User();
+		//user1.setDtcId("DTC" + new Date().getTime());
+		user1.setUserId("biksen");
+		user1.setPassword("password");
+		user1.setFirstName("Bikash");
+		user1.setLastName("Sen");
+		user1.setDateOfBirth(new Date());
+		user1.setEmail("sen.bikash@gmail.com");
+		user1.setContactNumber("7083042244");
+
+		int result = createUser(conn, user1);
+		System.out.println("Insert user result = " + result);
 		
 		boolean r = validateLogin(conn, "biksen", getSHA256Hash("password"));
 		
-		System.out.println("validate login status = "+r);
+		System.out.println("validate user login status = "+r);
 		
 		displayUser(conn, "biksen");
+		displayAllUsers(conn);
 
 		/*Connection conn1 = DriverManager.getConnection(
 				"jdbc:h2:tcp://localhost:59552/node", "sa", "");
