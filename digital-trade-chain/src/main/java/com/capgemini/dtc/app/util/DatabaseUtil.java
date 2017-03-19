@@ -14,11 +14,15 @@ import com.capgemini.dtc.app.model.User;
 import com.google.common.io.BaseEncoding;
 
 public class DatabaseUtil {
+	
+	private static final String DB_IP = "";
+	private static final String DB_PORT = "";
+	
 
-	public static Connection getDBConnection(String ip, String port)
+	private static Connection getDBConnection()
 			throws SQLException {
 
-		String connURL = "jdbc:h2:tcp://" + ip + ":" + port + "/node";
+		String connURL = "jdbc:h2:tcp://" + DB_IP + ":" + DB_PORT + "/node";
 		String userName = "sa";
 		String password = "";
 		Connection conn = DriverManager.getConnection(connURL, userName,
@@ -51,11 +55,12 @@ public class DatabaseUtil {
 
 	}
 
-	public static int createDBUserTable(Connection conn) {
-
+	public static int createDBUserTable() {
+		Connection conn = null;
 		int result = 0;
 		Statement statement = null;
 		try {
+			conn = getDBConnection();
 			String createTableSQL = "CREATE TABLE USER(DTC_ID varchar(255) primary key," + 
 									"FIRST_NAME varchar(255), LAST_NAME varchar(255), USER_ID varchar(255)," + 
 									"PASSWORD varchar(255), CONTACT_NUMBER varchar(255), EMAIL varchar(255), DOB varchar(255))";
@@ -66,7 +71,12 @@ public class DatabaseUtil {
 			e.printStackTrace();
 		} finally {
 			try {
-				statement.close();
+				if(conn != null){
+					conn.close();
+				}
+				if(statement != null){
+					statement.close();
+				}
 			} catch (Exception e) {}
 		}
 
@@ -74,13 +84,14 @@ public class DatabaseUtil {
 
 	}
 	
-	public static boolean validateLogin(Connection conn, String userName, String password) {
+	public static boolean validateLogin(String userName, String password) {
 
+		Connection conn = null;
 		boolean status = false;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-
+			conn = getDBConnection();
 			ps = conn.prepareStatement("SELECT * FROM USER WHERE USER_ID=? AND PASSWORD=?");
 			ps.setString(1, userName);
 			ps.setString(2, password);
@@ -92,6 +103,9 @@ public class DatabaseUtil {
 			e.printStackTrace();
 		} finally {
 			try {
+				if(conn != null){
+					conn.close();
+				}
 				if (ps != null) {
 					ps.close();
 				}
@@ -105,10 +119,12 @@ public class DatabaseUtil {
 
 	}
 	
-	public static int createUser(Connection conn, User user){		
+	public static int createUser(User user){	
+		Connection conn = null;
 		PreparedStatement ps = null;		
 		int result = 0;
 		try {
+			conn = getDBConnection();
 			String insertTableSQL = "INSERT INTO USER"
 					+ "(DTC_ID, FIRST_NAME, LAST_NAME, USER_ID, PASSWORD, CONTACT_NUMBER, EMAIL, DOB) VALUES"
 					+ "(?,?,?,?,?,?,?,?)";
@@ -128,17 +144,23 @@ public class DatabaseUtil {
 			e.printStackTrace();
 		} finally {
 			try {
-				if(ps != null)
-					ps.close();				
+				if(conn != null){
+					conn.close();
+				}
+				if(ps != null){
+					ps.close();	
+				}
 			} catch (Exception e) {}
 		}
 		return result;
 		
 	}
 	
-	public static void displayUser(Connection conn, String userId) {
+	public static void displayUser(String userId) {
 
+		Connection conn = null;
 		try {
+			conn = getDBConnection();
 			// Create a Statement class to execute the SQL statement
 			Statement stmt = conn.createStatement();
 
@@ -152,6 +174,7 @@ public class DatabaseUtil {
 						+ ", PASSWORD= " + rs1.getString("PASSWORD")
 						+ ", DOB= " + rs1.getString("DOB"));
 
+			conn.close();
 			rs1.close();
 			stmt.close();
 
@@ -161,9 +184,45 @@ public class DatabaseUtil {
 
 	}
 	
-	public static void displayAllUsers(Connection conn) {
+	public static User retriveUser(String userId) {
 
+		Connection conn = null;
+		User user = null;
 		try {
+			conn = getDBConnection();
+			// Create a Statement class to execute the SQL statement
+			Statement stmt = conn.createStatement();
+
+			// Execute the SQL statement and get the results in a Resultset
+			ResultSet rs1 = stmt
+					.executeQuery("SELECT * FROM USER WHERE USER_ID='" + userId
+							+ "'");
+			user = new User();
+			while (rs1.next()){
+				user.setDtcId(rs1.getString("DTC_ID"));
+				user.setUserId(rs1.getString("USER_ID"));
+				user.setFirstName(rs1.getString("FIRST_NAME"));
+				user.setLastName(rs1.getString("LAST_NAME"));
+				user.setEmail(rs1.getString("EMAIL"));
+				user.setContactNumber(rs1.getString("CONTACT_NUMBER"));
+			}				
+
+			conn.close();
+			rs1.close();
+			stmt.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return user;
+
+	}
+	
+	public static void displayAllUsers() {
+
+		Connection conn = null;
+		try {
+			conn = getDBConnection();
 			// Create a Statement class to execute the SQL statement
 			Statement stmt = conn.createStatement();
 
@@ -176,6 +235,7 @@ public class DatabaseUtil {
 						+ ", PASSWORD= " + rs1.getString("PASSWORD")
 						+ ", DOB= " + rs1.getString("DOB"));
 
+			conn.close();
 			rs1.close();
 			stmt.close();
 
@@ -215,14 +275,14 @@ public class DatabaseUtil {
 	}
 
 	
-
+    //This is for testing purpose only
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		
-		Connection conn = getDBConnection("localhost", "55618");
+		Connection conn = getDBConnection();
 		
 		if (isDBUserTableExists(conn)) {
-			int result = createDBUserTable(conn);
+			int result = createDBUserTable();
 			System.out.println("User DB table created = " + result);
 		}
 		
@@ -236,15 +296,15 @@ public class DatabaseUtil {
 		user1.setEmail("sen.bikash@gmail.com");
 		user1.setContactNumber("7083042244");
 
-		int result = createUser(conn, user1);
+		int result = createUser(user1);
 		System.out.println("Insert user result = " + result);
 		
-		boolean r = validateLogin(conn, "biksen", getSHA256Hash("password"));
+		boolean r = validateLogin("biksen", getSHA256Hash("password"));
 		
 		System.out.println("validate user login status = "+r);
 		
-		displayUser(conn, "biksen");
-		displayAllUsers(conn);
+		displayUser("biksen");
+		displayAllUsers();
 
 		/*Connection conn1 = DriverManager.getConnection(
 				"jdbc:h2:tcp://localhost:59552/node", "sa", "");

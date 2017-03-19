@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class User {
 	
-	/**dtcId is unique id on the DTC platform */
+	/**dtcId is unique id on the DTC platform. Auto generate */
 	private String dtcId;
 	private String firstName;
 	private String lastName;
@@ -13,13 +13,27 @@ public class User {
 	private String contactNumber;
 	private String email;
 	private Date dateOfBirth;
+	private String gender;
+	private Address address;
 	
-	public User(){}
-	
+	public User(){
+		super();
+		this.dtcId = "";
+		this.firstName = "";
+		this.lastName = "";
+		this.userId = "";
+		this.password = "";
+		this.contactNumber = "";
+		this.email = "";
+		this.dateOfBirth = null;
+		this.gender = "";
+		this.address = null;
+	}
+
 	public User(String dtcId, String firstName, String lastName, String userId,
 			String password, String contactNumber, String email,
-			Date dateOfBirth) {
-		super();
+			Date dateOfBirth, String gender, Address address) {
+		this();
 		this.dtcId = dtcId;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -28,6 +42,8 @@ public class User {
 		this.contactNumber = contactNumber;
 		this.email = email;
 		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+		this.address = address;
 	}
 
 	public String getDtcId() {
@@ -94,14 +110,30 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
 	@Override
 	public String toString() {
 		return "User [dtcId=" + dtcId + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", userId=" + userId
 				+ ", password=" + password + ", contactNumber=" + contactNumber
-				+ ", email=" + email + ", dateOfBirth=" + dateOfBirth + "]";
-	}
-	
+				+ ", email=" + email + ", dateOfBirth=" + dateOfBirth
+				+ ", gender=" + gender + ", address=" + address + "]";
+	}	
 	
 
 }
