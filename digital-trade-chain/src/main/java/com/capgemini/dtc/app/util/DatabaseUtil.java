@@ -15,18 +15,17 @@ import com.google.common.io.BaseEncoding;
 
 public class DatabaseUtil {
 	
-	private static final String DB_IP = "";
+	private static final String DB_IP = "localhost";
 	private static final String DB_PORT = "";
+	private static final String DB_USER_NAME = "sa";
+	private static final String DB_PASSWORD = "";
 	
 
 	private static Connection getDBConnection()
 			throws SQLException {
 
-		String connURL = "jdbc:h2:tcp://" + DB_IP + ":" + DB_PORT + "/node";
-		String userName = "sa";
-		String password = "";
-		Connection conn = DriverManager.getConnection(connURL, userName,
-				password);
+		String connURL = "jdbc:h2:tcp://" + DB_IP + ":" + DB_PORT + "/node";		
+		Connection conn = DriverManager.getConnection(connURL, DB_USER_NAME, DB_PASSWORD);
 
 		return conn;
 	}

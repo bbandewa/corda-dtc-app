@@ -82,8 +82,8 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['build']) {
         cordapps = []
     }
     node {
-        name "Bank of Corda"
-        nearestCity "London"
+        name "BankOfCorda"
+        nearestCity "Pune"
         advertisedServices = []
         artemisPort 10004
         webPort 10005
@@ -91,8 +91,8 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['build']) {
         rpcUsers = [[ user: "user1", "password": "test", "permissions": []]]
     }
     node {
-        name "Credit Union Bank"
-        nearestCity "New York"
+        name "CreditUnionBank"
+        nearestCity "Mumbai"
         advertisedServices = []
         artemisPort 10006
         webPort 10007
@@ -100,8 +100,8 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['build']) {
         rpcUsers = [[ user: "user1", "password": "test", "permissions": []]]
     }
     node {
-        name "ABB Federal Bank"
-        nearestCity "San Francisco"
+        name "ABBFederalBank"
+        nearestCity "Delhi"
         advertisedServices = []
         artemisPort 10008
         webPort 10009
