@@ -32,6 +32,7 @@ import com.capgemini.dtc.app.model.PurchaseOrderNew;
 import com.capgemini.dtc.app.model.User;
 import com.capgemini.dtc.app.state.PurchaseOrderState;
 import com.capgemini.dtc.app.util.DatabaseUtil;
+import com.capgemini.dtc.app.util.StringUtil;
 
 // This API is accessible from /api/example. All paths specified below are relative to it.
 @Path("dtc")
@@ -50,7 +51,7 @@ public class DTCApi {
     @GET
     @Path("me")
     @Produces(MediaType.APPLICATION_JSON)
-    public Map<String, String> whoami() { return singletonMap("me", myLegalName); }
+    public Map<String, String> whoami() { return singletonMap("me", StringUtil.splitByUpperCase(myLegalName)); }
 
     /**
      * Returns all parties registered with the [NetworkMapService]. The names can be used to look up identities by
@@ -148,7 +149,7 @@ public class DTCApi {
     	System.out.println(purchaseOrder);
         final Party otherParty = services.partyFromName(partyName);
         //this line will be removed. we only broadcast to target participant 
-        final Party anotherParty = services.partyFromName("ABB Federal Bank");
+        final Party anotherParty = services.partyFromName("ABBFederalBank");
 
         if (otherParty == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
