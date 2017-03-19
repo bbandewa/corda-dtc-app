@@ -9,31 +9,52 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.capgemini.dtc.app.model.User;
 import com.google.common.io.BaseEncoding;
 
 public class DatabaseUtil {
 	
-	private static final String DB_IP = "localhost";
-	private static final String DB_PORT = "";
+	private static final String DB_IP = "localhost";	
 	private static final String DB_USER_NAME = "sa";
 	private static final String DB_PASSWORD = "";
+	private static Map<String, String> nodeNameWithPortMap = new HashMap<String, String>();
 	
-
-	private static Connection getDBConnection()
+	static{
+		nodeNameWithPortMap.put("BankOfCorda", "63000");
+		nodeNameWithPortMap.put("CreditUnionBank", "64000");
+		nodeNameWithPortMap.put("ABBFederalBank", "65000");		
+	}
+	
+	/**
+	 H2 database port number is dynamic (generate random number) by default. To make it static, edit the 'node.conf' file
+	 under '/build/nodes/BankOfCorda' by appending the following lines for each node::
+	 dataSourceProperties = {
+    		dataSourceClassName = org.h2.jdbcx.JdbcDataSource
+    		"dataSource.url" = "jdbc:h2:file:"${basedir}"/persistence;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=10000;WRITE_DELAY=0;AUTO_SERVER_PORT="${h2port}
+    		"dataSource.user" = sa
+    		"dataSource.password" = ""
+	 }
+	 useHTTPS = false
+	 h2port = 63000
+	 */
+	private static Connection getDBConnection(String nodeName)
 			throws SQLException {
 
-		String connURL = "jdbc:h2:tcp://" + DB_IP + ":" + DB_PORT + "/node";		
+		String connURL = "jdbc:h2:tcp://" + DB_IP + ":" + nodeNameWithPortMap.get(nodeName) + "/node";		
 		Connection conn = DriverManager.getConnection(connURL, DB_USER_NAME, DB_PASSWORD);
 
 		return conn;
 	}
 
-	public static boolean isDBUserTableExists(Connection conn) {
+	public static boolean isDBUserTableExists(String nodeName) {
 		boolean status = true;
 		ResultSet rs = null;
+		Connection conn = null;
 		try {
+			conn = getDBConnection(nodeName);
 			DatabaseMetaData dbmd = conn.getMetaData();
 			String[] types = { "TABLE" };
 			rs = dbmd.getTables(null, null, "%", types);
@@ -54,12 +75,12 @@ public class DatabaseUtil {
 
 	}
 
-	public static int createDBUserTable() {
+	public static int createDBUserTable(String nodeName) {
 		Connection conn = null;
 		int result = 0;
 		Statement statement = null;
 		try {
-			conn = getDBConnection();
+			conn = getDBConnection(nodeName);
 			String createTableSQL = "CREATE TABLE USER(DTC_ID varchar(255) primary key," + 
 									"FIRST_NAME varchar(255), LAST_NAME varchar(255), USER_ID varchar(255)," + 
 									"PASSWORD varchar(255), CONTACT_NUMBER varchar(255), EMAIL varchar(255), DOB varchar(255))";
@@ -83,17 +104,17 @@ public class DatabaseUtil {
 
 	}
 	
-	public static boolean validateLogin(String userName, String password) {
+	public static boolean validateLogin(String nodeName, String userName, String password) {
 
 		Connection conn = null;
 		boolean status = false;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			conn = getDBConnection();
+			conn = getDBConnection(nodeName);
 			ps = conn.prepareStatement("SELECT * FROM USER WHERE USER_ID=? AND PASSWORD=?");
 			ps.setString(1, userName);
-			ps.setString(2, password);
+			ps.setString(2, getSHA256Hash(password));
 
 			rs = ps.executeQuery();
 			status = rs.next();
@@ -118,12 +139,16 @@ public class DatabaseUtil {
 
 	}
 	
-	public static int createUser(User user){	
+	public static int createUser(String nodeName, User user){	
 		Connection conn = null;
 		PreparedStatement ps = null;		
 		int result = 0;
+		if (isDBUserTableExists(nodeName)) {
+			int temp = createDBUserTable(nodeName);
+			System.out.println("User DB table created = " + temp);
+		}
 		try {
-			conn = getDBConnection();
+			conn = getDBConnection(nodeName);
 			String insertTableSQL = "INSERT INTO USER"
 					+ "(DTC_ID, FIRST_NAME, LAST_NAME, USER_ID, PASSWORD, CONTACT_NUMBER, EMAIL, DOB) VALUES"
 					+ "(?,?,?,?,?,?,?,?)";
@@ -155,11 +180,11 @@ public class DatabaseUtil {
 		
 	}
 	
-	public static void displayUser(String userId) {
+	public static void displayUser(String nodeName, String userId) {
 
 		Connection conn = null;
 		try {
-			conn = getDBConnection();
+			conn = getDBConnection(nodeName);
 			// Create a Statement class to execute the SQL statement
 			Statement stmt = conn.createStatement();
 
@@ -183,12 +208,12 @@ public class DatabaseUtil {
 
 	}
 	
-	public static User retriveUser(String userId) {
+	public static User retriveUser(String nodeName, String userId) {
 
 		Connection conn = null;
 		User user = null;
 		try {
-			conn = getDBConnection();
+			conn = getDBConnection(nodeName);
 			// Create a Statement class to execute the SQL statement
 			Statement stmt = conn.createStatement();
 
@@ -217,11 +242,11 @@ public class DatabaseUtil {
 
 	}
 	
-	public static void displayAllUsers() {
+	public static void displayAllUsers(String nodeName) {
 
 		Connection conn = null;
 		try {
-			conn = getDBConnection();
+			conn = getDBConnection(nodeName);
 			// Create a Statement class to execute the SQL statement
 			Statement stmt = conn.createStatement();
 
@@ -278,15 +303,14 @@ public class DatabaseUtil {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		
-		Connection conn = getDBConnection();
+		final String nodeName = "BankOfCorda";		
 		
-		if (isDBUserTableExists(conn)) {
-			int result = createDBUserTable();
+		if (isDBUserTableExists(nodeName)) {
+			int result = createDBUserTable(nodeName);
 			System.out.println("User DB table created = " + result);
 		}
 		
-		User user1 = new User();
-		//user1.setDtcId("DTC" + new Date().getTime());
+		/*User user1 = new User();		
 		user1.setUserId("biksen");
 		user1.setPassword("password");
 		user1.setFirstName("Bikash");
@@ -295,15 +319,15 @@ public class DatabaseUtil {
 		user1.setEmail("sen.bikash@gmail.com");
 		user1.setContactNumber("7083042244");
 
-		int result = createUser(user1);
-		System.out.println("Insert user result = " + result);
+		int result = createUser(nodeName,user1);
+		System.out.println("Insert user result = " + result);*/
 		
-		boolean r = validateLogin("biksen", getSHA256Hash("password"));
+		boolean r = validateLogin(nodeName, "jiyasen", getSHA256Hash("password"));
 		
 		System.out.println("validate user login status = "+r);
 		
-		displayUser("biksen");
-		displayAllUsers();
+		displayUser(nodeName, "biksen");
+		displayAllUsers(nodeName);
 
 		/*Connection conn1 = DriverManager.getConnection(
 				"jdbc:h2:tcp://localhost:59552/node", "sa", "");

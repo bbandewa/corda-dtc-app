@@ -188,10 +188,10 @@ public class DTCApi {
     @PUT
     @Path("user-registration")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createUser(User user) throws InterruptedException, ExecutionException, SQLException {
+    public User createUser(User user) throws InterruptedException, ExecutionException, SQLException {
     	
     	System.out.println(user);        
-    	int result = DatabaseUtil.createUser(user);
+    	int result = DatabaseUtil.createUser(myLegalName, user);
     	
         final Response.Status status;
         if (result != -1) {
@@ -200,10 +200,7 @@ public class DTCApi {
             status = Response.Status.BAD_REQUEST;
         }
 
-        return Response
-                .status(status)
-                .entity("status:"+result)
-                .build();
+        return user;
     }
     
     @PUT
@@ -212,13 +209,15 @@ public class DTCApi {
     public User validateLogin(User user) throws InterruptedException, ExecutionException, SQLException {
     	
     	System.out.println(user);        
-    	boolean result = DatabaseUtil.validateLogin(user.getUserId(), user.getPassword());
+    	boolean result = DatabaseUtil.validateLogin(myLegalName, user.getUserId(), user.getPassword());
+    	
+    	System.out.println("User validation status = "+ result);
     	
         final Response.Status status;
         User returnUser = null;
         if (result == true) {
             status = Response.Status.CREATED;
-            returnUser = DatabaseUtil.retriveUser(user.getUserId());
+            returnUser = DatabaseUtil.retriveUser(myLegalName, user.getUserId());
         } else {
             status = Response.Status.BAD_REQUEST;
         }
