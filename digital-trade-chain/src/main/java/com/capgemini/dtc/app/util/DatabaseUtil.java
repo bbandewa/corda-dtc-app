@@ -23,14 +23,15 @@ public class DatabaseUtil {
 	private static Map<String, String> nodeNameWithPortMap = new HashMap<String, String>();
 	
 	static{
-		nodeNameWithPortMap.put("BankOfCorda", "63000");
-		nodeNameWithPortMap.put("CreditUnionBank", "64000");
-		nodeNameWithPortMap.put("ABBFederalBank", "65000");		
+		nodeNameWithPortMap.put("BankOfPune", "63000");
+		nodeNameWithPortMap.put("BankOfMumbai", "64000");
+		nodeNameWithPortMap.put("BankOfDelhi", "65000");		
 	}
 	
 	/**
 	 H2 database port number is dynamic (generate random number) by default. To make it static, edit the 'node.conf' file
 	 under '/build/nodes/BankOfCorda' by appending the following lines for each node::
+	 ****************************************************************
 	 dataSourceProperties = {
     		dataSourceClassName = org.h2.jdbcx.JdbcDataSource
     		"dataSource.url" = "jdbc:h2:file:"${basedir}"/persistence;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=10000;WRITE_DELAY=0;AUTO_SERVER_PORT="${h2port}
@@ -39,6 +40,7 @@ public class DatabaseUtil {
 	 }
 	 useHTTPS = false
 	 h2port = 63000
+	 ***************************************************************
 	 */
 	private static Connection getDBConnection(String nodeName)
 			throws SQLException {
@@ -144,8 +146,8 @@ public class DatabaseUtil {
 		PreparedStatement ps = null;		
 		int result = 0;
 		if (isDBUserTableExists(nodeName)) {
-			int temp = createDBUserTable(nodeName);
-			System.out.println("User DB table created = " + temp);
+			createDBUserTable(nodeName);
+			System.out.println("User DB table created successfully...............");
 		}
 		try {
 			conn = getDBConnection(nodeName);
@@ -162,7 +164,9 @@ public class DatabaseUtil {
 			ps.setString(7, user.getEmail());
 			ps.setString(8, user.getDateOfBirth().toString());
 
-			result = ps.executeUpdate();			
+			result = ps.executeUpdate();
+			
+			System.out.println("User registration successful...............");
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -189,18 +189,20 @@ public class DTCApi {
     @Path("user-registration")
     @Produces(MediaType.APPLICATION_JSON)
     public User createUser(User user) throws InterruptedException, ExecutionException, SQLException {
-    	
-    	System.out.println(user);        
+    	System.out.println("*************************************************");
+    	System.out.println(user);    
+    	System.out.println("*************************************************");
     	int result = DatabaseUtil.createUser(myLegalName, user);
-    	
+    	User returnUser = null;
         final Response.Status status;
         if (result != -1) {
             status = Response.Status.CREATED;
+            returnUser = DatabaseUtil.retriveUser(myLegalName, user.getUserId());
         } else {
             status = Response.Status.BAD_REQUEST;
         }
 
-        return user;
+        return returnUser;
     }
     
     @PUT
