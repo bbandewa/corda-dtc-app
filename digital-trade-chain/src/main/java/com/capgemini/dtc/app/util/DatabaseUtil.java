@@ -84,8 +84,11 @@ public class DatabaseUtil {
 		try {
 			conn = getDBConnection(nodeName);
 			String createTableSQL = "CREATE TABLE USER(DTC_ID varchar(255) primary key," + 
-									"FIRST_NAME varchar(255), LAST_NAME varchar(255), USER_ID varchar(255)," + 
-									"PASSWORD varchar(255), CONTACT_NUMBER varchar(255), EMAIL varchar(255), DOB varchar(255))";
+									"COMPANY_NAME varchar(255), IBAN varchar(255), REGISTRATION_NO varchar(255)," + 
+									"CONTACT_NAME varchar(255), ADDRESS varchar(255), CITY varchar(255)," +
+									"STATE varchar(255), POSTAL_CODE varchar(255), COUNTRY varchar(255)," +
+									"CONTACT_NUMBER varchar(255), EMAIL varchar(255), WEBSITE varchar(255)," +
+									"PASSWORD varchar(255), USER_ID varchar(255), BANK_NAME varchar(255), BANK_ADDRESS varchar(255))";
 			statement = conn.createStatement();
 			result = statement.executeUpdate(createTableSQL);
 
@@ -152,17 +155,26 @@ public class DatabaseUtil {
 		try {
 			conn = getDBConnection(nodeName);
 			String insertTableSQL = "INSERT INTO USER"
-					+ "(DTC_ID, FIRST_NAME, LAST_NAME, USER_ID, PASSWORD, CONTACT_NUMBER, EMAIL, DOB) VALUES"
-					+ "(?,?,?,?,?,?,?,?)";
+					+ "(DTC_ID, COMPANY_NAME, IBAN, REGISTRATION_NO, CONTACT_NAME, ADDRESS, CITY, STATE, POSTAL_CODE, COUNTRY, CONTACT_NUMBER, EMAIL, WEBSITE, PASSWORD, USER_ID, BANK_NAME, BANK_ADDRESS) VALUES"
+					+ "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			ps = conn.prepareStatement(insertTableSQL);
 			ps.setString(1, "DTC" + new Date().getTime());
-			ps.setString(2, user.getFirstName());
-			ps.setString(3, user.getLastName());
-			ps.setString(4, user.getUserId());
-			ps.setString(5, getSHA256Hash(user.getPassword()));
-			ps.setString(6, user.getContactNumber());
-			ps.setString(7, user.getEmail());
-			ps.setString(8, user.getDateOfBirth().toString());
+			ps.setString(2, user.getCompanyName());
+			ps.setString(3, user.getIban());
+			ps.setString(4, user.getRegistrationNo());
+			ps.setString(5, user.getContactName());
+			ps.setString(6, user.getAddress());
+			ps.setString(7, user.getCity());
+			ps.setString(8, user.getState());
+			ps.setString(9, user.getPostalCode());
+			ps.setString(10, user.getCountry());
+			ps.setString(11, user.getContactNumber());
+			ps.setString(12, user.getEmail());
+			ps.setString(13, user.getWebsite());
+			ps.setString(14, getSHA256Hash(user.getPassword()));
+			ps.setString(15, user.getUserId());
+			ps.setString(16, user.getBankName());
+			ps.setString(17, user.getBankAddress());
 
 			result = ps.executeUpdate();
 			
@@ -194,13 +206,14 @@ public class DatabaseUtil {
 
 			// Execute the SQL statement and get the results in a Resultset
 			ResultSet rs1 = stmt
-					.executeQuery("SELECT * FROM USER WHERE USER_ID='" + userId
+					.executeQuery("SELECT DTC_ID, COMPANY_NAME, IBAN, REGISTRATION_NO, CONTACT_NAME, ADDRESS, CITY, STATE, POSTAL_CODE, COUNTRY," + 
+								"CONTACT_NUMBER, EMAIL, WEBSITE, PASSWORD, USER_ID, BANK_NAME, BANK_ADDRESS FROM USER WHERE USER_ID='" + userId
 							+ "'");
 			while (rs1.next())
 				System.out.println("DTC_ID= " + rs1.getString("DTC_ID")
 						+ ", USER_ID= " + rs1.getString("USER_ID")
 						+ ", PASSWORD= " + rs1.getString("PASSWORD")
-						+ ", DOB= " + rs1.getString("DOB"));
+						+ ", COMPANY_NAME= " + rs1.getString("COMPANY_NAME"));
 
 			conn.close();
 			rs1.close();
@@ -223,16 +236,27 @@ public class DatabaseUtil {
 
 			// Execute the SQL statement and get the results in a Resultset
 			ResultSet rs1 = stmt
-					.executeQuery("SELECT * FROM USER WHERE USER_ID='" + userId
+					.executeQuery("SELECT DTC_ID, COMPANY_NAME, IBAN, REGISTRATION_NO, CONTACT_NAME, ADDRESS, CITY, STATE, POSTAL_CODE, COUNTRY," + 
+								"CONTACT_NUMBER, EMAIL, WEBSITE, PASSWORD, USER_ID, BANK_NAME, BANK_ADDRESS FROM USER WHERE USER_ID='" + userId
 							+ "'");
 			user = new User();
 			while (rs1.next()){
 				user.setDtcId(rs1.getString("DTC_ID"));
-				user.setUserId(rs1.getString("USER_ID"));
-				user.setFirstName(rs1.getString("FIRST_NAME"));
-				user.setLastName(rs1.getString("LAST_NAME"));
-				user.setEmail(rs1.getString("EMAIL"));
+				user.setCompanyName(rs1.getString("COMPANY_NAME"));
+				user.setIban(rs1.getString("IBAN"));
+				user.setRegistrationNo(rs1.getString("REGISTRATION_NO"));
+				user.setContactName(rs1.getString("CONTACT_NAME"));
+				user.setAddress(rs1.getString("ADDRESS"));
+				user.setCity(rs1.getString("CITY"));
+				user.setState(rs1.getString("STATE"));
+				user.setPostalCode(rs1.getString("POSTAL_CODE"));
+				user.setCountry(rs1.getString("COUNTRY"));
 				user.setContactNumber(rs1.getString("CONTACT_NUMBER"));
+				user.setEmail(rs1.getString("EMAIL"));
+				user.setWebsite(rs1.getString("WEBSITE"));
+				user.setUserId(rs1.getString("USER_ID"));
+				user.setBankName(rs1.getString("BANK_NAME"));
+				user.setBankAddress(rs1.getString("BANK_ADDRESS"));
 			}				
 
 			conn.close();
@@ -261,7 +285,7 @@ public class DatabaseUtil {
 				System.out.println("DTC_ID= " + rs1.getString("DTC_ID")
 						+ ", USER_ID= " + rs1.getString("USER_ID")
 						+ ", PASSWORD= " + rs1.getString("PASSWORD")
-						+ ", DOB= " + rs1.getString("DOB"));
+						+ ", COMPANY_NAME= " + rs1.getString("COMPANY_NAME"));
 
 			conn.close();
 			rs1.close();
@@ -317,9 +341,7 @@ public class DatabaseUtil {
 		User user1 = new User();		
 		user1.setUserId("biksen");
 		user1.setPassword("password");
-		user1.setFirstName("Bikash");
-		user1.setLastName("Sen");
-		user1.setDateOfBirth(new Date());
+		user1.setCompanyName("ABC Company");
 		user1.setEmail("sen.bikash@gmail.com");
 		user1.setContactNumber("7083042244");
 
