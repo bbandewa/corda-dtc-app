@@ -145,11 +145,12 @@ function getPartyBankDetails(id) {
 function validateCridentials(userName, password) {
 	debugger;
     var isValid = false;
+    var user={userId:userName,password:password};
     $.ajax({
         type: "PUT",
         url: "http://localhost:10005/api/dtc/validate-login", //TODO: Change the web service URL to make it live
         contentType: "application/json;charset=UTF-8",
-        data: {"userId": json.stringify(userName),"password": json.stringify(password) },
+        data: JSON.stringify(user),
         dataType: "json",
         async: false,
         beforeSend: function () {

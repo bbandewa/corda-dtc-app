@@ -77,7 +77,7 @@
             $('#btnLogin').click(function (e) {
                 debugger;
                 if (validateCridentials($("#txtUsername").val(), $("#txtPassword").val())) {
-                    redirectUser("OrderList.htm?userID=" + $("#userName").val());
+                    redirectUser("OrderList.htm?userID=" + $("#txtUsername").val());
                 }
                 else {
                     alert("Invalid credentials.");
