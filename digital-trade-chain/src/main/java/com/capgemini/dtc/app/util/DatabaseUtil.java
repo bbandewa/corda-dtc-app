@@ -173,7 +173,7 @@ public class DatabaseUtil {
 			ps.setString(13, user.getWebsite());
 			ps.setString(14, getSHA256Hash(user.getPassword()));
 			ps.setString(15, user.getUserId());
-			ps.setString(16, user.getBankName());
+			ps.setString(16, nodeName);
 			ps.setString(17, user.getBankAddress());
 
 			result = ps.executeUpdate();
