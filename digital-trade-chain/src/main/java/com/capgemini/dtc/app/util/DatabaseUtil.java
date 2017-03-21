@@ -24,8 +24,8 @@ public class DatabaseUtil {
 	
 	static{
 		nodeNameWithPortMap.put("BankOfPune", "63000");
-		nodeNameWithPortMap.put("BankOfMumbai", "64000");
-		nodeNameWithPortMap.put("BankOfDelhi", "65000");		
+		nodeNameWithPortMap.put("BankOfHelsinki", "64000");
+		nodeNameWithPortMap.put("BankOfAmsterdam", "65000");		
 	}
 	
 	/**

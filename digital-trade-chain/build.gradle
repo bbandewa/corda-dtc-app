@@ -75,7 +75,7 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['build']) {
     networkMap "Controller"
     node {
         name "Controller"
-        nearestCity "London"
+        nearestCity "Madrid"
         advertisedServices = ["corda.notary.validating"]
         artemisPort 10002
         webPort 10003
@@ -91,8 +91,8 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['build']) {
         rpcUsers = [[ user: "user1", "password": "test", "permissions": []]]
     }
     node {
-        name "BankOfMumbai"
-        nearestCity "Mumbai"
+        name "BankOfHelsinki"
+        nearestCity "Helsinki"
         advertisedServices = []
         artemisPort 10006
         webPort 10007
@@ -100,8 +100,8 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['build']) {
         rpcUsers = [[ user: "user1", "password": "test", "permissions": []]]
     }
     node {
-        name "BankOfDelhi"
-        nearestCity "Delhi"
+        name "BankOfAmsterdam"
+        nearestCity "Amsterdam"
         advertisedServices = []
         artemisPort 10008
         webPort 10009
