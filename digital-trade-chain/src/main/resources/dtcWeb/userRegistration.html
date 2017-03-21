@@ -24,16 +24,43 @@
           rel="stylesheet">
     <LINK href="css/ui.jqgrid.css" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <STYLE type="text/css">
-        .row {
-            padding-bottom: 7px;
-        }
-    </STYLE>
     <LINK href="css/jqGrid.bootstrap.css" rel="stylesheet">
     <LINK href="css/Custom.css" rel="stylesheet">
 </HEAD>
 <BODY>
     <FORM id="form1" method="post">
+        <div class="websiteHeader" id="divWebHeader">
+            <div class="row">
+                <div class="col-md-1"><img src="images/KBCIcon.png" height="35" style="border:solid 1px white;margin-top:7px;margin-left:10px; " /></div>
+                <div class="col-md-3"><h3 style="margin-bottom:0px; margin-top:10px;margin-left:20px;">Digital Trade Chain</h3></div>
+                <div class="col-md-8">
+                    <span class="pull-right" style="text-align:right; margin-bottom:0px; margin-top:10px;margin-right:100px;font-size:15px;">
+                        <div class="dropdown">
+                            <a href="#" id="lnkUsersettings" data-toggle="dropdown" class="dropdown-toggle" style="color:white !important;">
+                                <img src="images/userImage.jpg" height="35" class="img-circle" /> &nbsp;&nbsp;Welcome Mayank! &nbsp; <span class="glyphicon glyphicon-triangle-bottom"></span>
+                            </a>
+                            <div class="dropdown-menu" style="min-width:200px;background-color:#f5f5f5; padding:10px;">
+                                <div class="row marginBottom10">
+                                    <div class="col-md-12" style="margin-bottom:7px;">
+                                        <a>  My Profile</a>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom:7px;">
+                                    <div class="col-md-12">
+                                        <a href="#">Change Password</a>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom:7px;">
+                                    <div class="col-md-12">
+                                        <a href="#">Logout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
         <div class="busyStatus" id="divBusyStatus" style="text-align: center">
             <div id="yourdiv" style="display: inline-block;">
                 <div class="loader">
@@ -41,125 +68,122 @@
             </div>
             <h2>Please wait...</h2>
         </div>
-        <DIV class="container" style="width: 75%; margin-top:5px; ">
+        <DIV class="container" style="width: 65%; margin-top:60px;">
             <DIV id="content">
                 <DIV class="form-horizontal">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-md-6"><h4>Create an Account</h4></div>
-                                <div class="col-md-6"><span class="pull-right"><label id="lblBankTitle"></label></span></div>
-                            </div>
-                        </div>
+                    <div class="row">
+                        <div class="col-md-6"><h4 style="color:#666769">Create an Account</h4></div>
+                        <div class="col-md-6"><span class="pull-right"><label id="lblBankTitle"></label></span></div>
                     </div>
                     <DIV class="panel">
                         <DIV class="panel panel-info" id="divOrderDetailsContainer">
-                            <div class="well well-sm">Personal Information</div>
+                            <div class="well well-sm">Company Information</div>
                             <DIV class="panel-body" style="margin-bottom:15px;">
                                 <DIV class="form-group">
-                                    <LABEL class="control-label col-sm-2" for="txtFirstName">First Name:</LABEL>
-                                    <div class="col-sm-6">
-                                        <input class="form-control" id="txtFirstName" placeholder="First Name">
+                                    <LABEL class="control-label col-sm-2" for="txtCompanytName">Company Name:</LABEL>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" id="txtCompanytName" placeholder="Company Name">
                                     </div>
                                 </DIV>
                                 <DIV class="form-group">
-                                    <label class="control-label col-sm-2" for="txtLastName">Last Name:</label>
-                                    <div class="col-sm-6">
-                                        <input class="form-control" type="text" id="txtLastName" placeholder="Last Name" />
+                                    <label class="control-label col-sm-2" for="txtRegistrationNo">Registration No:</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" type="text" id="txtRegistrationNo" placeholder="Registration No" />
                                     </div>
                                 </DIV>
-                                <DIV class="form-group">
+                                <!--<DIV class="form-group">
                                     <LABEL class="control-label col-sm-2" for="txtDateofBirth">Date of Birth:</LABEL>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         <input class="form-control" placeholder="YYYY/MM/DD" id="txtDateofBirth" />
                                     </div>
-                                    <label class="control-label col-sm-2" for="ddlGender">Gender:</label>
-                                    <div class="col-sm-2">
+                                    <label class="control-label col-sm-3" for="ddlGender">Gender:</label>
+                                    <div class="col-sm-3">
                                         <SELECT class="form-control" id="ddlGender">
                                             <OPTION>-- Select --</OPTION>
                                             <OPTION>Male</OPTION>
                                             <OPTION>Female</OPTION>
                                         </SELECT>
                                     </div>
-                                </DIV>
+                                </DIV>-->
                             </DIV>
-
-                            <div class="well well-sm">Contact Details</div>
+                            <div class="well well-sm">Company Contact Details</div>
                             <DIV class="panel-body" style="margin-bottom:15px;">
                                 <DIV class="form-group">
+                                    <LABEL class="control-label col-sm-2" for="txtContactName">Contact Name:</LABEL>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" type="text" placeholder="Contact Name" id="txtContactName" />
+                                    </div>
+                                </DIV>
+                                <DIV class="form-group">
                                     <LABEL class="control-label col-sm-2" for="txtAddress1">Address 1:</LABEL>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-9">
                                         <input class="form-control" type="text" placeholder="Address 1" id="txtAddress1" />
                                     </div>
                                 </DIV>
                                 <DIV class="form-group">
                                     <LABEL class="control-label col-sm-2" for="txtAddress2">Address 2:</LABEL>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-9">
                                         <input class="form-control" placeholder="Address 2" type="text" id="txtAddress2" />
                                     </div>
                                 </DIV>
                                 <DIV class="form-group">
                                     <LABEL class="control-label col-sm-2" for="txtCity">City:</LABEL>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         <input class="form-control" type="text" placeholder="City" id="txtCity" />
                                     </div>
-                                    <LABEL class="control-label col-sm-2" for="txtPostalCode">Postal Code:</LABEL>
-                                    <div class="col-sm-2">
+                                    <LABEL class="control-label col-sm-3" for="txtPostalCode">Postal Code:</LABEL>
+                                    <div class="col-sm-3">
                                         <input class="form-control" type="text" placeholder="Postal Code" id="txtPostalCode" />
                                     </div>
                                 </DIV>
                                 <DIV class="form-group">
                                     <LABEL class="control-label col-sm-2" for="txtState">State:</LABEL>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         <input class="form-control" type="text" placeholder="State" id="txtState" />
                                     </div>
-                                    <LABEL class="control-label col-sm-2" for="txtCountry">Country:</LABEL>
-                                    <div class="col-sm-2">
+                                    <LABEL class="control-label col-sm-3" for="txtCountry">Country:</LABEL>
+                                    <div class="col-sm-3">
                                         <input class="form-control" type="text" placeholder="Country" id="txtCountry" />
                                     </div>
                                 </DIV>
                                 <DIV class="form-group">
                                     <LABEL class="control-label col-sm-2" for="txtEmail">Email:</LABEL>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-9">
                                         <input class="form-control" type="email" placeholder="e.g. yourname@dtc.com" id="txtEmail" />
                                     </div>
                                 </DIV>
                                 <DIV class="form-group">
                                     <LABEL class="control-label col-sm-2" for="txtMobile">Mobile:</LABEL>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-9">
                                         <input class="form-control" type="text" placeholder="e.g. +91 9879146824" id="txtMobile" />
                                     </div>
                                 </DIV>
                             </DIV>
-
                             <div class="well well-sm">User Credentials</div>
                             <DIV class="panel-body" style="margin-bottom:15px;">
                                 <DIV class="form-group">
                                     <LABEL class="control-label col-sm-2" for="txtUsername">Username:</LABEL>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-9">
                                         <input class="form-control" id="txtUsername" placeholder="Username">
                                     </div>
                                 </DIV>
                                 <DIV class="form-group">
                                     <label class="control-label col-sm-2" for="txtPassword">Password:</label>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-3">
                                         <input class="form-control" type="password" id="txtPassword" placeholder="Password" />
                                     </div>
-                                </DIV>
-                                <DIV class="form-group">
-                                    <label class="control-label col-sm-2" for="txtConfirmPassword">Confirm Password:</label>
-                                    <div class="col-sm-6">
+                                    <label class="control-label col-sm-3" for="txtConfirmPassword">Confirm Password:</label>
+                                    <div class="col-sm-3">
                                         <input class="form-control" type="password" id="txtConfirmPassword" placeholder="Confirm Password" />
                                     </div>
                                 </DIV>
                             </DIV>
-
                         </DIV>
                     </DIV>
                     <DIV class="panel">
                         <DIV class="form-group">
-                            <LABEL class="control-label col-sm-2" for="txtUsername"></LABEL>
-                            <div class="col-sm-6">
+                            <LABEL class="control-label col-sm-2"></LABEL>
+                            <div class="col-sm-9">
                                 <BUTTON class="btn btn-info " id="btnSave">Save</BUTTON>
                                 <BUTTON class="btn btn-info" id="btnClose">Cancel</BUTTON>
                             </div>
@@ -173,6 +197,7 @@
             //var userID = "abc123";
             var userID = getQueryStringValue("userID");
             $(document).ready(function () {
+                $("#lnkUsersettings").popover({ trigger: "hover" });
                 setBankTitle();
                 // Setup grid
                 $("#btnSave").click(function (e) {
@@ -181,7 +206,7 @@
                         url: "http://localhost:10005/api/dtc/NodeB/create-purchase-order",
                         dataType: "json",
                         contentType: "application/json;charset=UTF-8",
-                        data: newUser, //objOrder will be parameter name in service.
+                        data: newAccount, //objOrder will be parameter name in service.
                         beforeSend: function () {
                             $("#divBusyStatus").show();
                         },
@@ -200,34 +225,35 @@
                         }
                     });
                 });
-                var newUser = new Object();
+                var newAccount = new Object();
                 function getUserFromInputs() {
-                    newUser = new Object();
-                    newUser.firstName = $("#txtFirstName").val();
-                    newUser.lastName = $("#txtLastName").val();
-                    newUser.dateofBirth = $("#txtDateofBirth").val();
-                    newUser.gender = $("#txtGender").val();
-
-                    newUser.address.address1 = $("#txtAddress1").val();
-                    newUser.address.address2 = $("#txtAddress2").val();
-                    newUser.address.city = $("#txtCity").val();
-                    newUser.address.postalCode = $("#txtPostalCode").val();
-                    newUser.address.state = $("#txtState").val();
-                    newUser.address.country = $("#txtCountry").val();
-                    newUser.address.email = $("#txtEmail").val();
-                    newUser.address.mobile = $("#txtMobile").val();
-
-                    newUser.username = $("#txtUsername").val();
-                    newUser.password = $("#txtPassword").val();
+                    newAccount = { contact: { address: {} } };
+                    newAccount.companyName = $("#txtCompanytName").val();
+                    newAccount.RegistrationNo = $("#txtRegistrationNo").val();
+                    //newAccount.dateofBirth = $("#txtDateofBirth").val();
+                    //newAccount.gender = $("#txtGender").val();
+                    newAccount.contact.contactName = $("#txtContactName").val();
+                    newAccount.contact.address.address1 = $("#txtAddress1").val();
+                    newAccount.contact.address.address2 = $("#txtAddress2").val();
+                    newAccount.contact.address.city = $("#txtCity").val();
+                    newAccount.contact.address.postalCode = $("#txtPostalCode").val();
+                    newAccount.contact.address.state = $("#txtState").val();
+                    newAccount.contact.address.country = $("#txtCountry").val();
+                    newAccount.contact.address.email = $("#txtEmail").val();
+                    newAccount.contact.address.mobile = $("#txtMobile").val();
+                    newAccount.username = $("#txtUsername").val();
+                    newAccount.password = $("#txtPassword").val();
                 }
                 function setBankTitle() {
                     //$("#lblBankTitle").text("Welcome to Bank of DTH");
+                    var serviceURL = window.location.protocol + "//" + window.location.host + "/api/dtc/me";
+                    alert(serviceURL);
                     $.ajax({
                         type: "GET",
-                        url: "http://localhost:10005/api/dtc/me",
+                        url: serviceURL,
                         dataType: "json",
                         contentType: "application/json;charset=UTF-8",
-                        data: newUser, //objOrder will be parameter name in service.
+                        data: newAccount, //objOrder will be parameter name in service.
                         beforeSend: function () {
                             $("#divBusyStatus").show();
                         },
@@ -235,22 +261,22 @@
                             $("#divBusyStatus").hide();
                         },
                         success: function (data) {
-                        	debugger;
+                            debugger;
                             $("#lblBankTitle").text(data.me);
                         },
                         error: function (errMsg) {
                             debugger;
-                            //alert(errMsg);
+                            alert(errMsg);
                             //redirectUser("OrderList.htm?userID=" + userID);
                             //window.location = "OrderList.htm?userID=" + userID;
                         }
                     });
                 }
                 $("#divBusyStatus").hide();
-                $("#txtDateofBirth").datepicker({
-                    dateFormat: 'yy-mm-dd',
-                    minDate: new Date()
-                });
+                //$("#txtDateofBirth").datepicker({
+                //    dateFormat: 'yy-mm-dd',
+                //    minDate: new Date()
+                //});
             });
         </SCRIPT>
     </FORM>

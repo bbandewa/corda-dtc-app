@@ -129,7 +129,8 @@ var data = {
     { id: 5, userName: "mayank", password: "mayank", name: "Mayank", bank: { company: "JP Morgan Chase", bankName: "JP Morgan Chase", vat: "JPMC93sKLPFF", iban: "JPMC", address: "270 Park Avenue New York, NY 10017 U.S." } }
 
     ]
-};
+};
+
 function getPartyBankDetails(id) {
     var bankDetails = null;
     $.each(data.rows, function (index, item) {
@@ -142,34 +143,39 @@ function getPartyBankDetails(id) {
 
 
 function validateCridentials(userName, password) {
-    //$.ajax({
-    //    type: "POST",
-    //    url: "http://localhost:63524/ChainGangService.asmx/ValidateCredentials", //TODO: Change the web service URL to make it live
-    //    cache: false,
-    //    contentType: "application/json; charset=utf-8",
-    //    data: '{"userName":"' + $("#userName").val() + '"}',
-    //    dataType: "json",
-    //    success: function (data, status) {
-    //    window.location = "OrderList.htm?userID=dtcuser"; //TODO: pass the userID returned from service result
-    //     },
-    //beforeSend: function () {
-    //    $("#divBusyStatus").show();
-    //},
-    //complete: function () {
-    //    $("#divBusyStatus").hide();
-    //}
-    //    error: function (xmlRequest) {
-    //    alert(xmlRequest.status + ' \n\r ' +
-    //          xmlRequest.statusText + '\n\r' +
-    //          xmlRequest.responseText);
-    //}
-    //});
+	debugger;
     var isValid = false;
-    $.each(userMaster, function (index, item) {
-        if (item.userName == userName && item.password == password) {
-            isValid = true;
+    $.ajax({
+        type: "PUT",
+        url: "http://localhost:10005/api/dtc/validate-login", //TODO: Change the web service URL to make it live
+        contentType: "application/json;charset=UTF-8",
+        data: {"userId": json.stringify(userName),"password": json.stringify(password) },
+        dataType: "json",
+        async: false,
+        beforeSend: function () {
+            $("#divBusyStatus").show();
+        },
+        complete: function () {
+            $("#divBusyStatus").hide();
+        },
+        success: function (data) {
+        	debugger;
+            isValid = (null != data && undefined != data && undefined != data.dtcId && data.dtcId.length > 0);
+        },
+        error: function (errMsg) {
+        	debugger;
+            alert(errMsg.status + ' \n\r ' +
+            errMsg.statusText + '\n\r' +
+            errMsg.responseText);
+            debugger;
         }
     });
+
+    //$.each(userMaster, function (index, item) {
+    //    if (item.userName == userName && item.password == password) {
+    //        isValid = true;
+    //    }
+    //});
     return isValid;
 }
 

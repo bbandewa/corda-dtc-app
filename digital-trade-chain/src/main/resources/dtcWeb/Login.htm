@@ -47,11 +47,11 @@
                     <DIV class="panel-body" style="min-height: 350px;">
                         <DIV class="form-group ">
                             <LABEL for="email">Username:</LABEL>
-                            <INPUT class="form-control" id="userName">
+                            <INPUT class="form-control" id="txtUsername">
                         </DIV>
                         <DIV class="form-group ">
                             <LABEL for="pwd">Password:</LABEL>
-                            <INPUT class="form-control" id="pwd" type="password">
+                            <INPUT class="form-control" id="txtPassword" type="password">
                         </DIV>
                         <DIV class="checkbox">
                             <LABEL>
@@ -76,9 +76,8 @@
         $(document).ready(function () {
             $('#btnLogin').click(function (e) {
                 debugger;
-                if (validateCridentials($("#userName").val(), $("#pwd").val()))
-                {
-                    redirectUser("OrderList.htm?userID=" + $("#userName").val());// TODO: Implement rest service to validate user and redirect user in success call back function.
+                if (validateCridentials($("#txtUsername").val(), $("#txtPassword").val())) {
+                    redirectUser("OrderList.htm?userID=" + $("#userName").val());
                 }
                 else {
                     alert("Invalid credentials.");

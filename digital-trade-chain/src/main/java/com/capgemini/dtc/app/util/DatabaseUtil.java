@@ -307,14 +307,14 @@ public class DatabaseUtil {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		
-		final String nodeName = "BankOfCorda";		
+		final String nodeName = "BankOfPune";		
 		
 		if (isDBUserTableExists(nodeName)) {
 			int result = createDBUserTable(nodeName);
 			System.out.println("User DB table created = " + result);
 		}
 		
-		/*User user1 = new User();		
+		User user1 = new User();		
 		user1.setUserId("biksen");
 		user1.setPassword("password");
 		user1.setFirstName("Bikash");
@@ -324,7 +324,7 @@ public class DatabaseUtil {
 		user1.setContactNumber("7083042244");
 
 		int result = createUser(nodeName,user1);
-		System.out.println("Insert user result = " + result);*/
+		System.out.println("Insert user result = " + result);
 		
 		boolean r = validateLogin(nodeName, "jiyasen", getSHA256Hash("password"));
 		
