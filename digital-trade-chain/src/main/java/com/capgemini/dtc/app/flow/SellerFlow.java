@@ -70,7 +70,7 @@ public class SellerFlow extends FlowLogic<SignedTransaction> {
 		
 		progressTracker.setCurrentStep(TRADING);
 		
-		// Send the offered amount/price.
+		// Send the offered price to buyer.
         send(otherParty, price);
         
         TwoPartyTradeFlow.Seller seller = new TwoPartyTradeFlow.Seller(
