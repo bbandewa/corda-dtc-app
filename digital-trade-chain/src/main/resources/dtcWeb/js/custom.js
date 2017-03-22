@@ -141,14 +141,15 @@ function getPartyBankDetails(id) {
     return bankDetails;
 }
 
+var serviceURL = window.location.protocol + "//" + window.location.host + "/api/dtc/";
 
 function validateCridentials(userName, password) {
-	debugger;
+    debugger;
     var isValid = false;
-    var user={userId:userName,password:password};
+    var user = { userId: userName, password: password };
     $.ajax({
         type: "PUT",
-        url: "http://localhost:10005/api/dtc/validate-login", //TODO: Change the web service URL to make it live
+        url: serviceURL + "validate-login", //TODO: Change the web service URL to make it live
         contentType: "application/json;charset=UTF-8",
         data: JSON.stringify(user),
         dataType: "json",
@@ -160,11 +161,11 @@ function validateCridentials(userName, password) {
             $("#divBusyStatus").hide();
         },
         success: function (data) {
-        	debugger;
+            debugger;
             isValid = (null != data && undefined != data && undefined != data.dtcId && data.dtcId.length > 0);
         },
         error: function (errMsg) {
-        	debugger;
+            debugger;
             alert(errMsg.status + ' \n\r ' +
             errMsg.statusText + '\n\r' +
             errMsg.responseText);

@@ -34,10 +34,10 @@
                 <div class="col-md-1"><img src="images/KBCIcon.png" height="35" style="border:solid 1px white;margin-top:7px;margin-left:10px; " /></div>
                 <div class="col-md-3"><h3 style="margin-bottom:0px; margin-top:10px;margin-left:20px;">Digital Trade Chain</h3></div>
                 <div class="col-md-8">
-                    <span class="pull-right" style="text-align:right; margin-bottom:0px; margin-top:10px;margin-right:100px;font-size:15px;">
+                    <div class="pull-right" style="text-align:right; margin-bottom:0px; margin-top:10px;margin-right:100px;font-size:15px;">
                         <div class="dropdown">
                             <a href="#" id="lnkUsersettings" data-toggle="dropdown" class="dropdown-toggle" style="color:white !important;">
-                                <img src="images/userImage.jpg" height="35" class="img-circle" /> &nbsp;&nbsp;Welcome Mayank! &nbsp; <span class="glyphicon glyphicon-triangle-bottom"></span>
+                                <img src="images/userImage.png" height="35" class="img-circle" /> &nbsp;&nbsp;<span id="lblBankTitle"></span> &nbsp; <span class="glyphicon glyphicon-triangle-bottom"></span>
                             </a>
                             <div class="dropdown-menu" style="min-width:200px;background-color:#f5f5f5; padding:10px;">
                                 <div class="row marginBottom10">
@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                         </div>
-                    </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
                 <DIV class="form-horizontal">
                     <div class="row">
                         <div class="col-md-6"><h4 style="color:#666769">Create an Account</h4></div>
-                        <div class="col-md-6"><span class="pull-right"><label id="lblBankTitle"></label></span></div>
+                        <!--<div class="col-md-6"><span class="pull-right"><label id="lblBankTitle"></label></span></div>-->
                     </div>
                     <DIV class="panel">
                         <DIV class="panel panel-info" id="divOrderDetailsContainer">
@@ -86,9 +86,13 @@
                                     </div>
                                 </DIV>
                                 <DIV class="form-group">
-                                    <label class="control-label col-sm-2" for="txtRegistrationNo">Registration No:</label>
-                                    <div class="col-sm-9">
-                                        <input class="form-control" type="text" id="txtRegistrationNo" placeholder="Registration No" />
+                                    <LABEL class="control-label col-sm-2" for="txtIBAN">IBAN:</LABEL>
+                                    <div class="col-sm-3">
+                                        <input class="form-control" type="text" placeholder="IBAN" id="txtIBAN" />
+                                    </div>
+                                    <LABEL class="control-label col-sm-3" for="txtRegisterVATNumber">Register/VAT Number:</LABEL>
+                                    <div class="col-sm-3">
+                                        <input class="form-control" type="text" placeholder="Register/VAT Number" id="txtRegisterVATNumber" />
                                     </div>
                                 </DIV>
                                 <!--<DIV class="form-group">
@@ -115,17 +119,17 @@
                                     </div>
                                 </DIV>
                                 <DIV class="form-group">
-                                    <LABEL class="control-label col-sm-2" for="txtAddress1">Address 1:</LABEL>
+                                    <LABEL class="control-label col-sm-2" for="txtAddress">Address:</LABEL>
                                     <div class="col-sm-9">
-                                        <input class="form-control" type="text" placeholder="Address 1" id="txtAddress1" />
+                                        <input class="form-control" type="text" placeholder="Address" id="txtAddress" />
                                     </div>
                                 </DIV>
-                                <DIV class="form-group">
+                                <!--<DIV class="form-group">
                                     <LABEL class="control-label col-sm-2" for="txtAddress2">Address 2:</LABEL>
                                     <div class="col-sm-9">
                                         <input class="form-control" placeholder="Address 2" type="text" id="txtAddress2" />
                                     </div>
-                                </DIV>
+                                </DIV>-->
                                 <DIV class="form-group">
                                     <LABEL class="control-label col-sm-2" for="txtCity">City:</LABEL>
                                     <div class="col-sm-3">
@@ -149,13 +153,19 @@
                                 <DIV class="form-group">
                                     <LABEL class="control-label col-sm-2" for="txtEmail">Email:</LABEL>
                                     <div class="col-sm-9">
-                                        <input class="form-control" type="email" placeholder="e.g. yourname@dtc.com" id="txtEmail" />
+                                        <input class="form-control" type="email" placeholder="Company Email Address" id="txtEmail" />
                                     </div>
                                 </DIV>
                                 <DIV class="form-group">
-                                    <LABEL class="control-label col-sm-2" for="txtMobile">Mobile:</LABEL>
+                                    <LABEL class="control-label col-sm-2" for="txtContactNumber">Contact Number:</LABEL>
                                     <div class="col-sm-9">
-                                        <input class="form-control" type="text" placeholder="e.g. +91 9879146824" id="txtMobile" />
+                                        <input class="form-control" type="text" placeholder="Company Contact Number" id="txtContactNumber" />
+                                    </div>
+                                </DIV>
+                                <DIV class="form-group">
+                                    <LABEL class="control-label col-sm-2" for="txtWebsite">Website:</LABEL>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" type="text" placeholder="Company Website URL" id="txtWebsite" />
                                     </div>
                                 </DIV>
                             </DIV>
@@ -193,20 +203,21 @@
             </DIV>
         </DIV>
         <SCRIPT type="text/javascript">
-
             //var userID = "abc123";
-            var userID = getQueryStringValue("userID");
+            var newAccount = new Object();
             $(document).ready(function () {
                 $("#lnkUsersettings").popover({ trigger: "hover" });
                 setBankTitle();
                 // Setup grid
                 $("#btnSave").click(function (e) {
+                    newAccount = getAccountInfoFromInputs();
                     $.ajax({
                         type: "PUT",
-                        url: "http://localhost:10005/api/dtc/NodeB/create-purchase-order",
+                        async:false,
+                        url: serviceURL + "user-registration",
                         dataType: "json",
                         contentType: "application/json;charset=UTF-8",
-                        data: newAccount, //objOrder will be parameter name in service.
+                        data: JSON.stringify(newAccount), //objOrder will be parameter name in service.
                         beforeSend: function () {
                             $("#divBusyStatus").show();
                         },
@@ -214,7 +225,7 @@
                             $("#divBusyStatus").hide();
                         },
                         success: function (data) {
-                            alert('Success');
+                            alert('Account is registered successfully.');
                             window.location = "OrderList.htm?userID=" + userID;
                         },
                         error: function (errMsg) {
@@ -225,32 +236,33 @@
                         }
                     });
                 });
-                var newAccount = new Object();
-                function getUserFromInputs() {
-                    newAccount = { contact: { address: {} } };
+                function getAccountInfoFromInputs() {
+                    newAccount = {};
                     newAccount.companyName = $("#txtCompanytName").val();
-                    newAccount.RegistrationNo = $("#txtRegistrationNo").val();
+                    newAccount.registrationNo = $("#txtRegisterVATNumber").val();
+                    newAccount.iban = $("#txtIBAN").val();
                     //newAccount.dateofBirth = $("#txtDateofBirth").val();
                     //newAccount.gender = $("#txtGender").val();
-                    newAccount.contact.contactName = $("#txtContactName").val();
-                    newAccount.contact.address.address1 = $("#txtAddress1").val();
-                    newAccount.contact.address.address2 = $("#txtAddress2").val();
-                    newAccount.contact.address.city = $("#txtCity").val();
-                    newAccount.contact.address.postalCode = $("#txtPostalCode").val();
-                    newAccount.contact.address.state = $("#txtState").val();
-                    newAccount.contact.address.country = $("#txtCountry").val();
-                    newAccount.contact.address.email = $("#txtEmail").val();
-                    newAccount.contact.address.mobile = $("#txtMobile").val();
-                    newAccount.username = $("#txtUsername").val();
+                    newAccount.contactName = $("#txtContactName").val();
+                    newAccount.address = $("#txtAddress").val();
+                    //newAccount.address2 = $("#txtAddress2").val();
+                    newAccount.city = $("#txtCity").val();
+                    newAccount.postalCode = $("#txtPostalCode").val();
+                    newAccount.state = $("#txtState").val();
+                    newAccount.country = $("#txtCountry").val();
+                    newAccount.email = $("#txtEmail").val();
+                    newAccount.contactNumber = $("#txtContactNumber").val();
+                    newAccount.website = $("#txtWebsite").val();
+                    newAccount.userId = $("#txtUsername").val();
                     newAccount.password = $("#txtPassword").val();
+                    return newAccount;
                 }
                 function setBankTitle() {
-                    //$("#lblBankTitle").text("Welcome to Bank of DTH");
-                    var serviceURL = window.location.protocol + "//" + window.location.host + "/api/dtc/me";
-                    alert(serviceURL);
+                    $("#lblBankTitle").text("Welcome Guest !");
+                    //var serviceURL = window.location.protocol + "//" + window.location.host + "/api/dtc/me";
                     $.ajax({
                         type: "GET",
-                        url: serviceURL,
+                        url: serviceURL + "me",
                         dataType: "json",
                         contentType: "application/json;charset=UTF-8",
                         data: newAccount, //objOrder will be parameter name in service.
@@ -261,11 +273,14 @@
                             $("#divBusyStatus").hide();
                         },
                         success: function (data) {
-                            debugger;
-                            $("#lblBankTitle").text(data.me);
+                            var currentSite = data.me;
+                            var currentUsername = "Guest";
+                            if (null != currentUser && undefined != currentUser && null != currentUser.userName && undefined != currentUser.userName) {
+                                currentUsername = currentUser.userName;
+                            }
+                            $("#lblBankTitle").text("Welcome to " + currentSite + " " + currentUsername + " !");
                         },
                         error: function (errMsg) {
-                            debugger;
                             alert(errMsg);
                             //redirectUser("OrderList.htm?userID=" + userID);
                             //window.location = "OrderList.htm?userID=" + userID;

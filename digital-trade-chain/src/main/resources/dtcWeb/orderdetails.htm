@@ -277,18 +277,18 @@
                                     </DIV>
                                     <DIV class="panel-body">
                                         <DIV class="row">
-                                            <DIV class="col-sm-6">
+                                            <DIV class="col-sm-12">
                                                 <DIV class="form-group">
-                                                    <LABEL for="txtAddress1">Address1:</LABEL>
-                                                    <INPUT class="form-control" id="txtAddress1" type="text">
+                                                    <LABEL for="txtAddress">Address:</LABEL>
+                                                    <INPUT class="form-control" id="txtAddress" type="text">
                                                 </DIV>
                                             </DIV>
-                                            <DIV class="col-sm-6">
+                                            <!--<DIV class="col-sm-6">
                                                 <DIV class="form-group">
                                                     <LABEL for="txtAddress2">Address2:</LABEL>
                                                     <INPUT class="form-control" id="txtAddress2" type="text">
                                                 </DIV>
-                                            </DIV>
+                                            </DIV>-->
                                         </DIV>
                                         <DIV class="row">
                                             <DIV class="col-sm-4">
@@ -582,8 +582,8 @@
                         $('#tblArticleDetailsBody').html(tableRow);
 
                         // setOrderAddress
-                        $("#txtAddress1").val(orderDetails.deliveryAddress.streetName);
-                        $("#txtAddress2").val(orderDetails.deliveryAddress.streetNumber);
+                        $("#txtAddress").val(orderDetails.deliveryAddress.streetName);
+                        //$("#txtAddress2").val(orderDetails.deliveryAddress.streetNumber);
                         $("#txtPostalCode").val(orderDetails.deliveryAddress.postalCode);
                         $("#txtCity").val(orderDetails.deliveryAddress.city);
                         $("#txtCountry").val(orderDetails.deliveryAddress.country);
@@ -885,8 +885,9 @@ debugger;
                             orderDetails.itemsList.push(tempItem);
                         });
                         orderDetails.deliveryAddress = new Object();
-                        orderDetails.deliveryAddress.streetName = $("#txtAddress1").val();
-                        orderDetails.deliveryAddress.streetNumber = $("#txtAddress2").val();
+                        orderDetails.deliveryAddress.streetName = $("#txtAddress").val();
+                        //orderDetails.deliveryAddress.streetNumber = $("#txtAddress2").val();
+                        orderDetails.deliveryAddress.streetNumber = "";
                         orderDetails.deliveryAddress.postalCode = $("#txtPostalCode").val();
                         orderDetails.deliveryAddress.city = $("#txtCity").val();
                         orderDetails.deliveryAddress.country = $("#txtCountry").val();
