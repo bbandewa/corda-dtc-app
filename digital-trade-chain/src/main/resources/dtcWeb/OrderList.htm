@@ -61,6 +61,38 @@
 </HEAD>
 <BODY>
     <FORM id="form1" method="post">
+        <div class="websiteHeader" id="divWebHeader">
+            <div class="row">
+                <div class="col-md-1"><img src="images/KBCIcon.png" height="35" style="border:solid 1px white;margin-top:7px;margin-left:10px; " /></div>
+                <div class="col-md-3"><h3 style="margin-bottom:0px; margin-top:10px;margin-left:20px;">Digital Trade Chain</h3></div>
+                <div class="col-md-8">
+                    <div class="pull-right" style="text-align:right; margin-bottom:0px; margin-top:10px;margin-right:100px;font-size:15px;">
+                        <div class="dropdown">
+                            <a href="#" id="lnkUsersettings" data-toggle="dropdown" class="dropdown-toggle" style="color:white !important;">
+                                <img src="images/userImage.png" height="35" class="img-circle" /> &nbsp;&nbsp;<span id="lblBankTitle"></span> &nbsp; <span class="glyphicon glyphicon-triangle-bottom"></span>
+                            </a>
+                            <div class="dropdown-menu" style="min-width:200px;background-color:#f5f5f5; padding:10px;">
+                                <div class="row marginBottom10">
+                                    <div class="col-md-12" style="margin-bottom:7px;">
+                                        <a>  My Profile</a>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom:7px;">
+                                    <div class="col-md-12">
+                                        <a href="#">Change Password</a>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom:7px;">
+                                    <div class="col-md-12">
+                                        <a href="#">Logout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="busyStatus" id="divBusyStatus" style="text-align: center">
             <div id="yourdiv" style="display: inline-block;">
                 <div class="loader">
@@ -85,10 +117,11 @@
                 </DIV>
             </DIV>
             <SCRIPT type="text/javascript">
-            
-            //var userID = "abc123";
-            var userID = getQueryStringValue("userID");
+
+                //var userID = "abc123";
+                var userID = getQueryStringValue("userID");
                 $(document).ready(function () {
+                    setBankTitle("lblBankTitle");
                     // Setup grid
                     $("#jqGrid01").jqGrid({
                         //datatype: "local",
@@ -121,8 +154,8 @@
                         {
                             name: 'status', width: 180, sortable: false, hidden: false, align: "center", formatter: function (cellvalue, options, rowObject) {
                                 //return "<h4><span class='" + getClassByOrderStatus(rowObject.Status) + "'>" + rowObject.status + "</span></h4>";
-                                rowObject.status="Ordered";
-                            	return "<h4><span class='" + getClassByOrderStatus(rowObject.Status) + "'>" + rowObject.status + "</span></h4>";
+                                rowObject.status = "Ordered";
+                                return "<h4><span class='" + getClassByOrderStatus(rowObject.Status) + "'>" + rowObject.status + "</span></h4>";
                             },
                         },
                         {
@@ -147,7 +180,31 @@
                             }
                         },
                     });
-
+                    function setBankTitle(label) {
+                        $("#" + label).text("Welcome Guest !");
+                        var newAccount = new Object();
+                        //var serviceURL = window.location.protocol + "//" + window.location.host + "/api/dtc/me";
+                        $.ajax({
+                            type: "GET",
+                            url: serviceURL + "me",
+                            dataType: "json",
+                            contentType: "application/json;charset=UTF-8",
+                            data: newAccount, //objOrder will be parameter name in service.
+                            success: function (data) {
+                                var currentSite = data.me;
+                                var currentUsername = "Guest";
+                                if (null != currentUser && undefined != currentUser && null != currentUser.userName && undefined != currentUser.userName) {
+                                    currentUsername = currentUser.userName;
+                                }
+                                $("#" + label).text("Welcome to " + currentSite + " " + currentUsername + " !");
+                            },
+                            error: function (errMsg) {
+                                alert(errMsg);
+                                //redirectUser("OrderList.htm?userID=" + userID);
+                                //window.location = "OrderList.htm?userID=" + userID;
+                            }
+                        });
+                    }
                     // Setup buttons
                     $("#jqGrid01").jqGrid('navGrid', '#jqGridPager01',
                             { edit: true, add: true, del: false, search: true },

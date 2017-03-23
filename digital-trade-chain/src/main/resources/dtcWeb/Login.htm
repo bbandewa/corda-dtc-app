@@ -54,17 +54,20 @@
                             <INPUT class="form-control" id="txtPassword" type="password">
                         </DIV>
                         <DIV class="checkbox">
-                            <LABEL>
+                            <!--<LABEL>
                                 <INPUT type="checkbox">
                                 Remember me
-                            </LABEL>
-                        </DIV><BUTTON class="btn btn-info"
-                                      id="btnLogin">
+                            </LABEL>-->
+                        </DIV>
+                        <button class="btn btn-info" id="btnLogin">
                             Login
-                        </BUTTON>                         <BUTTON class="btn btn-link"
-                                                                  type="button">
-                            Forgot Password?
-                        </BUTTON>
+                        </button>
+                        <button class="btn btn-info" type="button">
+                            Recover Password
+                        </button>
+                        <button class="btn btn-link" id="btnSignUp" type="button">
+                            New User? Sign Up
+                        </button>
                     </DIV>
                 </DIV>
             </DIV>
@@ -75,7 +78,6 @@
         // Get the modal
         $(document).ready(function () {
             $('#btnLogin').click(function (e) {
-                debugger;
                 if (validateCridentials($("#txtUsername").val(), $("#txtPassword").val())) {
                     redirectUser("OrderList.htm?userID=" + $("#txtUsername").val());
                 }
@@ -85,6 +87,10 @@
                 e.preventDefault();
             });
             $("#divBusyStatus").hide();
+            $("#btnSignUp").click(function () {
+                alert("test");
+                window.location.href = "userRegistration.html";
+            });
         });
     </SCRIPT>
     <SCRIPT src="js/bootstrap.min.js"></SCRIPT>

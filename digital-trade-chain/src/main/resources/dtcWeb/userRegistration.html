@@ -39,7 +39,7 @@
                             <a href="#" id="lnkUsersettings" data-toggle="dropdown" class="dropdown-toggle" style="color:white !important;">
                                 <img src="images/userImage.png" height="35" class="img-circle" /> &nbsp;&nbsp;<span id="lblBankTitle"></span> &nbsp; <span class="glyphicon glyphicon-triangle-bottom"></span>
                             </a>
-                            <div class="dropdown-menu" style="min-width:200px;background-color:#f5f5f5; padding:10px;">
+                            <!--<div class="dropdown-menu" style="min-width:200px;background-color:#f5f5f5; padding:10px;">
                                 <div class="row marginBottom10">
                                     <div class="col-md-12" style="margin-bottom:7px;">
                                         <a>  My Profile</a>
@@ -55,7 +55,7 @@
                                         <a href="#">Logout</a>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -206,14 +206,15 @@
             //var userID = "abc123";
             var newAccount = new Object();
             $(document).ready(function () {
+                $("#divBusyStatus").hide();
+                setBankTitle("lblBankTitle");
                 $("#lnkUsersettings").popover({ trigger: "hover" });
-                setBankTitle();
                 // Setup grid
                 $("#btnSave").click(function (e) {
                     newAccount = getAccountInfoFromInputs();
                     $.ajax({
                         type: "PUT",
-                        async:false,
+                        async: false,
                         url: serviceURL + "user-registration",
                         dataType: "json",
                         contentType: "application/json;charset=UTF-8",
@@ -226,13 +227,12 @@
                         },
                         success: function (data) {
                             alert('Account is registered successfully.');
-                            window.location = "OrderList.htm?userID=" + userID;
+                            window.location.href = "Login.htm";
                         },
                         error: function (errMsg) {
                             debugger;
-                            //alert(errMsg);
+                            alert(errMsg);
                             //redirectUser("OrderList.htm?userID=" + userID);
-                            window.location = "OrderList.htm?userID=" + userID;
                         }
                     });
                 });
@@ -257,8 +257,9 @@
                     newAccount.password = $("#txtPassword").val();
                     return newAccount;
                 }
-                function setBankTitle() {
-                    $("#lblBankTitle").text("Welcome Guest !");
+                function setBankTitle(label) {
+                    $("#" + label).text("Welcome Guest !");
+                    var newAccount = new Object();
                     //var serviceURL = window.location.protocol + "//" + window.location.host + "/api/dtc/me";
                     $.ajax({
                         type: "GET",
@@ -266,19 +267,13 @@
                         dataType: "json",
                         contentType: "application/json;charset=UTF-8",
                         data: newAccount, //objOrder will be parameter name in service.
-                        beforeSend: function () {
-                            $("#divBusyStatus").show();
-                        },
-                        complete: function () {
-                            $("#divBusyStatus").hide();
-                        },
                         success: function (data) {
                             var currentSite = data.me;
                             var currentUsername = "Guest";
                             if (null != currentUser && undefined != currentUser && null != currentUser.userName && undefined != currentUser.userName) {
                                 currentUsername = currentUser.userName;
                             }
-                            $("#lblBankTitle").text("Welcome to " + currentSite + " " + currentUsername + " !");
+                            $("#" + label).text("Welcome to " + currentSite + " " + currentUsername + " !");
                         },
                         error: function (errMsg) {
                             alert(errMsg);
