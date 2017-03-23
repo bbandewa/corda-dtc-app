@@ -22,24 +22,7 @@ import co.paralleluniverse.fibers.Suspendable;
 import com.capgemini.dtc.app.state.PurchaseOrderState;
 import com.google.common.collect.ImmutableSet;
 
-/**
- * This is the "Hello World" of flows!
- *
- * It is a generic flow which facilitates the workflow required for two parties; an [Initiator] and an [Acceptor],
- * to come to an agreement about some arbitrary data (in this case, a [PurchaseOrder]) encapsulated within a [DealState].
- *
- * As this is just an example there's no way to handle any counter-proposals. The [Acceptor] always accepts the
- * proposed state assuming it satisfies the referenced [Contract]'s issuance constraints.
- *
- * These flows have deliberately been implemented by using only the call() method for ease of understanding. In
- * practice we would recommend splitting up the various stages of the flow into sub-routines.
- *
- * NB. All methods called within the [FlowLogic] sub-class need to be annotated with the @Suspendable annotation.
- *
- * The flows below have been heavily commented to aid your understanding. It may also be worth reading the CorDapp
- * tutorial documentation on the Corda docsite (https://docs.corda.net) which includes a sequence diagram which clearly
- * explains each stage of the flow.
- */
+
 public class DTCFlow {
     public static class Initiator extends FlowLogic<DTCFlowResult> {
 

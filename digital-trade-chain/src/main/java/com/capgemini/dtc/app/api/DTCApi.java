@@ -3,6 +3,12 @@ package com.capgemini.dtc.app.api;
 import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -22,8 +28,11 @@ import net.corda.core.messaging.CordaRPCOps;
 
 import com.capgemini.dtc.app.contract.PurchaseOrderContract;
 import com.capgemini.dtc.app.flow.DTCFlow;
-import com.capgemini.dtc.app.model.PurchaseOrder;
+import com.capgemini.dtc.app.model.PurchaseOrderNew;
+import com.capgemini.dtc.app.model.User;
 import com.capgemini.dtc.app.state.PurchaseOrderState;
+import com.capgemini.dtc.app.util.DatabaseUtil;
+import com.capgemini.dtc.app.util.StringUtil;
 
 // This API is accessible from /api/example. All paths specified below are relative to it.
 @Path("dtc")
@@ -42,7 +51,7 @@ public class DTCApi {
     @GET
     @Path("me")
     @Produces(MediaType.APPLICATION_JSON)
-    public Map<String, String> whoami() { return singletonMap("me", myLegalName); }
+    public Map<String, String> whoami() { return singletonMap("me", StringUtil.splitByUpperCase(myLegalName)); }
 
     /**
      * Returns all parties registered with the [NetworkMapService]. The names can be used to look up identities by
@@ -66,10 +75,61 @@ public class DTCApi {
      * Displays all purchase order states that exist in the vault.
      */
     @GET
-    @Path("purchase-orders")
+    @Path("{userId}/purchase-orders")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<StateAndRef<ContractState>> getPurchaseOrders() {
-        return services.vaultAndUpdates().getFirst();
+    public List<PurchaseOrderNew> getPurchaseOrders(@PathParam("userId") String userId) {
+
+    	List<PurchaseOrderNew> returnRecords = new ArrayList<PurchaseOrderNew>();
+    	
+    	List<StateAndRef<ContractState>> allRecords = services.vaultAndUpdates().getFirst();
+    	
+    	for(int i=0; i<allRecords.size();i++){
+    		
+    		StateAndRef<ContractState> singleRecord = (StateAndRef<ContractState>) allRecords.get(i);
+    		
+    		PurchaseOrderState state = (PurchaseOrderState) singleRecord.getState().getData();
+    		
+    		if(state.getPurchaseOrder().getBuyer().getUserName().equalsIgnoreCase(userId) ||
+    				state.getPurchaseOrder().getSeller().getUserName().equalsIgnoreCase(userId)){
+    			returnRecords.add(state.getPurchaseOrder());
+    		}
+    	}
+    	// return only one record based on date which is created last
+    	//PurchaseOrderNew lastPOCreation = Collections.max(returnRecords, Comparator.comparing(PurchaseOrderNew::getPoDate));
+    	
+    	//returnRecords.clear();
+    	//returnRecords.add(lastPOCreation);
+    	
+        //return services.vaultAndUpdates().getFirst();
+    	return returnRecords;
+    }
+    
+    @GET
+    @Path("{poNumber}/get-po-details")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<PurchaseOrderNew> getPODetails(@PathParam("poNumber") String poNumber) {
+    	
+    	List<PurchaseOrderNew> returnRecords = new ArrayList<PurchaseOrderNew>();
+    	
+    	List<StateAndRef<ContractState>> allRecords = services.vaultAndUpdates().getFirst();
+    	
+    	for(int i=0; i<allRecords.size();i++){
+    		
+    		StateAndRef<ContractState> singleRecord = (StateAndRef<ContractState>) allRecords.get(i);
+    		
+    		PurchaseOrderState state = (PurchaseOrderState) singleRecord.getState().getData();
+    		
+    		if(state.getPurchaseOrder().getPurchaseOrderNum().equalsIgnoreCase(poNumber)){
+    			returnRecords.add(state.getPurchaseOrder());
+    		}
+    	}
+    	// return only one record based on date which is created last
+    	PurchaseOrderNew lastPOCreation = Collections.max(returnRecords, Comparator.comparing(PurchaseOrderNew::getPoDate));
+    	
+    	returnRecords.clear();
+    	returnRecords.add(lastPOCreation);
+    	
+        return returnRecords;
     }
 
     /**
@@ -84,32 +144,34 @@ public class DTCApi {
      */
     @PUT
     @Path("{party}/create-purchase-order")
-    public Response createPurchaseOrder(PurchaseOrder purchaseOrder, @PathParam("party") String partyName) throws InterruptedException, ExecutionException {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createPurchaseOrder(PurchaseOrderNew purchaseOrder, @PathParam("party") String partyName) throws InterruptedException, ExecutionException {
+    	System.out.println(purchaseOrder);
         final Party otherParty = services.partyFromName(partyName);
-        final Party anotherParty = services.partyFromName("NodeC");
+        //this line will be removed. we only broadcast to target participant 
+        final Party anotherParty = services.partyFromName("ABBFederalBank");
 
         if (otherParty == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-
+        }        
         /*final PurchaseOrderState state = new PurchaseOrderState(
                 purchaseOrder,
                 services.nodeIdentity().getLegalIdentity(),
                 otherParty,
                 new PurchaseOrderContract());*/
+        purchaseOrder.setPoDate(new Date());
         final PurchaseOrderState state = new PurchaseOrderState(
                 purchaseOrder,
                 services.nodeIdentity().getLegalIdentity(),
-                otherParty, anotherParty,
-                new PurchaseOrderContract());
-
+                otherParty, 
+                anotherParty,
+                new PurchaseOrderContract());        
         // The line below blocks and waits for the flow to return.
         final DTCFlow.DTCFlowResult result = services
                 .startFlowDynamic(DTCFlow.Initiator.class, state, otherParty, anotherParty)
                 .getReturnValue()
                 .toBlocking()
-                .first();
-
+                .first();        
         final Response.Status status;
         if (result instanceof DTCFlow.DTCFlowResult.Success) {
             status = Response.Status.CREATED;
@@ -121,5 +183,47 @@ public class DTCApi {
                 .status(status)
                 .entity(result.toString())
                 .build();
+    }
+    
+    @PUT
+    @Path("user-registration")
+    @Produces(MediaType.APPLICATION_JSON)
+    public User createUser(User user) throws InterruptedException, ExecutionException, SQLException {
+    	System.out.println("*************************************************");
+    	System.out.println(user);    
+    	System.out.println("*************************************************");
+    	int result = DatabaseUtil.createUser(myLegalName, user);
+    	User returnUser = null;
+        final Response.Status status;
+        if (result != -1) {
+            status = Response.Status.CREATED;
+            returnUser = DatabaseUtil.retriveUser(myLegalName, user.getUserId());
+        } else {
+            status = Response.Status.BAD_REQUEST;
+        }
+
+        return returnUser;
+    }
+    
+    @PUT
+    @Path("validate-login")
+    @Produces(MediaType.APPLICATION_JSON)
+    public User validateLogin(User user) throws InterruptedException, ExecutionException, SQLException {
+    	
+    	System.out.println(user);        
+    	boolean result = DatabaseUtil.validateLogin(myLegalName, user.getUserId(), user.getPassword());
+    	
+    	System.out.println("User validation status = "+ result);
+    	
+        final Response.Status status;
+        User returnUser = null;
+        if (result == true) {
+            status = Response.Status.CREATED;
+            returnUser = DatabaseUtil.retriveUser(myLegalName, user.getUserId());
+        } else {
+            status = Response.Status.BAD_REQUEST;
+        }
+
+        return returnUser;
     }
 }

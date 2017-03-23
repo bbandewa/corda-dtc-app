@@ -19,6 +19,14 @@ public class Item {
 	}
 
 	/**
+	 * 
+	 */
+	public Item() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
 	 * @return the articleId
 	 */
 	public String getArticleId() {

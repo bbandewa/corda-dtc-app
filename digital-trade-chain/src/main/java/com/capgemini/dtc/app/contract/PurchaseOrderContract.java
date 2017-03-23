@@ -155,14 +155,14 @@ public class PurchaseOrderContract implements Contract {
                             command.getSigners().containsAll(out.getParticipants()));
 
                     // Purchase order specific constraints.
-                    require.by("We only deliver to the UK.",
-                            out.getPurchaseOrder().getDeliveryAddress().getCountry().equals("UK"));
+                    /*require.by("We only deliver to the UK.",
+                            out.getPurchaseOrder().getDeliveryAddress().getCountry().equals("UK"));*/
                     require.by("You must order at least one type of item.",
-                            !out.getPurchaseOrder().getItems().isEmpty());
+                            !out.getPurchaseOrder().getItemsList().isEmpty());
                     require.by("You cannot order zero or negative amounts of an item.",
-                            out.getPurchaseOrder().getItems().stream().allMatch(item -> item.getAmount() > 0));
-                    require.by("You can only order up to 100 items in total.",
-                            out.getPurchaseOrder().getItems().stream().mapToInt(PurchaseOrder.Item::getAmount).sum() <= 100);
+                            out.getPurchaseOrder().getItemsList().stream().allMatch(ItemPurchased -> ItemPurchased.getArticle().getPrice() > 0));
+                    /*require.by("You can only order up to 100 items in total.",
+                            out.getPurchaseOrder().getItemsList().stream().mapToInt(PurchaseOrder.Item::getAmount).sum() <= 100);*/
                     require.by("The delivery date must be in the future.",
                             out.getPurchaseOrder().getDeliveryDate().toInstant().isAfter(time));
 

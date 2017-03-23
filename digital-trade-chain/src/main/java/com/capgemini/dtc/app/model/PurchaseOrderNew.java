@@ -6,26 +6,39 @@ package com.capgemini.dtc.app.model;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * @author Balaji
  *
  */
 public class PurchaseOrderNew {
 
-	Party buyer;
-	Party seller;
-	String purchaseOrderNum;
-	double totalPrice;
-	String currency;
-	Date deliveryDate;
-	String incoterm;
-	int pymntCondDays;
-	List<ItemPurchased> itemsList;
-	Address deliveryAddress;
-	boolean isPymntConfirmation;
-	boolean isBankPymntCommitment;
-	boolean isInfoCounterparty;
-	boolean isForfaitingOfInvoice;
+	/**
+	 * 
+	 */
+	public PurchaseOrderNew() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	private Party buyer;
+	private Party seller;
+	private String purchaseOrderNum;
+	private double totalPrice;
+	private String currency;
+	//@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date deliveryDate;
+	private String incoterm;
+	private int pymntCondDays;
+	private List<ItemPurchased> itemsList;
+	private Address deliveryAddress;
+	private String pymntConfirmation;
+	private String bankPymntCommitment;
+	private String infoCounterparty;
+	private String forfaitingOfInvoice;
+	
+	Date poDate;
 	
 	/**
 	 * @param buyer
@@ -45,8 +58,8 @@ public class PurchaseOrderNew {
 	 */
 	public PurchaseOrderNew(Party buyer, Party seller, String purchaseOrderNum, double totalPrice, String currency,
 			Date deliveryDate, String incoterm, int pymntCondDays, List<ItemPurchased> itemsList,
-			Address deliveryAddress, boolean isPymntConfirmation, boolean isBankPymntCommitment,
-			boolean isInfoCounterparty, boolean isForfaitingOfInvoice) {
+			Address deliveryAddress, String isPymntConfirmation, String isBankPymntCommitment,
+			String isInfoCounterparty, String isForfaitingOfInvoice) {
 		super();
 		this.buyer = buyer;
 		this.seller = seller;
@@ -58,10 +71,19 @@ public class PurchaseOrderNew {
 		this.pymntCondDays = pymntCondDays;
 		this.itemsList = itemsList;
 		this.deliveryAddress = deliveryAddress;
-		this.isPymntConfirmation = isPymntConfirmation;
-		this.isBankPymntCommitment = isBankPymntCommitment;
-		this.isInfoCounterparty = isInfoCounterparty;
-		this.isForfaitingOfInvoice = isForfaitingOfInvoice;
+		this.pymntConfirmation = isPymntConfirmation;
+		this.bankPymntCommitment = isBankPymntCommitment;
+		this.infoCounterparty = isInfoCounterparty;
+		this.forfaitingOfInvoice = isForfaitingOfInvoice;
+		this.poDate = new Date();
+	}
+	
+	public Date getPoDate(){
+		return poDate;
+	}
+	
+	public void setPoDate(Date poDate){
+		this.poDate = poDate;
 	}
 	
 	/**
@@ -189,52 +211,52 @@ public class PurchaseOrderNew {
 	/**
 	 * @return the isPymntConfirmation
 	 */
-	public boolean isPymntConfirmation() {
-		return isPymntConfirmation;
+	public String getPymntConfirmation() {
+		return pymntConfirmation;
 	}
 	/**
-	 * @param isPymntConfirmation the isPymntConfirmation to set
+	 * @param pymntConfirmation the isPymntConfirmation to set
 	 */
-	public void setPymntConfirmation(boolean isPymntConfirmation) {
-		this.isPymntConfirmation = isPymntConfirmation;
+	public void setPymntConfirmation(String pymntConfirmation) {
+		this.pymntConfirmation = pymntConfirmation;
 	}
 	/**
 	 * @return the isBankPymntCommitment
 	 */
-	public boolean isBankPymntCommitment() {
-		return isBankPymntCommitment;
+	public String getBankPymntCommitment() {
+		return bankPymntCommitment;
 	}
 	/**
-	 * @param isBankPymntCommitment the isBankPymntCommitment to set
+	 * @param bankPymntCommitment the isBankPymntCommitment to set
 	 */
-	public void setBankPymntCommitment(boolean isBankPymntCommitment) {
-		this.isBankPymntCommitment = isBankPymntCommitment;
+	public void setBankPymntCommitment(String bankPymntCommitment) {
+		this.bankPymntCommitment = bankPymntCommitment;
 	}
 	/**
 	 * @return the isInfoCounterparty
 	 */
-	public boolean isInfoCounterparty() {
-		return isInfoCounterparty;
+	public String getInfoCounterparty() {
+		return infoCounterparty;
 	}
 	/**
-	 * @param isInfoCounterparty the isInfoCounterparty to set
+	 * @param infoCounterparty the isInfoCounterparty to set
 	 */
-	public void setInfoCounterparty(boolean isInfoCounterparty) {
-		this.isInfoCounterparty = isInfoCounterparty;
+	public void setInfoCounterparty(String infoCounterparty) {
+		this.infoCounterparty = infoCounterparty;
 	}
 	
 	/**
 	 * @return the isForfaitingOfInvoice
 	 */
-	public boolean isForfaitingOfInvoice() {
-		return isForfaitingOfInvoice;
+	public String getForfaitingOfInvoice() {
+		return forfaitingOfInvoice;
 	}
 	
 	/**
-	 * @param isForfaitingOfInvoice the isForfaitingOfInvoice to set
+	 * @param forfaitingOfInvoice the isForfaitingOfInvoice to set
 	 */
-	public void setForfaitingOfInvoice(boolean isForfaitingOfInvoice) {
-		this.isForfaitingOfInvoice = isForfaitingOfInvoice;
+	public void setForfaitingOfInvoice(String forfaitingOfInvoice) {
+		this.forfaitingOfInvoice = forfaitingOfInvoice;
 	}
 	
 	/* (non-Javadoc)
@@ -245,7 +267,7 @@ public class PurchaseOrderNew {
 		return String.format(
 				"PurchaseOrderNew [buyer=%s, seller=%s, purchaseOrderNum=%s, totalPrice=%s, currency=%s, deliveryDate=%s, incoterm=%s, pymntCondDays=%s, itemsList=%s, deliveryAddress=%s, isPymntConfirmation=%s, isBankPymntCommitment=%s, isInfoCounterparty=%s, isForfaitingOfInvoice=%s]",
 				buyer, seller, purchaseOrderNum, totalPrice, currency, deliveryDate, incoterm, pymntCondDays, itemsList,
-				deliveryAddress, isPymntConfirmation, isBankPymntCommitment, isInfoCounterparty, isForfaitingOfInvoice);
+				deliveryAddress, pymntConfirmation, bankPymntCommitment, infoCounterparty, forfaitingOfInvoice);
 	}
 	
 	

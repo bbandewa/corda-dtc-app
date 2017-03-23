@@ -1,0 +1,98 @@
+﻿<!DOCTYPE HTML>
+<HTML xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+    <META content="IE=11.0000"
+          http-equiv="X-UA-Compatible">
+    <TITLE> </TITLE>
+    <META charset="utf-8">
+    <META name="viewport" content="width=device-width, initial-scale=1">     <!-- jQuery -->
+
+    <SCRIPT src="js/jquery-1.10.1.min.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery-migrate-1.2.1.min.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery-ui.js"></SCRIPT>
+
+    <SCRIPT src="js/grid.locale-en.js"></SCRIPT>
+
+    <SCRIPT src="js/jquery.jqGrid.min.js"></SCRIPT>
+    <SCRIPT src="js/custom.js"></SCRIPT>
+
+    <!-- jquery-ui CSS -->
+    <LINK href="css/jquery-ui.css"
+          rel="stylesheet">     <!-- Bootstrap core CSS -->
+    <LINK href="css/bootstrap.min.css"
+          rel="stylesheet">
+    <LINK href="css/ui.jqgrid.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <STYLE type="text/css"></STYLE>
+    <META name="GENERATOR" content="MSHTML 11.00.10570.1001">
+</HEAD>
+<BODY>
+    <FORM id="form1" method="post">
+        <div class="busyStatus" id="divBusyStatus" style="text-align: center;">
+            <div id="yourdiv" style="display: inline-block;">
+                <div class="loader">
+                </div>
+            </div>
+            <h2>Please wait...</h2>
+        </div>
+        <DIV class="container">
+            <DIV class="panel-group col-sm-6"
+                 style="margin-top: 100px; margin-left: 200px;">
+                <DIV class="panel panel-info">
+                    <DIV class="panel-heading">
+                        <H3>User Login</H3>
+                    </DIV>
+                    <DIV class="panel-body" style="min-height: 350px;">
+                        <DIV class="form-group ">
+                            <LABEL for="email">Username:</LABEL>
+                            <INPUT class="form-control" id="txtUsername">
+                        </DIV>
+                        <DIV class="form-group ">
+                            <LABEL for="pwd">Password:</LABEL>
+                            <INPUT class="form-control" id="txtPassword" type="password">
+                        </DIV>
+                        <DIV class="checkbox">
+                            <!--<LABEL>
+                                <INPUT type="checkbox">
+                                Remember me
+                            </LABEL>-->
+                        </DIV>
+                        <button class="btn btn-info" id="btnLogin">
+                            Login
+                        </button>
+                        <button class="btn btn-info" type="button">
+                            Recover Password
+                        </button>
+                        <button class="btn btn-link" id="btnSignUp" type="button">
+                            New User? Sign Up
+                        </button>
+                    </DIV>
+                </DIV>
+            </DIV>
+        </DIV>
+    </FORM><!-- Visual Studio Browser Link -->
+    <!-- End Browser Link -->
+    <SCRIPT>
+        // Get the modal
+        $(document).ready(function () {
+            $('#btnLogin').click(function (e) {
+                if (validateCridentials($("#txtUsername").val(), $("#txtPassword").val())) {
+                    redirectUser("OrderList.htm?userID=" + $("#txtUsername").val());
+                }
+                else {
+                    alert("Invalid credentials.");
+                }
+                e.preventDefault();
+            });
+            $("#divBusyStatus").hide();
+            $("#btnSignUp").click(function () {
+                alert("test");
+                window.location.href = "userRegistration.html";
+            });
+        });
+    </SCRIPT>
+    <SCRIPT src="js/bootstrap.min.js"></SCRIPT>
+</BODY>
+</HTML>

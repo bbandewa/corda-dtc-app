@@ -16,6 +16,14 @@ public class ItemPurchased {
 	}
 
 	/**
+	 * 
+	 */
+	public ItemPurchased() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
 	 * @return the article
 	 */
 	public Item getArticle() {

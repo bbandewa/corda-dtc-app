@@ -3,22 +3,30 @@ package com.capgemini.dtc.app.plugin;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
+import net.corda.core.contracts.Amount;
 import net.corda.core.crypto.Party;
 import net.corda.core.flows.IllegalFlowLogicException;
 import net.corda.core.messaging.CordaRPCOps;
 import net.corda.core.node.CordaPluginRegistry;
 import net.corda.core.node.PluginServiceHub;
+import net.corda.core.serialization.OpaqueBytes;
+import net.corda.flows.IssuerFlow;
 
 import com.capgemini.dtc.app.api.DTCApi;
 import com.capgemini.dtc.app.contract.PurchaseOrderContract;
 import com.capgemini.dtc.app.flow.DTCFlow;
+import com.capgemini.dtc.app.model.Address;
+import com.capgemini.dtc.app.model.Item;
+import com.capgemini.dtc.app.model.ItemPurchased;
 import com.capgemini.dtc.app.model.PurchaseOrder;
+import com.capgemini.dtc.app.model.PurchaseOrderNew;
 import com.capgemini.dtc.app.service.DTCService;
 import com.capgemini.dtc.app.state.PurchaseOrderState;
 import com.esotericsoftware.kryo.Kryo;
@@ -42,12 +50,25 @@ public class DTCPlugin extends CordaPluginRegistry {
      * This map also acts as a white list. If a flow is invoked via the API and not registered correctly
      * here, then the flow state machine will _not_ invoke the flow. Instead, an exception will be raised.
      */
-    private final Map<String, Set<String>> requiredFlows = Collections.singletonMap(
+   /* private final Map<String, Set<String>> requiredFlows = Collections.singletonMap(
             DTCFlow.Initiator.class.getName(),
             new HashSet<>(Arrays.asList(
                     PurchaseOrderState.class.getName(),
                     Party.class.getName()
-            )));
+            )));*/
+    
+  //Putting the above two flows into a single map
+    Map<String, Set<String>> requiredFlows = new HashMap<String, Set<String>>();
+   //instance block
+    {
+    	requiredFlows.put(DTCFlow.Initiator.class.getName(), new HashSet<>(Arrays.asList(
+    			PurchaseOrderState.class.getName(),
+    			Party.class.getName()
+                
+        )));
+    	requiredFlows.put(IssuerFlow.IssuanceRequester.class.getName(), new HashSet<>(Arrays.asList(Amount.class.getName(), Party.class.getName(), OpaqueBytes.class.getName(), Party.class.getName())));
+    	
+    }
 
     /**
      * A list of long lived services to be hosted within the node. Typically you would use these to register flow
@@ -76,9 +97,14 @@ public class DTCPlugin extends CordaPluginRegistry {
         kryo.register(PurchaseOrderState.class);
         kryo.register(PurchaseOrderContract.class);
         kryo.register(PurchaseOrder.class);
+        kryo.register(PurchaseOrderNew.class);
         kryo.register(PurchaseOrder.Address.class);
+        kryo.register(Address.class);
         kryo.register(Date.class);
         kryo.register(PurchaseOrder.Item.class);
+        kryo.register(Item.class);
+        kryo.register(ItemPurchased.class);
+        kryo.register(com.capgemini.dtc.app.model.Party.class);
         kryo.register(DTCFlow.DTCFlowResult.Success.class);
         kryo.register(DTCFlow.DTCFlowResult.Failure.class);
         kryo.register(IllegalArgumentException.class);

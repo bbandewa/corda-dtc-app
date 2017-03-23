@@ -6,27 +6,35 @@ public class Party {
 	String userName;
 	Address address;
 	String bankName;
-	String VAT;
-	String IBAN;
+	String vat;
+	String iban;
 	
 	/**
 	 * @param name
 	 * @param userName
 	 * @param address
 	 * @param bankName
-	 * @param vAT
-	 * @param iBAN
+	 * @param vat
+	 * @param iban
 	 */
-	public Party(String name, String userName, Address address, String bankName, String vAT, String iBAN) {
+	public Party(String name, String userName, Address address, String bankName, String vat, String iban) {
 		super();
 		this.name = name;
 		this.userName = userName;
 		this.address = address;
 		this.bankName = bankName;
-		VAT = vAT;
-		IBAN = iBAN;
+		this.vat = vat;
+		this.iban = iban;
 	}
 	
+	/**
+	 * 
+	 */
+	public Party() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * @return the name
 	 */
@@ -55,13 +63,13 @@ public class Party {
 	 * @return the vAT
 	 */
 	public String getVAT() {
-		return VAT;
+		return vat;
 	}
 	/**
 	 * @return the iBAN
 	 */
 	public String getIBAN() {
-		return IBAN;
+		return iban;
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -69,7 +77,7 @@ public class Party {
 	@Override
 	public String toString() {
 		return String.format("Party [name=%s, userName=%s, address=%s, bankName=%s, VAT=%s, IBAN=%s]", name,
-				userName, address, bankName, VAT, IBAN);
+				userName, address, bankName, vat, iban);
 	}
 	
 }
