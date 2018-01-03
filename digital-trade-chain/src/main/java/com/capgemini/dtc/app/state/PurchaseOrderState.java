@@ -19,6 +19,7 @@ import net.corda.core.transactions.TransactionBuilder;
 
 import com.capgemini.dtc.app.contract.PurchaseOrderContract;
 import com.capgemini.dtc.app.model.PurchaseOrder;
+import com.capgemini.dtc.app.model.PurchaseOrderNew;
 import com.capgemini.dtc.app.contract.PurchaseOrderContract.Commands.Place;
 
 // TODO: Implement QueryableState and add ORM code (to match Kotlin example).
@@ -31,33 +32,36 @@ import com.capgemini.dtc.app.contract.PurchaseOrderContract.Commands.Place;
  * properties and methods for managing states pertaining to deals.
  */
 public class PurchaseOrderState implements DealState {
-    private final PurchaseOrder purchaseOrder;
+    private final PurchaseOrderNew purchaseOrder;
     private final Party buyer;
     private final Party seller;
+    private final Party anotherParty;
     private final PurchaseOrderContract contract;
     private final UniqueIdentifier linearId;
 
-    public PurchaseOrderState(PurchaseOrder purchaseOrder,
+    public PurchaseOrderState(PurchaseOrderNew purchaseOrder,
                               Party buyer,
                               Party seller,
+                              Party anotherParty,
                               PurchaseOrderContract contract)
     {
         this.purchaseOrder = purchaseOrder;
         this.buyer = buyer;
         this.seller = seller;
+        this.anotherParty = anotherParty;
         this.contract = contract;
         this.linearId = new UniqueIdentifier(
-                Integer.toString(purchaseOrder.getOrderNumber()),
+                purchaseOrder.getPurchaseOrderNum(),
                 UUID.randomUUID());
     }
 
-    public PurchaseOrder getPurchaseOrder() { return purchaseOrder; }
+    public PurchaseOrderNew getPurchaseOrder() { return purchaseOrder; }
     public Party getBuyer() { return buyer; }
     public Party getSeller() { return seller; }
     @Override public PurchaseOrderContract getContract() { return contract; }
     @Override public UniqueIdentifier getLinearId() { return linearId; }
     @Override public String getRef() { return linearId.getExternalId(); }
-    @Override public List<Party> getParties() { return Arrays.asList(buyer, seller); }
+    @Override public List<Party> getParties() { return Arrays.asList(buyer, seller, anotherParty); }
     @Override public List<CompositeKey> getParticipants() {
         return getParties()
                 .stream()

@@ -5,11 +5,8 @@ import static kotlin.collections.CollectionsKt.single;
 import java.security.KeyPair;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collections;
+import java.util.Set;
 
-import net.corda.core.contracts.ContractState;
-import net.corda.core.contracts.DealState;
-import net.corda.core.contracts.TransactionState;
 import net.corda.core.crypto.CompositeKey;
 import net.corda.core.crypto.CryptoUtilities;
 import net.corda.core.crypto.DigitalSignature;
@@ -19,34 +16,19 @@ import net.corda.core.transactions.SignedTransaction;
 import net.corda.core.transactions.TransactionBuilder;
 import net.corda.core.transactions.WireTransaction;
 import net.corda.core.utilities.ProgressTracker;
-import net.corda.flows.NotaryFlow;
+import net.corda.flows.FinalityFlow;
 import co.paralleluniverse.fibers.Suspendable;
 
 import com.capgemini.dtc.app.state.PurchaseOrderState;
+import com.google.common.collect.ImmutableSet;
 
-/**
- * This is the "Hello World" of flows!
- *
- * It is a generic flow which facilitates the workflow required for two parties; an [Initiator] and an [Acceptor],
- * to come to an agreement about some arbitrary data (in this case, a [PurchaseOrder]) encapsulated within a [DealState].
- *
- * As this is just an example there's no way to handle any counter-proposals. The [Acceptor] always accepts the
- * proposed state assuming it satisfies the referenced [Contract]'s issuance constraints.
- *
- * These flows have deliberately been implemented by using only the call() method for ease of understanding. In
- * practice we would recommend splitting up the various stages of the flow into sub-routines.
- *
- * NB. All methods called within the [FlowLogic] sub-class need to be annotated with the @Suspendable annotation.
- *
- * The flows below have been heavily commented to aid your understanding. It may also be worth reading the CorDapp
- * tutorial documentation on the Corda docsite (https://docs.corda.net) which includes a sequence diagram which clearly
- * explains each stage of the flow.
- */
+
 public class DTCFlow {
     public static class Initiator extends FlowLogic<DTCFlowResult> {
 
         private final PurchaseOrderState purchaseOrderState;
         private final Party otherParty;
+        private final Party anotherParty;
         // The progress tracker checkpoints each stage of the flow and outputs the specified messages when each
         // checkpoint is reached in the code. See the 'progressTracker.currentStep' expressions within the call()
         // function.
@@ -75,9 +57,11 @@ public class DTCFlow {
         private static final ProgressTracker.Step SENDING_FINAL_TRANSACTION = new ProgressTracker.Step(
                 "Sending fully signed transaction to seller.");
 
-        public Initiator(PurchaseOrderState purchaseOrderState, Party otherParty) {
+      
+        public Initiator(PurchaseOrderState purchaseOrderState, Party otherParty, Party anotherParty) {
             this.purchaseOrderState = purchaseOrderState;
             this.otherParty = otherParty;
+            this.anotherParty = anotherParty;
         }
 
         @Override public ProgressTracker getProgressTracker() { return progressTracker; }
@@ -87,75 +71,53 @@ public class DTCFlow {
          */
         @Suspendable
         @Override public DTCFlowResult call() {
-            // Naively, wrapped the whole flow in a try ... catch block so we can
+        	// Naively, wrapped the whole flow in a try ... catch block so we can
             // push the exceptions back through the web API.
             try {
-                // Prep.
-                // Obtain a reference to our key pair. Currently, the only key pair used is the one which is registered with
-                // the NetWorkMapService. In a future milestone release we'll implement HD key generation such that new keys
-                // can be generated for each transaction.
+
                 final KeyPair myKeyPair = getServiceHub().getLegalIdentityKey();
                 // Obtain a reference to the notary we want to use and its public key.
                 final Party notary = single(getServiceHub().getNetworkMapCache().getNotaryNodes()).getNotaryIdentity();
                 final CompositeKey notaryPubKey = notary.getOwningKey();
 
-                // Stage 1.
-                progressTracker.setCurrentStep(CONSTRUCTING_OFFER);
-                // Construct a state object which encapsulates the PurchaseOrder object.
-                // We add the public keys for us and the counterparty as well as a reference to the contract code.
-                final TransactionState offerMessage = new TransactionState<ContractState>(purchaseOrderState, notary);
+                final TransactionBuilder utx = purchaseOrderState.generateAgreement(notary);
 
-                // Stage 2.
-                progressTracker.setCurrentStep(SENDING_OFFER_AND_RECEIVING_PARTIAL_TRANSACTION);
-                // Send the state across the wire to the designated counterparty.
-                // -----------------------
-                // Flow jumps to Acceptor.
-                // -----------------------
-                // Receive the partially signed transaction off the wire from the other party.
-                final SignedTransaction ptx = sendAndReceive(SignedTransaction.class, otherParty, offerMessage)
-                        .unwrap(data -> data);
+                final Instant currentTime = getServiceHub().getClock().instant();
+                utx.setTime(currentTime, Duration.ofSeconds(30));                
+                
 
-                // Stage 7.
-                progressTracker.setCurrentStep(VERIFYING);
-                // Check that the signature of the other party is valid.
-                // Our signature and the Notary's signature are allowed to be omitted at this stage as this is only a
-                // partially signed transaction.
-                final WireTransaction wtx = ptx.verifySignatures(CryptoUtilities.getComposite(myKeyPair.getPublic()), notaryPubKey);
-                // Run the contract's verify function.
-                // We want to be sure that the PurchaseOrderState agreed upon is a valid instance of an PurchaseOrderContract, to do
-                // this we need to run the contract's verify() function.
-                wtx.toLedgerTransaction(getServiceHub()).verify();
+                final SignedTransaction signWithA = utx.signWith(myKeyPair).toSignedTransaction(false);
 
-                // Stage 8.
-                progressTracker.setCurrentStep(SIGNING);
-                // Sign the transaction with our key pair and add it to the transaction.
-                // We now have 'validation consensus'. We still require uniqueness consensus.
-                // Technically validation consensus for this type of agreement implicitly provides uniqueness consensus.
-                final DigitalSignature.WithKey mySig = CryptoUtilities.signWithECDSA(myKeyPair, ptx.getId().getBytes());
-                final SignedTransaction vtx = ptx.plus(mySig);
+                //******************************
+                final SignedTransaction signWithB = this.sendAndReceive(SignedTransaction.class, otherParty , signWithA).unwrap(data -> data);
 
-                // Stage 9.
-                progressTracker.setCurrentStep(NOTARY);
-                // Obtain the notary's signature.
-                // We do this by firing-off a sub-flow. This illustrates the power of protocols as reusable workflows.
-                final DigitalSignature.WithKey notarySignature = subFlow(new NotaryFlow.Client(vtx, NotaryFlow.Client.Companion.tracker()), false);
-                // Add the notary signature to the transaction.
-                final SignedTransaction ntx = vtx.plus(notarySignature);
+                final WireTransaction wtxWithB = signWithB.verifySignatures(notaryPubKey,this.otherParty.getOwningKey(), this.anotherParty.getOwningKey());
+                
+                wtxWithB.toLedgerTransaction(getServiceHub()).verify();
 
-                // Stage 10.
-                progressTracker.setCurrentStep(RECORDING);
-                // Record the transaction in our vault.
-                getServiceHub().recordTransactions(Collections.singletonList(ntx));
 
-                // Stage 11.
-                progressTracker.setCurrentStep(SENDING_FINAL_TRANSACTION);
-                // Send a copy of the transaction to our counter-party.
-                send(otherParty, ntx);
-                return new DTCFlowResult.Success(String.format("Transaction id %s committed to ledger.", ntx.getId()));
+                //*****************************
+
+                final SignedTransaction signWithC = this.sendAndReceive(SignedTransaction.class, anotherParty , signWithB).unwrap(data -> data);
+
+                final WireTransaction wtxWitC = signWithC.verifySignatures(notaryPubKey,this.anotherParty.getOwningKey(),this.otherParty.getOwningKey());
+                
+                wtxWitC.toLedgerTransaction(getServiceHub()).verify();
+
+                //******************************
+
+                final Set<Party> participants = ImmutableSet.of(getServiceHub().getMyInfo().getLegalIdentity(), otherParty, anotherParty);
+                // FinalityFlow() notarises the transaction and records it in each party's vault.
+                subFlow(new FinalityFlow(signWithC, participants),false);
+
+
+                return new DTCFlowResult.Success(String.format("Transaction id %s committed to ledger.", signWithC.getId()));
+
             } catch(Exception ex) {
                 // Just catch all exception types.
                 return new DTCFlowResult.Failure(ex.getMessage());
             }
+        
         }
     }
 
@@ -192,55 +154,29 @@ public class DTCFlow {
 
         @Suspendable
         @Override public DTCFlowResult call() {
-            try {
+        	try {
                 // Prep.
                 // Obtain a reference to our key pair.
                 final KeyPair keyPair = getServiceHub().getLegalIdentityKey();
 
-                // Stage 3.
-                progressTracker.setCurrentStep(WAIT_FOR_AND_RECEIVE_PROPOSAL);
-                // All messages come off the wire as UntrustworthyData. You need to 'unwrap' it. This is an appropriate
-                // place to perform some validation over what you have just received.
-                final TransactionState<DealState> message = this.receive(TransactionState.class, otherParty)
-                        .unwrap(data -> (TransactionState<DealState>) data );
+                // Obtain a reference to the notary we want to use and its public key.
+                final Party notary = single(getServiceHub().getNetworkMapCache().getNotaryNodes()).getNotaryIdentity();
+                final CompositeKey notaryPubKey = notary.getOwningKey();
 
-                // Stage 4.
-                progressTracker.setCurrentStep(GENERATING_TRANSACTION);
-                // Generate an unsigned transaction. See PurchaseOrderState for further details.
-                final TransactionBuilder utx = message.getData().generateAgreement(message.getNotary());
-                // Add a timestamp as the contract code in PurchaseOrderContract mandates that ExampleStates are timestamped.
-                final Instant currentTime = getServiceHub().getClock().instant();
-                // As we are running in a distributed system, we allocate a 30 second time window for the transaction to
-                // be timestamped by the Notary service.
-                utx.setTime(currentTime, Duration.ofSeconds(30));
+                //final Party partyC = getServiceHub().getIdentityService().partyFromName("NodeC");
 
-                // Stage 5.
-                progressTracker.setCurrentStep(SIGNING);
-                // Sign the transaction.
-                final SignedTransaction stx = utx.signWith(keyPair).toSignedTransaction(false);
+                final SignedTransaction utx = this.receive(SignedTransaction.class, otherParty).unwrap(data -> data );
 
-                // Stage 6.
-                progressTracker.setCurrentStep(SEND_TRANSACTION_AND_WAIT_FOR_RESPONSE);
-                // Send the state back across the wire to the designated counterparty.
-                // ------------------------
-                // Flow jumps to Initiator.
-                // ------------------------
-                // Receive the signed transaction off the wire from the other party.
-                final SignedTransaction ntx = this.sendAndReceive(SignedTransaction.class, otherParty, stx)
-                        .unwrap(data -> data);
+                //final WireTransaction wtx = utx.verifySignatures(CryptoUtilities.getComposite(keyPair.getPublic()), notaryPubKey, partyC.getOwningKey());
+                //wtx.toLedgerTransaction(getServiceHub()).verify();
 
-                // Stage 12.
-                progressTracker.setCurrentStep(VERIFYING_TRANSACTION);
-                // Validate transaction.
-                // No need to allow for any omitted signatures as everyone should have signed.
-                ntx.verifySignatures();
-                // Check it's valid.
-                ntx.toLedgerTransaction(getServiceHub()).verify();
+                final DigitalSignature.WithKey mySig = CryptoUtilities.signWithECDSA(keyPair, utx.getTx().getId().getBytes());
+                final SignedTransaction vtx = utx.plus(mySig);
 
-                // Record the transaction.
-                progressTracker.setCurrentStep(RECORDING);
-                getServiceHub().recordTransactions(Collections.singletonList(ntx));
-                return new DTCFlowResult.Success(String.format("Transaction id %s committed to ledger.", ntx.getId()));
+                this.send(otherParty, vtx);                
+
+                return new DTCFlowResult.Success(String.format("Signed And Sent Back"));
+
             } catch (Exception ex) {
                 return new DTCFlowResult.Failure(ex.getMessage());
             }

@@ -1,0 +1,96 @@
+.ui-jqgrid {
+	-moz-box-sizing: content-box;
+}
+.ui-jqgrid-btable {
+	border-collapse: separate;
+}
+.ui-jqgrid-htable {
+	border-collapse: separate;
+}
+.ui-jqgrid-titlebar {
+	height: 40px; color: rgb(153, 153, 153); line-height: 15px; text-shadow: 0px 1px 0px rgba(255,255,255,0.5); background-color: rgb(249, 249, 249);
+}
+.ui-jqgrid .ui-jqgrid-title {
+	margin: 1.1em 1em 0.2em; float: left;
+}
+.ui-jqgrid .ui-jqgrid-titlebar {
+	position: relative;
+}
+.ui-widget-header {
+	background: rgb(249, 249, 249); text-transform: uppercase; border-top-left-radius: 6px; border-top-right-radius: 6px;
+}
+.ui-jqgrid tr.ui-row-ltr td {
+	border-color: rgb(221, 221, 221); text-align: left; border-right-width: 1px; border-right-style: solid; background-color: inherit;
+}
+.ui-search-toolbar input[type='text'] {
+	border-radius: 0px; border: 1px solid rgb(204, 204, 204); border-image: none; height: 15px; font-size: 12px;
+}
+.ui-state-default {
+	background: rgb(249, 249, 249); border: 1px solid rgb(211, 211, 211); border-image: none; color: rgb(119, 119, 119); line-height: 15px; font-weight: bold; text-shadow: 0px 1px 0px rgba(255,255,255,0.5);
+}
+.ui-widget-content .ui-state-default {
+	background: rgb(249, 249, 249); border: 1px solid rgb(211, 211, 211); border-image: none; color: rgb(119, 119, 119); line-height: 15px; font-weight: bold; text-shadow: 0px 1px 0px rgba(255,255,255,0.5);
+}
+.ui-widget-header .ui-state-default {
+	background: rgb(249, 249, 249); border: 1px solid rgb(211, 211, 211); border-image: none; color: rgb(119, 119, 119); line-height: 15px; font-weight: bold; text-shadow: 0px 1px 0px rgba(255,255,255,0.5);
+}
+.ui-widget-content {
+	box-sizing: content-box;
+}
+.ui-icon-triangle-1-n {
+	background-position: 1px -16px;
+}
+.ui-jqgrid tr.ui-search-toolbar th {
+	border-top-color: inherit !important; border-top-width: 0px !important; border-top-style: ridge !important;
+}
+.ui-state-hover {
+	background: rgb(218, 218, 218); border-collapse: separate;
+}
+.ui-widget-content .ui-state-hover {
+	background: rgb(218, 218, 218); border-collapse: separate;
+}
+.ui-state-focus {
+	background: rgb(218, 218, 218); border-collapse: separate;
+}
+.ui-widget-content .ui-state-focus {
+	background: rgb(218, 218, 218); border-collapse: separate;
+}
+.ui-widget-header .ui-state-focus {
+	background: rgb(218, 218, 218); border-collapse: separate;
+}
+.ui-state-active {
+	background: rgb(255, 255, 255); border: 1px solid rgb(170, 170, 170); border-image: none; color: rgb(33, 33, 33); font-weight: normal;
+}
+.ui-widget-content .ui-state-active {
+	background: rgb(255, 255, 255); border: 1px solid rgb(170, 170, 170); border-image: none; color: rgb(33, 33, 33); font-weight: normal;
+}
+.ui-widget-header .ui-state-active {
+	background: rgb(255, 255, 255); border: 1px solid rgb(170, 170, 170); border-image: none; color: rgb(33, 33, 33); font-weight: normal;
+}
+.ui-jqgrid .ui-pg-input {
+	border: 1px solid rgb(204, 204, 204); border-image: none; width: 50px; height: 15px; font-size: inherit;
+}
+.ui-jqgrid .ui-pg-selbox {
+	margin: 0px; width: auto; height: 25px; line-height: 18px; font-size: 1em; display: block;
+}
+.ui-jqgrid .ui-pager-control {
+	position: relative;
+}
+.ui-jqgrid .ui-jqgrid-pager {
+	height: 32px; position: relative;
+}
+.ui-pg-table .navtable .ui-corner-all {
+	border-radius: 0px;
+}
+.ui-jqgrid .ui-pg-button:hover {
+	padding: 1px; border: 0px currentColor; border-image: none;
+}
+.ui-jqgrid .loading {
+	border-width: 2px !important; margin: 5px; padding: 6px; left: 45%; top: 45%; width: auto; height: auto; text-align: center; font-size: 11px; font-weight: bold; display: none; position: absolute; z-index: 101;
+}
+.ui-jqgrid .form-control {
+	padding: 10px 12px; width: auto; height: 10px; display: inline;
+}
+.ui-jqgrid-pager {
+	height: 32px;
+}

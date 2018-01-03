@@ -41,3 +41,10 @@ https://discourse.corda.net/t/broadcasting-in-corda-7-missing-signature/755
 PUT:http://localhost:10005/api/dtc/NodeB/create-purchase-order
 
 {"orderNumber": "100","deliveryDate": "2018-09-15","deliveryAddress": {"city": "London","country": "UK"},"items" : [{"name": "widget","amount": "3"},{"name": "thing","amount": "4"}]}
+
+# Git commit issue
+If you face git commit error saying "non-fast-forward". Use the following command:
+
+C:\git\corda-dtc-app\>git pull origin master
+
+then push through eclipse.
